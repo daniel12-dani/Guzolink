@@ -5,24 +5,30 @@ import { useProducts } from "../context/products";
 function Signup() {
   const navigate = useNavigate();
   const { signup } = useProducts();
-  const [formData, setFormData] = useState({ name: "", email: "", password: "" });
+  const [formData, setFormData] = useState({ username: "", email: "", password: "" });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const success = signup(formData.name, formData.email, formData.password);
+    setError("");
+    setLoading(true);
 
-    if (success) {
+    const result = await signup(formData.username, formData.email, formData.password);
+
+    setLoading(false);
+
+    if (result.success) {
       navigate("/products");
       return;
     }
 
-    setError("This email is already registered.");
+    setError(result.message || "This email is already registered.");
   };
 
   return (
@@ -44,8 +50,8 @@ function Signup() {
             <span className="mb-2 block text-sm">Full name</span>
             <input
               type="text"
-              name="name"
-              value={formData.name}
+              name="username"
+              value={formData.username}
               onChange={handleChange}
               className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-sm text-white outline-none"
               placeholder="Your name"
@@ -80,8 +86,12 @@ function Signup() {
             />
           </label>
 
-          <button className="w-full rounded-xl bg-amber-500 px-4 py-3 font-semibold text-slate-950 transition hover:bg-amber-400">
-            Create account
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full rounded-xl bg-amber-500 px-4 py-3 font-semibold text-slate-950 transition hover:bg-amber-400 disabled:cursor-not-allowed disabled:bg-amber-300"
+          >
+            {loading ? "Creating account..." : "Create account"}
           </button>
 
           <p className="mt-4 text-center text-sm text-slate-400">

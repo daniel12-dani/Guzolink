@@ -1,5 +1,6 @@
 import { createContext, createElement, useContext, useEffect, useMemo, useState } from "react";
 import { products as productCatalog } from "../data/products";
+import { API_BASE_URL } from "../config/api";
 
 const ProductsContext = createContext(null);
 
@@ -13,10 +14,6 @@ function ProductsProvider({ children }) {
     const storedUser = window.localStorage.getItem("guzolink-user");
     return storedUser ? JSON.parse(storedUser) : null;
   });
-  const [registeredUsers, setRegisteredUsers] = useState(() => {
-    const storedUsers = window.localStorage.getItem("guzolink-users");
-    return storedUsers ? JSON.parse(storedUsers) : [{ name: "Demo User", email: "demo@Guzolink.com", password: "123456" }];
-  });
 
   useEffect(() => {
     window.localStorage.setItem("guzolink-cart", JSON.stringify(cart));
@@ -25,10 +22,6 @@ function ProductsProvider({ children }) {
   useEffect(() => {
     window.localStorage.setItem("guzolink-user", JSON.stringify(user));
   }, [user]);
-
-  useEffect(() => {
-    window.localStorage.setItem("guzolink-users", JSON.stringify(registeredUsers));
-  }, [registeredUsers]);
 
   const addToCart = (product, quantity = 1) => {
     setCart((currentCart) => {
@@ -91,29 +84,82 @@ function ProductsProvider({ children }) {
     setProducts((currentProducts) => currentProducts.filter((item) => item.id !== productId));
   };
 
-  const login = (email, password) => {
-    const foundUser = registeredUsers.find((entry) => entry.email === email && entry.password === password);
-    if (!foundUser) {
-      return false;
+  const signup = async (username, email, password) => {
+    const response = await fetch(`${API_BASE_URL}/api/user/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, email, password }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      return {
+        success: false,
+        message: data.message || "Unable to create your account",
+      };
     }
 
-    setUser({ name: foundUser.name, email: foundUser.email });
-    return true;
+    const sessionUser = {
+      id: data.user?.id,
+      username: data.user?.username,
+      email: data.user?.email,
+      role: data.user?.role,
+      token: data.bearerToken,
+    };
+
+    window.localStorage.setItem("guzolink-token", data.bearerToken);
+    setUser(sessionUser);
+
+    return {
+      success: true,
+      user: sessionUser,
+      message: data.message || "User registered successfully",
+    };
   };
 
-  const signup = (name, email, password) => {
-    const alreadyExists = registeredUsers.some((entry) => entry.email === email);
-    if (alreadyExists) {
-      return false;
+  const login = async (email, password) => {
+    const response = await fetch(`${API_BASE_URL}/api/user/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      return {
+        success: false,
+        message: data.message || "Invalid email or password",
+      };
     }
 
-    const newUser = { name, email, password };
-    setRegisteredUsers((currentUsers) => [...currentUsers, newUser]);
-    setUser({ name, email });
-    return true;
+    const sessionUser = {
+      id: data.user?.id,
+      username: data.user?.username,
+      email: data.user?.email,
+      role: data.user?.role,
+      token: data.bearerToken,
+    };
+
+    window.localStorage.setItem("guzolink-token", data.bearerToken);
+    setUser(sessionUser);
+
+    return {
+      success: true,
+      user: sessionUser,
+      message: data.message || "Logged in successfully",
+    };
   };
 
-  const logout = () => setUser(null);
+  const logout = () => {
+    window.localStorage.removeItem("guzolink-token");
+    setUser(null);
+  };
 
   const total = useMemo(
     () => cart.reduce((sum, item) => sum + item.price * item.quantity, 0),

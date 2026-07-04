@@ -13,6 +13,7 @@ import {
 
 UserRoute.get("/all", IsLoggedIn, IsAdmin, GetAllUsers);
 UserRoute.get("/:id", IsLoggedIn, GetUserProfile);
+UserRoute.post("/register", RegisterUser);
 UserRoute.post("/regr", RegisterUser);
 UserRoute.post("/login", LoginUser);
 UserRoute.delete("/", DeleteUser);

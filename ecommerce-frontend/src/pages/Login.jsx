@@ -7,22 +7,28 @@ function Login() {
   const { login } = useProducts();
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const success = login(formData.email, formData.password);
+    setError("");
+    setLoading(true);
 
-    if (success) {
+    const result = await login(formData.email, formData.password);
+
+    setLoading(false);
+
+    if (result.success) {
       navigate("/products");
       return;
     }
 
-    setError("Invalid email or password. Try demo@Guzolink.com / 123456");
+    setError(result.message || "Invalid email or password.");
   };
 
   return (
@@ -35,7 +41,7 @@ function Login() {
             Access your order history, save products for later, and breeze through checkout.
           </p>
           <div className="rounded-2xl bg-slate-100 p-4 text-sm text-slate-600">
-            Demo login: demo@Guzolink.com / 123456
+            Your account is now checked against the backend API.
           </div>
         </div>
 
@@ -69,8 +75,12 @@ function Login() {
             />
           </label>
 
-          <button className="w-full rounded-xl bg-amber-500 px-4 py-3 font-semibold text-slate-950 transition hover:bg-amber-400">
-            Sign In
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full rounded-xl bg-amber-500 px-4 py-3 font-semibold text-slate-950 transition hover:bg-amber-400 disabled:cursor-not-allowed disabled:bg-amber-300"
+          >
+            {loading ? "Signing in..." : "Sign In"}
           </button>
 
           <p className="mt-4 text-center text-sm text-slate-400">
