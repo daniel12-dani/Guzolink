@@ -1,0 +1,85 @@
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useProducts } from "../context/products";
+
+function Login() {
+  const navigate = useNavigate();
+  const { login } = useProducts();
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [error, setError] = useState("");
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const success = login(formData.email, formData.password);
+
+    if (success) {
+      navigate("/products");
+      return;
+    }
+
+    setError("Invalid email or password. Try demo@Guzolink.com / 123456");
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-50 px-4 py-16 text-slate-800">
+      <div className="mx-auto flex max-w-5xl flex-col gap-8 rounded-3xl border border-slate-200 bg-white p-8 shadow-sm lg:flex-row lg:items-center">
+        <div className="flex-1 space-y-4">
+          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-amber-600">Welcome back</p>
+          <h1 className="text-4xl font-bold">Sign in to continue shopping</h1>
+          <p className="max-w-xl text-lg text-slate-600">
+            Access your order history, save products for later, and breeze through checkout.
+          </p>
+          <div className="rounded-2xl bg-slate-100 p-4 text-sm text-slate-600">
+            Demo login: demo@Guzolink.com / 123456
+          </div>
+        </div>
+
+        <form onSubmit={handleSubmit} className="flex-1 rounded-3xl bg-slate-900 p-6 text-white shadow-xl">
+          <h2 className="mb-6 text-2xl font-semibold">Login</h2>
+          {error ? <p className="mb-4 rounded-xl bg-red-500/20 p-3 text-sm text-red-200">{error}</p> : null}
+
+          <label className="mb-4 block">
+            <span className="mb-2 block text-sm">Email</span>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-sm text-white outline-none ring-0"
+              placeholder="you@example.com"
+              required
+            />
+          </label>
+
+          <label className="mb-6 block">
+            <span className="mb-2 block text-sm">Password</span>
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-sm text-white outline-none ring-0"
+              placeholder="Enter password"
+              required
+            />
+          </label>
+
+          <button className="w-full rounded-xl bg-amber-500 px-4 py-3 font-semibold text-slate-950 transition hover:bg-amber-400">
+            Sign In
+          </button>
+
+          <p className="mt-4 text-center text-sm text-slate-400">
+            New here? <Link to="/signup" className="font-semibold text-amber-400">Create an account</Link>
+          </p>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+export default Login;
