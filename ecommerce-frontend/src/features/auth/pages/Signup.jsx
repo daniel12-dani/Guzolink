@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth.context";
 
+
 function Signup() {
   const navigate = useNavigate();
   const { signup } = useAuth();
@@ -13,6 +14,10 @@ function Signup() {
     const { name, value } = event.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
+
+  // After a successful registration the backend returns:
+  // { success:true, bearerToken:<jwt>, user:{id,username,email,role} }
+  // We store token & user via the auth context (which writes to localStorage).
 
   const handleSubmit = async (event) => {
     event.preventDefault();

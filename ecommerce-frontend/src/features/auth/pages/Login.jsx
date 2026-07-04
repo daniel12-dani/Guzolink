@@ -13,6 +13,9 @@ function Login() {
     const { name, value } = event.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
+  // After a successful login the backend returns:
+  // { success:true, bearerToken:<jwt>, user:{id,username,email,role} }
+  // The auth context stores the token & user, keeping the session alive.
 
   const handleSubmit = async (event) => {
     event.preventDefault();
