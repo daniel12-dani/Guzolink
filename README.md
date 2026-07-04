@@ -1,45 +1,27 @@
-# BookStore
+# Guzolink
 
-A minimal online bookstore demo with a Node.js + Express backend and a Vite-based frontend.
+A lightweight marketplace platform where local merchants create online shops and sell products. The project includes a Node.js + Express backend and a Vite-based frontend.
 
 ## Overview
 
-This repository contains a full-stack example application named BookStore. The backend provides REST APIs for authentication, users, books, categories and payments. The frontend is a lightweight Vite-powered static client that consumes those APIs.
+This repository contains a full-stack application named Guzolink. The backend provides REST APIs for merchant and shop management, product catalog, orders, customers, and payments. The frontend is a Vite-powered client that lets merchants manage shops and customers browse and buy products.
 
 ## Frontend Flow
 
-The frontend uses a simple render-then-init pattern: the router chooses a page, the page returns markup, and a separate init function attaches event listeners after the DOM is in place.
-
-```mermaid
-flowchart TD
-  A[URL changes] --> B[LoadPage in router.js]
-  B --> C{Route}
-  C -->|login| D[Render login layout]
-  C -->|profile| E[Render profile layout]
-  C -->|admin| F[Render admin layout]
-  C -->|home| G[Render home layout]
-
-  D --> H[Set app.innerHTML]
-  E --> H
-  F --> H
-  G --> H
-
-  H --> I[Run init functions]
-  I --> J[Attach events]
-  J --> K[User clicks button]
-  K --> L[Open modal, navigate, fetch data]
-```
+The frontend follows a render-then-init pattern: the router selects a page, the page returns markup, and an init function attaches event handlers. Key flows include merchant onboarding, shop management, product CRUD, and customer checkout.
 
 ## Tech stack
 
 - Backend: Node.js, Express, Mongoose (MongoDB)
-- Frontend: Vite, vanilla JS, Tailwind (minimal)
+- Frontend: Vite, vanilla JS, Tailwind CSS
+- Payments: Stripe (or pluggable provider)
 - Dev tooling: nodemon, Jest, Supertest
 
 ## Repository layout
 
-- backend/ — Express API server and related code
-- book_store/ — Vite frontend application (static client)
+- backend/ — Express API server, models for merchants, shops, products, orders
+- guzolink_client/ — Vite frontend application for merchants and customers
+- scripts/ — utility scripts (eg. seed data, create demo merchant)
 
 ## Quick start
 
@@ -59,7 +41,7 @@ npm install
 # development with auto-reload
 npm run dev
 # or start production-like server
-npm run run
+npm run start
 ```
 
 Server defaults to port `9000` unless `PORT` is set.
@@ -69,12 +51,12 @@ Server defaults to port `9000` unless `PORT` is set.
 Install and run the Vite dev server:
 
 ```bash
-cd book_store
+cd guzolink_client
 npm install
 npm run dev
 ```
 
-The frontend runs via Vite and will proxy or call your backend API endpoints as configured in the client code.
+The frontend runs via Vite and talks to the backend API as configured.
 
 ## Environment variables (backend)
 
@@ -86,34 +68,35 @@ Place environment variables in one of these locations (the project checks them i
 
 Common variables used by the project:
 
-- `DB_URI` / `DB_URL` — full MongoDB connection URI (overrides host/name)
+- `DB_URI` / `DB_URL` — MongoDB connection URI
 - `HOST` — MongoDB host (default: localhost)
-- `DB_NAME` — Database name (default: BookStore)
+- `DB_NAME` — Database name (default: Guzolink)
 - `PORT` — API server port (default: 9000)
-- `JW_SECRET` / `JWT_SECRET` — JWT signing secret
-- `JW_EXPIRES_IN` / `JWT_EXPIRES_IN` — JWT expiration (e.g. 1d)
+- `JWT_SECRET` — JWT signing secret
+- `JWT_EXPIRES_IN` — JWT expiration (e.g. 1d)
+- `PAYMENTS_PROVIDER_KEY` — API key for payments provider (eg. Stripe)
 
 ## Useful scripts
 
 - Backend
   - `npm run dev` — start `nodemon` development server
-  - `npm run run` — start node server
+  - `npm start` — start node server
   - `npm test` — run tests (Jest)
-- Frontend (book_store)
+- Frontend (guzolink_client)
   - `npm run dev` — start Vite dev server
   - `npm run build` — build for production
   - `npm run preview` — preview build
 
-## Create default admin user
+## Create demo merchant
 
-The backend includes a convenience script to create a default admin user:
+The backend includes a script to create a demo merchant and sample shop/products for local development:
 
 ```bash
 cd backend
-node src/scripts/createAdmin.js
+node src/scripts/createDemoMerchant.js
 ```
 
-This script creates an admin with username `admin` and a default password (see script). Use it only for local development.
+Use this for local development and testing.
 
 ## Testing
 
@@ -125,7 +108,7 @@ npm test
 
 ## Contributing
 
-Contributions are welcome. Open an issue to propose changes or submit a pull request with a clear description of your changes and rationale.
+Contributions welcome. Open an issue or submit a pull request with a clear description of changes and rationale.
 
 ## License
 
@@ -135,6 +118,6 @@ This project is provided under the `ISC` license (see LICENSE file).
 
 If you'd like, I can also:
 
-- add a short API reference section with common endpoints,
-- add example `.env.local` template in `backend/envs/.env.local.example`, or
-- create a short CONTRIBUTING.md with contribution guidelines.
+- add a short API reference for merchant/shop/product endpoints,
+- add an `.env.local` example in `backend/envs/.env.local.example`, or
+- create a CONTRIBUTING.md with contribution guidelines.

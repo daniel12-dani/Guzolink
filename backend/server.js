@@ -1,5 +1,5 @@
 import "./src/configs/env.config.js";
-import App from "./app.js";
+import App from "./src/app.js";
 import StartDatabase from "./src/configs/database.config.js";
 
 const PORT = process.env.PORT || 9000;

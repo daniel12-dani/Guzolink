@@ -28,7 +28,7 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
-
+test/
 
 # PyInstaller
 #   Usually these files are written by a python script from a template
@@ -220,8 +220,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
-BookStore/restfox_test/
-MovieCollection/restfox_test
 
 # Logs
 logs

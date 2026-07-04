@@ -1,17 +1,17 @@
 clear
 echo "============================================================================"
-echo "Removing Bookstore App in Docker"
+echo "Removing Guzolink App in Docker"
 echo "============================================================================"
-docker stop bookstore-test
-docker rm bookstore-test
+docker stop guzolink-test
+docker rm guzolink-test
 
 
-echo "Starting Bookstore App in Docker"
+echo "Starting Guzolink App in Docker"
 echo "============================================================================"
 docker run -d \
-  --name bookstore-test \
+  --name guzolink-test \
   --network host \
   --env-file .env.production \
-  fraolbmax/booky-bookstore-app:latest
+  fraolbmax/guzolink-app:latest
   
-docker logs -f -t bookstore-test
+docker logs -f -t guzolink-test
