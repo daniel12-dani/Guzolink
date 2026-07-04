@@ -1,7 +1,7 @@
 import mongoose from "../utils/mongoose.util.js";
 
-const BookSchema = new mongoose.Schema({
-	title: {
+const shopSchema = new mongoose.Schema({
+	name: {
 		type: String,
 		required: true,
 		unique: true,
@@ -10,7 +10,7 @@ const BookSchema = new mongoose.Schema({
 	description: {
 		type: String,
 	},
-	author: {
+	owner: {
 		type: String,
 		required: true,
 	},
