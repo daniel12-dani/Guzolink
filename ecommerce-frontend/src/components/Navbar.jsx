@@ -7,13 +7,13 @@ function Navbar() {
   const { user, logout } = useAuth();
 
   return (
-    <header className="border-b border-slate-200 bg-white/90 backdrop-blur">
+    <header className="border-b border-white/10 bg-slate-900/50 backdrop-blur sticky top-0 z-50">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-        <Link to="/" className="text-xl font-semibold tracking-tight text-slate-900">
+        <Link to="/" className="text-xl font-semibold tracking-tight text-white">
           Guzolink
         </Link>
 
-        <nav className="hidden items-center gap-6 text-sm font-medium text-slate-600 md:flex">
+        <nav className="hidden items-center gap-6 text-sm font-medium text-slate-300 md:flex">
           <NavLink to="/" className={({ isActive }) => (isActive ? "text-amber-600" : "")}>
             Home
           </NavLink>
@@ -35,19 +35,19 @@ function Navbar() {
         <div className="flex items-center gap-3">
           {user ? (
             <>
-              <span className="hidden rounded-full bg-slate-100 px-3 py-1 text-sm text-slate-700 sm:inline">
+              <span className="hidden rounded-full bg-white/10 px-3 py-1 text-sm text-slate-200 sm:inline">
                 Hi, {user.username}
               </span>
-              <button onClick={logout} className="rounded-full border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700">
+              <button onClick={logout} className="rounded-full border border-white/20 px-3 py-1.5 text-sm font-medium text-slate-200 hover:bg-white/10">
                 Logout
               </button>
             </>
           ) : (
             <>
-              <Link to="/login" className="rounded-full border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700">
+              <Link to="/login" className="rounded-full border border-white/20 px-3 py-1.5 text-sm font-medium text-slate-200 hover:bg-white/10">
                 Login
               </Link>
-              <Link to="/signup" className="rounded-full bg-slate-900 px-3 py-1.5 text-sm font-medium text-white">
+              <Link to="/signup" className="rounded-full bg-amber-500 px-3 py-1.5 text-sm font-medium text-slate-950 hover:bg-amber-400">
                 Sign up
               </Link>
             </>

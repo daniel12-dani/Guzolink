@@ -3,7 +3,7 @@ import { useAuth } from "../features/auth/auth.context";
 function Hero() {
   const { user } = useAuth();
   return (
-    <section className="bg-linear-to-br from-slate-900 via-slate-800 to-slate-700 px-4 py-20 text-white sm:px-6 lg:px-8">
+    <section className="px-4 py-20 text-white sm:px-6 lg:px-8">
       <div className="mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
         <div className="space-y-6">
           <p className="text-sm font-semibold uppercase tracking-[0.3em] text-amber-400">New season essentials</p>
