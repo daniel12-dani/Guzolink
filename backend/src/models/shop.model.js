@@ -9,6 +9,10 @@ const ShopSchema = new mongoose.Schema({
 	description: {
 		type: String,
 	},
+	contact: {
+		type: String,
+		required: true,
+	},
 	owner: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "User",
@@ -32,9 +36,6 @@ const ShopSchema = new mongoose.Schema({
 		max: 5,
 	},
 	location: {
-		type: String,
-	},
-	contact: {
 		type: String,
 	},
 	posterimage: {
