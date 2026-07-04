@@ -1,6 +1,6 @@
 import UserRoute from "./user.route.js";
 import ShopRoute from "./shop.route.js";
-import ProductRoute from "./product.router.js"
+import ProductRoute from "./product.route.js"
 import ShopCategoryRoute from "./shopCategory.route.js";
 
 export default function RegisterRoutes(app) {

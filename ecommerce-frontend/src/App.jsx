@@ -12,6 +12,7 @@ import Signup from "./features/auth/pages/Signup";
 import CreateShop from "./features/shop/pages/CreateShop";
 import MyShops from "./features/shop/pages/MyShops";
 import ShopDashboard from "./features/shop/pages/ShopDashboard";
+import CreateProduct from "./features/shop/pages/CreateProduct";
 import Products from "./features/products/pages/Products";
 
 
@@ -52,6 +53,14 @@ function App() {
           element={
             <ProtectedRoute>
               <ShopDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/shop/:shopId/product/create"
+          element={
+            <ProtectedRoute>
+              <CreateProduct />
             </ProtectedRoute>
           }
         />

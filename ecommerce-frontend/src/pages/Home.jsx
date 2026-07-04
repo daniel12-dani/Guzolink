@@ -1,9 +1,9 @@
 import Hero from "../components/Hero";
 import ProductCard from "../features/products/components/ProductCard";
-import { useCatalog } from "../features/products/catalog.context";
+import useProducts from "../features/products/hooks/useProducts";
 
 function Home() {
-  const { products } = useCatalog();
+  const { products, loading, error } = useProducts();
 
   return (
     <div>
@@ -19,11 +19,17 @@ function Home() {
           </a>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {products.slice(0, 3).map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
+        {loading ? (
+          <p className="text-white">Loading products...</p>
+        ) : error ? (
+          <p className="text-red-400">{error}</p>
+        ) : (
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            {products.slice(0, 3).map((product) => (
+              <ProductCard key={product.id || product._id} product={product} />
+            ))}
+          </div>
+        )}
       </section>
     </div>
   );

@@ -1,12 +1,16 @@
 import { Link, useParams } from "react-router-dom";
-import { useCatalog } from "../catalog.context";
+import useProducts from "../hooks/useProducts";
 import { useCart } from "../../cart/cart.context";
 
 function ProductDetails() {
   const { id } = useParams();
-  const { products } = useCatalog();
+  const { products, loading, error } = useProducts();
   const { addToCart } = useCart();
-  const product = products.find((item) => String(item.id) === String(id));
+  
+  if (loading) return <div className="p-16 text-center text-white">Loading...</div>;
+  if (error) return <div className="p-16 text-center text-red-400">{error}</div>;
+
+  const product = products.find((item) => String(item._id || item.id) === String(id));
 
   if (!product) {
     return (
