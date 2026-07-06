@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useProducts } from "../context/products";
+import { useCart } from "../features/cart/cart.context";
 
 function Checkout() {
-  const { cart, clearCart, total } = useProducts();
+  const { cart, clearCart, total } = useCart();
   const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     name: "",

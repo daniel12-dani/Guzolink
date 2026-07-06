@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
-import { useProducts } from "../context/products";
+import { useAuth } from "../features/auth/auth.context";
+import { useCart } from "../features/cart/cart.context";
 
 function Cart() {
-  const { cart, removeFromCart, updateQuantity, total, user } = useProducts();
+  const { cart, removeFromCart, updateQuantity, total } = useCart();
+  const { user } = useAuth();
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">

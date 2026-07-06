@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import { useProducts } from "../context/products";
+import { useCart } from "../../cart/cart.context";
 
-function ProductCart({ product }) {
-  const { addToCart } = useProducts();
+function ProductCard({ product }) {
+  const { addToCart } = useCart();
 
   return (
     <article className="flex h-full flex-col rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
@@ -10,7 +10,7 @@ function ProductCart({ product }) {
         <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-amber-700">
           {product.badge}
         </span>
-        <span className="text-sm text-slate-500">{product.category}</span>
+        <span className="text-sm text-slate-500">{product.category?.name || product.category}</span>
       </div>
 
       <div className="mb-4 rounded-2xl bg-slate-100 p-8 text-center text-4xl">
@@ -34,4 +34,4 @@ function ProductCart({ product }) {
   );
 }
 
-export default ProductCart;
+export default ProductCard;

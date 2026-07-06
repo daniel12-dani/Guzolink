@@ -1,18 +1,65 @@
-# React + Vite
+# Guzolink Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+E-commerce frontend built with React + Vite, featuring a modular architecture organized by domain.
 
-Currently, two official plugins are available:
+## Architecture
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+The frontend is structured as feature modules, each owning its own state, API calls, and UI:
 
-## React Compiler
+```
+src/
+  app/
+    App.jsx
+    providers/
+      AppProviders.jsx         # Root provider composition
+  shared/
+    components/               # Reusable UI components
+    lib/
+      apiClient.js           # Shared API request helper
+      storage.js             # Shared localStorage helpers
+  features/
+    auth/                     # Authentication feature
+      auth.context.js         # Auth state and login/signup logic
+      pages/
+        Login.jsx
+        Signup.jsx
+    catalog/                  # Product catalog feature
+      catalog.context.js      # Product state management
+      components/
+        ProductCard.jsx
+      pages/
+        Products.jsx
+        ProductDetails.jsx
+    cart/                     # Shopping cart feature
+      cart.context.js         # Cart state and operations
+    shop-admin/              # Shop administration tools
+      components/
+        ShopForm.jsx
+        ShopRequestPanel.jsx
+  pages/                      # Shared page layouts
+    Home.jsx
+    Cart.jsx
+    Checkout.jsx
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## State Management
 
-## Expanding the ESLint configuration
+Each feature module owns its state and exports a hook:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-email_ demo@Guzolink.com 
-password 123456
+- `useAuth()` - login, signup, logout, user state
+- `useCatalog()` - products, product CRUD
+- `useCart()` - cart items, add/remove, totals
+
+This eliminates tight coupling and makes features independently testable and scalable.
+
+## Running the App
+
+```bash
+npm install
+npm run dev                   # Start dev server (connects to backend at http://localhost:9000)
+VITE_API_URL=http://api.example.com npm run build  # Build with custom API endpoint
+```
+
+Demo credentials:
+- Email: demo@guzolink.com
+- Password: 123456

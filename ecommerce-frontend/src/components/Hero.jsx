@@ -1,6 +1,9 @@
+import { useAuth } from "../features/auth/auth.context";
+
 function Hero() {
+  const { user } = useAuth();
   return (
-    <section className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-700 px-4 py-20 text-white sm:px-6 lg:px-8">
+    <section className="px-4 py-20 text-white sm:px-6 lg:px-8">
       <div className="mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
         <div className="space-y-6">
           <p className="text-sm font-semibold uppercase tracking-[0.3em] text-amber-400">New season essentials</p>
@@ -14,9 +17,15 @@ function Hero() {
             <a href="/products" className="rounded-full bg-amber-500 px-5 py-3 font-semibold text-slate-950 transition hover:bg-amber-400">
               Shop now
             </a>
-            <a href="/signup" className="rounded-full border border-white/20 px-5 py-3 font-semibold text-white transition hover:bg-white/10">
-              Create account
-            </a>
+            {user ? (
+              <a href="/shops" className="rounded-full border border-white/20 px-5 py-3 font-semibold text-white transition hover:bg-white/10">
+                My Dashboard
+              </a>
+            ) : (
+              <a href="/signup" className="rounded-full border border-white/20 px-5 py-3 font-semibold text-white transition hover:bg-white/10">
+                Create account
+              </a>
+            )}
           </div>
         </div>
 

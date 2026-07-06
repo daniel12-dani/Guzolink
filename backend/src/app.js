@@ -12,11 +12,14 @@ const __dirname = path.dirname(__filename);
 
 const App = express();
 
-// cors
-App.use(cors());
-
-//body parser
-App.use(cors());
+// ---------- CORS ----------
+App.use(
+  cors({
+    origin: (origin, callback) => callback(null, origin || "*"),
+    credentials: true,
+  })
+);
+// ---------- Body parser ----------
 App.use(express.json());
 App.use(express.urlencoded({ extended: true }));
 App.use(morgan("common"));

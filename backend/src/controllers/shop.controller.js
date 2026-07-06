@@ -1,60 +1,96 @@
 import Shop from "../models/shop.model.js";
 import ShopCategory from "../models/shopCategory.model.js";
 
-
 export async function CreateMerchantShop(req, res) {
-    try{
-        const owner = req.user.id;
-        const {name, description, contact  } = req.body;
-        const { category } = req.body; // category should be an existing category ObjectId
-        
-        if(!name || !description || !contact || !category){
-            return res.status(400).json({ success: false, message: "All fields are required" });
-        }
-        
-        const existingShop = await Shop.findOne({ name });
-        if(existingShop){
-            return res.status(400).json({ success: false, message: "Shop with this name already exists" });
-        }
+  try {
+    const owner = req.user.id;
+    const { name, description, contact } = req.body;
+    const { category } = req.body; // category should be an existing category ObjectId
 
-        const categoryExists = await ShopCategory.findById(category);
-        if(!categoryExists){
-            return res.status(400).json({ success: false, message: "Invalid category" });
-        }
-
-        const shop = await Shop.create({
-            name,
-            description,
-            contact,
-            owner,
-            category
-        });
-
-        return res.status(200).json({ success: true, message: "Shop created successfully", shop });
-    }catch(error){
-        console.log("error occurred while creating shop: ", error)
-        res.status(500).json({ message: error.message });
-    
+    if (!name || !description || !contact || !category) {
+      return res
+        .status(400)
+        .json({ success: false, message: "All fields are required" });
     }
+
+    const existingShop = await Shop.findOne({ name });
+    if (existingShop) {
+      return res.status(400).json({
+        success: false,
+        message: "Shop with this name already exists",
+      });
+    }
+
+    const categoryExists = await ShopCategory.findById(category);
+    if (!categoryExists) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid category" });
+    }
+
+    const shop = await Shop.create({
+      name,
+      description,
+      contact,
+      owner,
+      category,
+    });
+
+    return res
+      .status(200)
+      .json({ success: true, message: "Shop created successfully", shop });
+  } catch (error) {
+    console.log("error occurred while creating shop: ", error);
+    res.status(500).json({ message: error.message });
+  }
 }
 
-export async function GetAllMerchantShops(req, res ){
-    try{
-        const userid  =  req.user.id
-        console.log("User id:", userid)
-        const shops = await Shop.find({owner: userid})
+export async function GetAllMerchantShops(req, res) {
+  try {
+    const userid = req.user.id;
+    console.log("User id:", userid);
+    const shops = await Shop.find({ owner: userid }).populate("category", "name");
 
-        if(!shops || shops.length === 0){
-            return res.status(404).json({ success: false, message: "No shops found for this user" });
-        }
-
-        return res.status(200).json({ success: true, message: "Shops retrieved successfully", shops });
-
-    }catch(error){
-        console.log("error occurred while getting all categories", error)
-        return res.status(404).json({
-            success:false,
-            message: error.message
-        })
+    if (!shops || shops.length === 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "No shops found for this user" });
     }
+
+    return res
+      .status(200)
+      .json({ success: true, message: "Shops retrieved successfully", shops });
+  } catch (error) {
+    console.log("error occurred while getting all categories", error);
+    return res.status(404).json({
+      success: false,
+      message: error.message,
+    });
+  }
+}
+
+export async function GetMerchantShopDetails(req, res) {
+  try {
+    const { id } = req.params;
+    const existingShop = await Shop.findOne({ _id: id }).populate("category", "name");
+
+    if (!existingShop) {
+      return res.status(400).json({
+        success: false,
+        message: "Shop not found with given id ",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Shop detials retrieved successfully",
+      shop: existingShop,
+    });
+  } catch (error) {
+    console.log("error occurred while getting all categories", error);
+    return res.status(404).json({
+      success: false,
+      message: error.message,
+    });
+  }
 }
