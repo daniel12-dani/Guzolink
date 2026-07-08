@@ -3,8 +3,8 @@ import { useQuery } from "@apollo/client/react";
 
 const GET_ALL_SHOP_PRODUCTS = gql`
   query GetAllShopProducts {
-    allShopProducts {
-      _id
+    getAllShopProducts {
+      id
       name
       description
       price

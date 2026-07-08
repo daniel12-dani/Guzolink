@@ -1,15 +1,12 @@
 import { Routes, Route } from "react-router-dom";
+import { ApolloProvider } from "@apollo/client/react";
 // globals
+import { client } from "./providers/ApolloClient.js";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
-import { ApolloClient, InMemoryCache, HttpLink } from "@apollo/client";
-import { ApolloProvider } from "@apollo/client/react";
 
-const client = new ApolloClient({
-  link: new HttpLink({ uri: "/graphql", credentials: "include" }),
-  cache: new InMemoryCache(),
-});
+
 
 // auth
 import Login from "./features/auth/pages/Login";

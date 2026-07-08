@@ -3,8 +3,8 @@ import { useQuery, useMutation } from "@apollo/client/react";
 
 const GET_SHOP_PRODUCTS = gql`
   query ShopProducts($shopId: ID!) {
-    shopProducts(shopId: $shopId) {
-      _id
+    getShopProducts(shopId: $shopId) {
+      id
       name
       description
       price

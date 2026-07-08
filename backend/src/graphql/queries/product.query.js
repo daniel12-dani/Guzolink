@@ -3,7 +3,7 @@ import ProductType from "../types/product.type.js";
 import { ProductResolvers } from "../resolvers/product.resolver.js";
 
 const ProductQueries = {
-  getAllShopProduct: {
+  getAllShopProducts: {
     type: new GraphQLList(ProductType),
     args: {
       id: { type: GraphQLID },
@@ -13,7 +13,7 @@ const ProductQueries = {
   getShopProducts: {
     type: ProductType,
     args: {
-      shopId: { type: GraphQLString },
+      shopId: { type: GraphQLID },
     },
     resolve: ProductResolvers.shopProducts,
   },
