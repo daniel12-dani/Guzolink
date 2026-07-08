@@ -8,14 +8,14 @@ const ProductQueries = {
     args: {
       id: { type: GraphQLID },
     },
-    resolver: ProductResolvers.getAllShopProducts,
+    resolve: ProductResolvers.getAllShopProducts,
   },
   getShopProducts: {
     type: ProductType,
     args: {
       shopId: { type: GraphQLString },
     },
-    resolver: ProductResolvers.shopProducts,
+    resolve: ProductResolvers.shopProducts,
   },
 
 };

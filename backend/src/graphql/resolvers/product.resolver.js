@@ -5,12 +5,12 @@ export const ProductResolvers = {
   getAllShopProducts: async () => {
     return await Product.find();
   },
-  shopProducts: async ({ shopId }) => {
+  shopProducts: async (parent, { shopId }) => {
     return await Product.find({ shop: shopId });
   },
 
   //   mutation
-  createProduct: async ({ input }, { user }) => {
+  createProduct: async (parents, args, {user }) => {
     try {
       if (!user) throw new Error("You are not AUTHENTICATED ");
 
@@ -23,12 +23,15 @@ export const ProductResolvers = {
         description,
         stock,
         image,
-      } = input;
+      } = args;
+
+
       if (!name || !price || !category || !shopId) {
         throw new Error("Name, price, category, and shop are required");
       }
+
       //   save the product
-      const product = await Product.create({
+      return await Product.create({
         name,
         description,
         price,
@@ -37,7 +40,6 @@ export const ProductResolvers = {
         shop: shopId,
         image,
       });
-      return product;
     } catch (error) {
       console.log("Error while creating a product: ", error.message);
     }

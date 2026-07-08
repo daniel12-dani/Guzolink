@@ -11,7 +11,7 @@ const ProductType = new GraphQLObjectType({
   name: "Product",
   fields: () => ({
     id: { type: GraphQLID },
-    name: { type: GraphQLID },
+    name: { type: GraphQLString },
     description: { type: GraphQLString },
     price: { type: GraphQLFloat },
     stock: { type: GraphQLInt },
