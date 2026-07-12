@@ -2,8 +2,10 @@ import Product from "../../models/product.model.js";
 
 export const ProductResolvers = {
   // ─── queries ────────────────────────────────────────────────
-  getAllShopProducts: async () => {
-    return await Product.find();
+  getAllShopProducts: async (_, { page = 1, limit = 6 }) => {
+    return Product.find()
+      .skip((page - 1) * limit)
+      .limit(limit);
   },
   shopProducts: async (parent, { shopId }) => {
     return await Product.find({ shop: shopId });
@@ -23,6 +25,10 @@ export const ProductResolvers = {
       image,
     } = args;
 
+    // Note: `!price` treats a legitimate price of 0 (e.g. a free
+    // promotional item) as missing. Fine to leave for now since real
+    // products won't be free, but worth remembering if that ever
+    // changes — the fix would be `price === undefined` instead of `!price`.
     if (!name || !price || !category || !shopId) {
       throw new Error("Name, price, category, and shop are required");
     }
@@ -35,7 +41,12 @@ export const ProductResolvers = {
       category,
       shop: shopId,
       image,
-      createdById: user._id || user.id,
+      // was createdById -> renamed to createdBy to match the actual
+      // field on the Product model. Mongoose's default strict mode
+      // silently drops fields that aren't in the schema, so this was
+      // saving products with NO creator reference at all — which is
+      // also why the ownership checks below always failed.
+      createdBy: user._id || user.id,
     });
   },
 
@@ -47,7 +58,7 @@ export const ProductResolvers = {
 
     // Only the product's creator (or an admin) may delete it.
     const isOwner =
-      product.createdById?.toString() === (user._id || user.id)?.toString();
+      product.createdBy?.toString() === (user._id || user.id)?.toString();
     if (!isOwner && user.role !== "admin") {
       throw new Error("You are not authorized to delete this product");
     }
@@ -67,7 +78,7 @@ export const ProductResolvers = {
     if (!product) throw new Error("Product not found");
 
     const isOwner =
-      product.createdById?.toString() === (user._id || user.id)?.toString();
+      product.createdBy?.toString() === (user._id || user.id)?.toString();
     if (!isOwner && user.role !== "admin") {
       throw new Error("You are not authorized to update this product");
     }

@@ -2,8 +2,8 @@ import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useShops } from "../shop.context.js";
 import { useAuth } from "../../../features/auth/auth.context.js";
-import useShopProducts from "../../products/hooks/useShopProducts";
-import ProductCard from "../components/ProductCard.jsx";
+import useShopProducts from "../../products/hooks/useShopProducts.js";
+import ProductCard from "../../../features/products/components/ShopProductCard.jsx";
 
 function ShopDashboard() {
   const { shopId } = useParams();

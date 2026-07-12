@@ -1,34 +1,58 @@
 import Hero from "../components/Hero";
-import ProductCard from "../features/products/components/ProductCard";
-import useProducts from "../features/products/hooks/useProducts";
+import ProductCard from "../features/products/components/HomePageProductCard";
+import useProducts from "../features/products/hooks/useProducts.js";
 
 function Home() {
-  const { products, loading, error } = useProducts();
+  const { products, loading, isLoadingMore, hasMore, loadMore, error } =
+    useProducts();
 
   return (
     <div>
       <Hero />
+
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="mb-10 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-amber-500">Featured products</p>
-            <h2 className="text-3xl font-bold text-white">Popular picks for your next order</h2>
-          </div>
-          <a href="/products" className="text-sm font-semibold text-slate-300 hover:text-amber-500">
-            View all products →
-          </a>
+        <div className="mb-10 space-y-3">
+          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-amber-500">
+            Shop all
+          </p>
+          <h1 className="text-3xl font-bold text-white">
+            Discover the essentials
+          </h1>
+          <p className="max-w-2xl text-slate-300">
+            Browse products from every shop on the platform.
+          </p>
         </div>
 
         {loading ? (
+          // Only the very first load shows this — "Load more" clicks use
+          // isLoadingMore instead, so the grid never disappears once
+          // there's something on screen.
           <p className="text-white">Loading products...</p>
         ) : error ? (
-          <p className="text-red-400">{error.message}</p>
+          <p className="text-red-400">{error}</p>
+        ) : products.length === 0 ? (
+          <p className="text-slate-300">No products available at the moment.</p>
         ) : (
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {products.slice(0, 3).map((product) => (
-              <ProductCard key={product.id || product._id} product={product} />
-            ))}
-          </div>
+          <>
+            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+              {products.map((product) => (
+                <ProductCard key={product.id || product._id} product={product} />
+              ))}
+            </div>
+
+            {hasMore && (
+              <div className="mt-10 flex justify-center">
+                <button
+                  type="button"
+                  onClick={loadMore}
+                  disabled={isLoadingMore}
+                  className="rounded-full bg-slate-900 px-6 py-3 font-semibold text-white transition hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isLoadingMore ? "Loading..." : "Load more products"}
+                </button>
+              </div>
+            )}
+          </>
         )}
       </section>
     </div>

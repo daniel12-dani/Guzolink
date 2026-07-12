@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useCart } from "../../cart/cart.context";
 
-function ProductCard({ product }) {
+export default function HomePageProductCard({ product }) {
   const { addToCart } = useCart();
 
   return (
@@ -34,4 +34,3 @@ function ProductCard({ product }) {
   );
 }
 
-export default ProductCard;
