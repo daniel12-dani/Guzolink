@@ -1,11 +1,10 @@
 import Hero from "../components/Hero";
-import ProductCard from "../features/products/components/HomePageProductCard";
+import HomePageProductCard from "../features/products/components/HomePageProductCard";
 import useProducts from "../features/products/hooks/useProducts.js";
 
 function Home() {
-  const { products, loading, isLoadingMore, hasMore, loadMore, error } =
-    useProducts();
-
+  const { products, loading, isLoadingMore, hasMore, loadMore, error } = useProducts();
+  console.log("Home products:", products); // Debugging line to check the products state
   return (
     <div>
       <Hero />
@@ -36,7 +35,7 @@ function Home() {
           <>
             <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
               {products.map((product) => (
-                <ProductCard key={product.id || product._id} product={product} />
+                <HomePageProductCard key={product.id || product._id} product={product} />
               ))}
             </div>
 

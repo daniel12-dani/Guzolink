@@ -1,4 +1,5 @@
-
+import { Link } from "react-router-dom";
+import {useAuth}  from "../../auth/auth.context";
 
 function ShopFormUi({
   message,
@@ -7,8 +8,9 @@ function ShopFormUi({
   shopDetails,
   handleChange,
   shopCategories = [],
-  fileInputRef
+  fileInputRef,
 }) {
+  const { user } = useAuth();
   return (
     <div className="min-h-screen bg-slate-50 px-4 py-16 text-slate-800">
       <div className="mx-auto flex max-w-5xl flex-col gap-8 rounded-3xl border border-slate-200 bg-white p-8 shadow-sm lg:flex-row lg:items-center">
@@ -21,18 +23,38 @@ function ShopFormUi({
             Enter information about your shop to reach millions of customers.
           </p>
         </div>
-        
+
         {message && (
           <p className="mt-4 rounded-xl bg-emerald-50 p-3 text-sm text-emerald-700">
             {message}
           </p>
         )}
         {/* Error Banner */}
-  {error && (
-    <p className="mt-4 rounded-xl bg-rose-50 p-3 text-sm text-rose-700 border border-rose-200">
-      {error}
-    </p>
-  )}
+        {error && (
+          <p className="mt-4 rounded-xl bg-rose-50 p-3 text-sm text-rose-700 border border-rose-200">
+            {error}
+          </p>
+        )}
+         <Link
+          to={"/profile/" + user.id}
+          className="inline-flex items-center gap-1 text-sm text-slate-400 hover:text-white transition mb-2 mt-4"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+          Back to dashboard
+        </Link>
         <form
           onSubmit={handleSubmit}
           className="flex-1 rounded-3xl bg-slate-900 p-6 text-white shadow-xl space-y-4"
@@ -105,32 +127,30 @@ function ShopFormUi({
 
           {/* Poster Image (Changed to type="text" to accept the URL cleanly) */}
           <div className="mb-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <label className="block text-sm text-slate-300">
+              <span className="mb-2 block">Poster Image URL</span>
+              <input
+                type="text"
+                name="posterimage"
+                value={shopDetails.posterimage}
+                onChange={handleChange}
+                className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-sm text-white outline-none"
+                placeholder="https://example.com/image.jpg"
+              />
+            </label>
 
-          <label className="block text-sm text-slate-300">
-            <span className="mb-2 block">Poster Image URL</span>
-            <input
-              type="text"
-              name="posterimage"
-              value={shopDetails.posterimage}
-              onChange={handleChange}
-              className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-sm text-white outline-none"
-              placeholder="https://example.com/image.jpg"
-            />
-          </label>
-
-          {/* upload your own poster */}
-          <label className="block text-sm text-slate-300">
-            <span className="mb-2 block">Upload Poster Image</span>
-            <input
-              type="file"
-              name="posterimage"
-              ref={fileInputRef}
-              onChange={handleChange}
-              className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-sm text-white outline-none"
-            />
-          </label>
+            {/* upload your own poster */}
+            <label className="block text-sm text-slate-300">
+              <span className="mb-2 block">Upload Poster Image</span>
+              <input
+                type="file"
+                name="posterimage"
+                ref={fileInputRef}
+                onChange={handleChange}
+                className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-sm text-white outline-none"
+              />
+            </label>
           </div>
-
 
           {/* Submission and Preview Actions */}
           <div className="flex items-center gap-4">
@@ -157,5 +177,3 @@ function ShopFormUi({
 }
 
 export default ShopFormUi;
-
-

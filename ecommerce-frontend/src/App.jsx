@@ -22,8 +22,7 @@ import CreateShop from "./features/shop/pages/CreateShop";
 import ShopDashboard from "./features/shop/pages/ShopDashboard";
 
 // products
-import Products from "./features/products/pages/Products";
-// import CreateProduct from "./features/shop/pages/CreateProduct";
+import CreateProductCard from "./features/products/pages/CreateProduct";
 // import ProductDetails from "./features/products/pages/ProductDetails";
 
 // shoping and marketing
@@ -83,16 +82,15 @@ function App() {
             }
           />
 
-          {/* <Route
+          <Route
             path="/shop/:shopId/product/create"
             element={
               <ProtectedRoute>
-                <CreateProduct />
+                <CreateProductCard />
               </ProtectedRoute>
             }
-          /> */}
+          />
 
-          <Route path="/products" element={<Products />} />
         </Routes>
         <Footer />
       </div>

@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import UserModel from "../models/user.model.js";
 import ValidateUserRegisration from "../validators/user.validator.js";
-import GenerateToken from "../configs/jwt.config.js";
+import GenerateToken from "../middlewares/auth.middleware.js";
 
 export async function GetAllUsers(req, res) {
 	try {
