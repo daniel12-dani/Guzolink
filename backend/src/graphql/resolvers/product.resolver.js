@@ -3,11 +3,15 @@ import Product from "../../models/product.model.js";
 export const ProductResolvers = {
   // ─── queries ────────────────────────────────────────────────
   getAllShopProducts: async (_, { page = 1, limit = 6 }) => {
-    return Product.find()
+    const products = await Product.find()
       .skip((page - 1) * limit)
       .limit(limit);
+    console.log("getAllShopProducts resolver called with page:", page, "limit:", limit, "products", products);
+    return products;
   },
+
   shopProducts: async (parent, { shopId }) => {
+    console.log("shopProducts resolver called with shopId:", shopId);
     return await Product.find({ shop: shopId });
   },
 

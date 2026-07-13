@@ -7,7 +7,7 @@
 
 import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/client/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const PAGE_SIZE = 6;
 
@@ -34,15 +34,21 @@ export default function useProducts() {
   const [hasMore, setHasMore] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
-  const { loading, error, fetchMore } = useQuery(GET_ALL_SHOP_PRODUCTS, {
+  // NOT using onCompleted here — that callback may not fire reliably on
+  // every Apollo Client version (we already hit one API-surface surprise
+  // with useMutation not existing on the main entry point). `data` is
+  // the one part of useQuery's contract guaranteed to update whenever
+  // the query resolves, in every version, so we sync from that instead.
+  const { loading, error, data, fetchMore } = useQuery(GET_ALL_SHOP_PRODUCTS, {
     variables: { page: 1, limit: PAGE_SIZE },
-    onCompleted: (data) => {
-      const batch = data?.getAllShopProducts ?? [];
-      setProducts(batch);
-      setHasMore(batch.length === PAGE_SIZE);
-    },
   });
-
+   useEffect(() => {
+    const batch = data?.getAllShopProducts;
+    if (!batch) return; // query hasn't resolved yet
+    setProducts(batch);
+    setHasMore(batch.length === PAGE_SIZE);
+  }, [data]);
+ 
   const loadMore = async () => {
     if (isLoadingMore || !hasMore) return;
 
