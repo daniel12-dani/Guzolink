@@ -18,9 +18,9 @@ import {
   useMemo,
   useState,
 } from "react";
-import { request } from "../../shared/lib/apiClient";
-import { storage } from "../../shared/lib/storage";
-import { isTokenExpired, decodeToken } from "../../shared/lib/tokenUtils";
+import { request } from "../../shared/lib/apiClient.js";
+import { storage } from "../../shared/lib/storage.js";
+import { isTokenExpired, decodeToken } from "../../shared/lib/tokenUtils.js";
 
 const AuthContext = createContext(null);
 

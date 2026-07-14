@@ -1,4 +1,4 @@
-import { useAuth } from "../features/auth/auth.context";
+import { useAuth } from "../features/auth/auth.context.js";
 
 function Hero() {
   const { user } = useAuth();
@@ -6,23 +6,38 @@ function Hero() {
     <section className="px-4 py-20 text-white sm:px-6 lg:px-8">
       <div className="mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
         <div className="space-y-6">
-          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-amber-400">New season essentials</p>
+          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-amber-400">
+            New season essentials
+          </p>
           <h1 className="text-4xl font-bold sm:text-5xl">
             Shop smarter with curated favorites for everyday life.
           </h1>
           <p className="max-w-2xl text-lg text-slate-300">
-            Discover premium gadgets, accessories, and lifestyle picks designed to simplify your routine.
+            Discover premium gadgets, accessories, and lifestyle picks designed
+            to simplify your routine.
           </p>
           <div className="flex flex-wrap gap-3">
-            <a href="/products" className="rounded-full bg-amber-500 px-5 py-3 font-semibold text-slate-950 transition hover:bg-amber-400">
+        
+            <a
+              //  when user clicks on "Shop now", it should scroll down to the products section of the page but the section is not products 
+              // its controlled by this card, " Shop all" section in Home.jsx, so we can use an anchor link to scroll down to that section by adding an id to the section and linking to it here
+              href="#products"
+              className="rounded-full bg-amber-500 px-5 py-3 font-semibold text-slate-950 transition hover:bg-amber-400"
+            >
               Shop now
             </a>
             {user ? (
-              <a href={`/profile/${user.id || user._id}`} className="rounded-full border border-white/20 px-5 py-3 font-semibold text-white transition hover:bg-white/10">
+              <a
+                href={`/profile/${user.id || user._id}`}
+                className="rounded-full border border-white/20 px-5 py-3 font-semibold text-white transition hover:bg-white/10"
+              >
                 My Dashboard
               </a>
             ) : (
-              <a href="/signup" className="rounded-full border border-white/20 px-5 py-3 font-semibold text-white transition hover:bg-white/10">
+              <a
+                href="/signup"
+                className="rounded-full border border-white/20 px-5 py-3 font-semibold text-white transition hover:bg-white/10"
+              >
                 Create account
               </a>
             )}

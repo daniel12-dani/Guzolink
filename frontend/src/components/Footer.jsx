@@ -4,9 +4,15 @@ function Footer() {
       <div className="mx-auto flex max-w-7xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p>© 2026 Guzolink. All rights reserved.</p>
         <div className="flex gap-4">
-          <a href="/products" className="hover:text-amber-600">Products</a>
-          <a href="/login" className="hover:text-amber-600">Login</a>
-          <a href="/cart" className="hover:text-amber-600">Cart</a>
+          <a href="/products" className="hover:text-amber-600">
+            Products
+          </a>
+          <a href="/login" className="hover:text-amber-600">
+            Login
+          </a>
+          <a href="/cart" className="hover:text-amber-600">
+            Cart
+          </a>
         </div>
       </div>
     </footer>

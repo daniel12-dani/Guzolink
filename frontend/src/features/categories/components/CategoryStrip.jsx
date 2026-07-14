@@ -11,7 +11,7 @@ export default function CategoryStrip() {
       <p className="mb-4 text-sm font-semibold uppercase tracking-[0.3em] text-amber-500">
         Shop by category
       </p>
-      <div className="flex gap-4 overflow-x-auto pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div className="flex gap-4 overflow-x-auto pb-4 [-ms-overflow-style:none] [scrollbar-none] [&::-webkit-scrollbar]:hidden">
         {categories.map((category) => (
           <Link
             key={category.id || category._id}

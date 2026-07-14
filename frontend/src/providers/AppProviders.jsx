@@ -1,7 +1,7 @@
-import { AuthProvider } from "../features/auth/auth.context";
-import { ShopProvider } from "../features/shop/shop.context";
-import { CartProvider } from "../features/cart/cart.context";
-import { CategoryProvider } from "../features/categories/category.context";
+import { AuthProvider } from "../features/auth/auth.context.js";
+import { ShopProvider } from "../features/shop/shop.context.js";
+import { CartProvider } from "../features/cart/cart.context.js";
+import { CategoryProvider } from "../features/categories/category.context.js";
 
 function AppProviders({ children }) {
   return (

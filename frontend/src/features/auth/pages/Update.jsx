@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "../auth.context";
 import { useNavigate } from "react-router-dom";
-import  UpdateUserCard from "../components/UpdateUserCard";
+import UpdateUserCard from "../components/UpdateUserCard.jsx";
 
 function UpdateUserInfo() {
   const [formData, setFormData] = useState({
@@ -19,7 +19,7 @@ function UpdateUserInfo() {
     const { name, value } = event.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
-  
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError("");
@@ -44,11 +44,11 @@ function UpdateUserInfo() {
   };
   return (
     <UpdateUserCard
-    formData = {formData}
-    loading={loading}
-    handleSubmit={handleSubmit}
-    handleChange={handleChange}
-    error={error}
+      formData={formData}
+      loading={loading}
+      handleSubmit={handleSubmit}
+      handleChange={handleChange}
+      error={error}
     />
   );
 }

@@ -1,9 +1,9 @@
-import Hero from "../components/Hero";
+import Hero from "../components/Hero.jsx";
 import ShopsStrip from "../features/shop/components/ShopStrip.jsx";
 import CategoryStrip from "../features/categories/components/CategoryStrip.jsx";
 import HowItWorksSection from "../components/HowItWorksSection.jsx";
 import MerchantCTA from "../components/MerchantCTA.jsx";
-import HomePageProductCard from "../features/products/components/HomePageProductCard";
+import HomePageProductCard from "../features/products/components/HomePageProductCard.jsx";
 import useProducts from "../features/products/hooks/useProducts.js";
 
 function Home() {
@@ -41,7 +41,7 @@ function Home() {
 
         {/* Full catalog */}
         <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-10 space-y-3">
+          <div  id="products" className="mb-10 space-y-3">
             <p className="text-sm font-semibold uppercase tracking-[0.3em] text-amber-500">
               Shop all
             </p>
@@ -63,7 +63,7 @@ function Home() {
             </p>
           ) : (
             <>
-              <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+              <div  className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
                 {products.map((product) => (
                   <HomePageProductCard key={product.id} product={product} />
                 ))}

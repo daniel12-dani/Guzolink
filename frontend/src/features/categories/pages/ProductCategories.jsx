@@ -1,6 +1,5 @@
-import { Link } from "react-router-dom";
-import ShopCard from "../components/ShopCard";
-import useShops from "../hooks/useShops";
+import ShopCard from "../../shop/components/ShopCard.jsx";
+import useShops from "../hooks/useShops.js";
 
 function MyShops() {
   const { shops, error, handleDelete } = useShops();

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import {useAuth}  from "../../auth/auth.context";
+import { useAuth } from "../../auth/auth.context.js";
 
 function ShopFormUi({
   message,
@@ -35,7 +35,7 @@ function ShopFormUi({
             {error}
           </p>
         )}
-         <Link
+        <Link
           to={"/profile/" + user.id}
           className="inline-flex items-center gap-1 text-sm text-slate-400 hover:text-white transition mb-2 mt-4"
         >

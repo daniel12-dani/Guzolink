@@ -1,6 +1,6 @@
 import { createContext, createElement, useContext, useEffect, useMemo, useState } from "react";
-import { request } from "../../shared/lib/apiClient";
-import { useAuth } from "../auth/auth.context";
+import { request } from "../../shared/lib/apiClient.js";
+import { useAuth } from "../auth/auth.context.js";
 
 const CategoryContext = createContext(null);
 

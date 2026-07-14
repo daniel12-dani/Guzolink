@@ -5,7 +5,7 @@
 // logs). Same three-state shape as everything else: loading/data/error.
 
 import { useEffect, useState } from "react";
-import { request } from "../../../shared/lib/apiClient";
+import { request } from "../../../shared/lib/apiClient.js";
 
 export default function useProductCategories() {
   const [categories, setCategories] = useState([]);
