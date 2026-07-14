@@ -27,18 +27,18 @@ function RefreshIcon({ spinning }) {
 function ShopDashboard() {
   const { shopId } = useParams();
   const { user } = useAuth();
-  const { fetchSingleShop, shopError } = useShops();
+  const { fetchSingleShopDetails, shopError } = useShops();
   const [shop, setShop] = useState(null);
 
   useEffect(() => {
     const loadShop = async () => {
-      const result = await fetchSingleShop(shopId);
+      const result = await fetchSingleShopDetails(shopId);
       if (result.success) {
         setShop(result.shop);
       }
     };
     loadShop();
-  }, [shopId, fetchSingleShop]);
+  }, [shopId, fetchSingleShopDetails]);
 
   const {
     products,

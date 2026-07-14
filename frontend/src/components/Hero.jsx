@@ -1,4 +1,5 @@
 import { useAuth } from "../features/auth/auth.context.js";
+import { Link } from "react-router-dom";
 
 function Hero() {
   const { user } = useAuth();
@@ -18,28 +19,26 @@ function Hero() {
           </p>
           <div className="flex flex-wrap gap-3">
         
-            <a
-              //  when user clicks on "Shop now", it should scroll down to the products section of the page but the section is not products 
-              // its controlled by this card, " Shop all" section in Home.jsx, so we can use an anchor link to scroll down to that section by adding an id to the section and linking to it here
-              href="#products"
+            <Link
+              to="#products"
               className="rounded-full bg-amber-500 px-5 py-3 font-semibold text-slate-950 transition hover:bg-amber-400"
             >
               Shop now
-            </a>
+            </Link>
             {user ? (
-              <a
-                href={`/profile/${user.id || user._id}`}
+              <Link
+                to={`/profile/${user.id || user._id}`}
                 className="rounded-full border border-white/20 px-5 py-3 font-semibold text-white transition hover:bg-white/10"
               >
                 My Dashboard
-              </a>
+              </Link>
             ) : (
-              <a
-                href="/signup"
+              <Link
+                to="/signup"
                 className="rounded-full border border-white/20 px-5 py-3 font-semibold text-white transition hover:bg-white/10"
               >
                 Create account
-              </a>
+              </Link>
             )}
           </div>
         </div>

@@ -158,7 +158,6 @@ export async function LoginUser(req, res) {
 		return res.status(500).json({
 			success: false,
 			message: "An error occurred while logging in",
-			error: error.message,
 		});
 	}
 }

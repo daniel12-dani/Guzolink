@@ -22,7 +22,7 @@ App.use(
 // ---------- Body parser ----------
 App.use(express.json());
 App.use(express.urlencoded({ extended: true }));
-App.use(morgan("dev"));
+App.use(morgan("common"));
 
 // // static files
 // App.use("/uploads", express.static("uploads"));

@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth.context.js";
+import Modal from "../../../components/Modal.jsx";
+import LoadingSpinnerModal from "../../../components/LoadingSpinnerModal.jsx";
 
 function Signup() {
   const navigate = useNavigate();
@@ -41,7 +43,8 @@ function Signup() {
     setLoading(false);
 
     if (result.success) {
-      navigate("/products");
+      const userId = result.user.id;
+      navigate("/profile/" + userId);
       return;
     }
 
@@ -68,9 +71,12 @@ function Signup() {
         >
           <h2 className="mb-6 text-2xl font-semibold">Create account</h2>
           {error ? (
-            <p className="mb-4 rounded-xl bg-red-500/20 p-3 text-sm text-red-200">
-              {error}
-            </p>
+            <Modal
+              isOpen={true}
+              onClose={() => setError("")}
+              title="Signup Error"
+              message={error}
+            />
           ) : null}
 
           <label className="mb-4 block">
@@ -137,7 +143,7 @@ function Signup() {
                 name="phone"
                 value={formData.phone}
                 onChange={handleChange}
-                className="flex-1 rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-sm text-white outline-none"
+                className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-sm text-white outline-none"
                 placeholder="912345678"
               />
             </div>
@@ -160,7 +166,14 @@ function Signup() {
             disabled={loading}
             className="w-full rounded-xl bg-amber-500 px-4 py-3 font-semibold text-slate-950 transition hover:bg-amber-400 disabled:cursor-not-allowed disabled:bg-amber-300"
           >
-            {loading ? "Creating account..." : "Create account"}
+            {loading ? (
+              <LoadingSpinnerModal
+                isOpen={loading}
+                message="Generating report..."
+              />
+            ) : (
+              "Create account"
+            )}
           </button>
 
           <p className="mt-4 text-center text-sm text-slate-400">

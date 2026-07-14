@@ -68,6 +68,56 @@ export async function GetAllMerchantShops(req, res) {
   }
 }
 
+
+export async function GetAllShops(req, res) {
+  try {
+    // GET /shops?page=1&limit=10
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    const skip = (page - 1) * limit;
+
+    // Get total number of shops
+    const totalShops = await Shop.countDocuments();
+
+    // Fetch paginated shops
+    const shops = await Shop.find({})
+      .populate("category", "name")
+      .skip(skip)
+      .sort({ createdAt: -1 })
+      .limit(limit);
+
+    if (shops.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No shops found",
+        shops: [],
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Shops retrieved successfully",
+      data: shops,
+      pagination: {
+        totalItems: totalShops,
+        totalPages: Math.ceil(totalShops / limit),
+        currentPage: page,
+        pageSize: limit,
+        hasNextPage: page * limit < totalShops,
+        hasPreviousPage: page > 1,
+      },
+    });
+  } catch (error) {
+    console.error("Error getting shops:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+}
+
 export async function GetMerchantShopDetails(req, res) {
   try {
     const { id } = req.params;
@@ -85,6 +135,31 @@ export async function GetMerchantShopDetails(req, res) {
       message: "Shop detials retrieved successfully",
       shop: existingShop,
     });
+  } catch (error) {
+    console.log("error occurred while getting all categories", error);
+    return res.status(404).json({
+      success: false,
+      message: error.message,
+    });
+  }
+}
+
+
+export async function DeleteMerchantShop(req, res) {
+  try {
+    const userid = req.user.id;
+    const shopId = req.params;
+    const shop = await Shop.findOneAndDelete({ owner: userid, shopId: shopId })
+
+    if (!shop || shop.length === 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "No shop found for this user please add new shop", shop: [] });
+    }
+
+    return res
+      .status(200)
+      .json({ success: true, message: "Shops deleted successfully" });
   } catch (error) {
     console.log("error occurred while getting all categories", error);
     return res.status(404).json({
