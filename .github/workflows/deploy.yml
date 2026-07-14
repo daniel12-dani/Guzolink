@@ -2,10 +2,8 @@ name: GuzoLink CI/CD
 
 on:
   push:
-    branches:
-      - main
-      - master
-      - dev-deploy
+  # testing workflow initiall done on dev-deploy branch, then we can directly merge to the master
+    branches: ["master", "dev-deploy"]
 
 jobs:
   build-and-deploy:
