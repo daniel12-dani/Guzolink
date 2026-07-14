@@ -5,7 +5,7 @@ import AppProviders from "./providers/AppProviders";
 import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-    <BrowserRouter>
+    <BrowserRouter basename="/guzolink">
       <AppProviders>
         <App />
       </AppProviders>

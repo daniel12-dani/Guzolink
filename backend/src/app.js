@@ -1,14 +1,14 @@
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
-import path from "path";
-import { fileURLToPath } from "url";
+// import path from "path";
+// import { fileURLToPath } from "url";
 
 import RegisterRoutes from "./routes/main.js";
 
 // Get current directory path in ES modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
 
 const App = express();
 
@@ -24,19 +24,19 @@ App.use(express.json());
 App.use(express.urlencoded({ extended: true }));
 App.use(morgan("dev"));
 
-// static files
-App.use("/uploads", express.static("uploads"));
+// // static files
+// App.use("/uploads", express.static("uploads"));
 
-// frontend
-if (process.env.NODE_ENV === "production") {
- // Serve static frontend bundle assets from /dist folder
-  App.use(express.static(path.join(__dirname, "dist")));
+// // frontend
+// if (process.env.NODE_ENV === "production") {
+//  // Serve static frontend bundle assets from /dist folder
+//   App.use(express.static(path.join(__dirname, "dist")));
 
-  // Catch-all route to serve the SPA entry index.html cleanly
-  App.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "dist", "index.html"));
-  });
-}
+//   // Catch-all route to serve the SPA entry index.html cleanly
+//   App.get("*", (req, res) => {
+//     res.sendFile(path.join(__dirname, "dist", "index.html"));
+//   });
+// }
 // routes
 RegisterRoutes(App);
 
