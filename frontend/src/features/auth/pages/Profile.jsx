@@ -1,10 +1,9 @@
-import { useAuth } from "../auth.context";
+import { useAuth } from "../auth.context.js";
 import { Link } from "react-router-dom";
-
 
 function ProfileCard() {
   const { user } = useAuth();
-  
+
   // Guard clause against initial null auth state
   if (!user) return null;
 
@@ -15,21 +14,18 @@ function ProfileCard() {
       {/* Header Profile Section */}
       <div className="flex flex-col sm:flex-row items-center gap-6 pb-6 border-b border-slate-700/50">
         <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-2 border-amber-500/30 p-1 bg-slate-900 shrink-0">
-          <img 
-            src={profileImage} 
-            alt={`${user.username || 'User'}'s profile`} 
+          <img
+            src={profileImage}
+            alt={`${user.username || "User"}'s profile`}
             className="w-full h-full object-cover rounded-full"
           />
         </div>
-        
+
         <div className="text-center sm:text-left flex-1 space-y-1">
           <h2 className="text-2xl font-bold tracking-tight text-white">
             Welcome {user.username}
           </h2>
-    
         </div>
-
-        
       </div>
 
       {/* User Technical Details Grid */}
@@ -52,7 +48,7 @@ function ProfileCard() {
           </span>
         </div>
         <div>
-               <p className="text-sm tracking-tight text-gray-500 mb-2">
+          <p className="text-sm tracking-tight text-gray-500 mb-2">
             You can update your info with this button
           </p>
           <Link

@@ -2,27 +2,27 @@ import { Routes, Route } from "react-router-dom";
 import { ApolloProvider } from "@apollo/client/react";
 
 // globals
-import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import { client } from "./providers/ApolloClient.js";
 
 // componenets
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
-import Home from "./pages/Home";
+import Navbar from "./components/Navbar.jsx";
+import Footer from "./components/Footer.jsx";
+import Home from "./pages/Home.jsx";
 
 // auth
-import Login from "./features/auth/pages/Login";
-import Signup from "./features/auth/pages/Signup";
-import UpdateUserInfo from "./features/auth/pages/Update";
-import Dashboard from "./features/auth/pages/Dashboard";
+import Login from "./features/auth/pages/Login.jsx";
+import Signup from "./features/auth/pages/Signup.jsx";
+import UpdateUserInfo from "./features/auth/pages/Update.jsx";
+import Dashboard from "./features/auth/pages/Dashboard.jsx";
 
 // shops
-import MyShops from "./features/shop/pages/MyShops";
-import CreateShop from "./features/shop/pages/CreateShop";
-import ShopDashboard from "./features/shop/pages/ShopDashboard";
+import MyShops from "./features/shop/pages/MyShops.jsx";
+import CreateShop from "./features/shop/pages/CreateShop.jsx";
+import ShopDashboard from "./features/shop/pages/ShopDashboard.jsx";
 
 // products
-import CreateProductCard from "./features/products/pages/CreateProduct";
+import CreateProductCard from "./features/products/pages/CreateProduct.jsx";
 // import ProductDetails from "./features/products/pages/ProductDetails";
 
 // shoping and marketing
@@ -90,7 +90,6 @@ function App() {
               </ProtectedRoute>
             }
           />
-
         </Routes>
         <Footer />
       </div>

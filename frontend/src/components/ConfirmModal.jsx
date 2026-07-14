@@ -50,7 +50,10 @@ export default function ConfirmModal({
         className="w-full max-w-sm rounded-2xl border border-white/10 bg-slate-800 p-6 shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <h3 id="confirm-modal-title" className="text-lg font-semibold text-white">
+        <h3
+          id="confirm-modal-title"
+          className="text-lg font-semibold text-white"
+        >
           {title}
         </h3>
         {message && <p className="mt-2 text-sm text-slate-300">{message}</p>}

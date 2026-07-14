@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../auth.context";
+import { useAuth } from "../auth.context.js";
 
 function Login() {
   const navigate = useNavigate();
@@ -38,20 +38,30 @@ function Login() {
     <div className="min-h-screen bg-slate-50 px-4 py-16 text-slate-800">
       <div className="mx-auto flex max-w-5xl flex-col gap-8 rounded-3xl border border-slate-200 bg-white p-8 shadow-sm lg:flex-row lg:items-center">
         <div className="flex-1 space-y-4">
-          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-amber-600">Welcome back</p>
+          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-amber-600">
+            Welcome back
+          </p>
           <h1 className="text-4xl font-bold">Sign in to continue shopping</h1>
           <p className="max-w-xl text-lg text-slate-600">
-            Access your order history, save products for later, and breeze through checkout.
+            Access your order history, save products for later, and breeze
+            through checkout.
           </p>
           <div className="rounded-2xl bg-slate-100 p-4 text-sm text-slate-600">
             Your account is now checked against the backend API.
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="flex-1 rounded-3xl bg-slate-900 p-6 text-white shadow-xl">
+        <form
+          onSubmit={handleSubmit}
+          className="flex-1 rounded-3xl bg-slate-900 p-6 text-white shadow-xl"
+        >
           <h2 className="mb-6 text-2xl font-semibold">Login</h2>
           {/* TODO: implement small notification model card that displays over the window */}
-          {error ? <p className="mb-4 rounded-xl bg-red-500/20 p-3 text-sm text-red-200">{error}</p> : null}
+          {error ? (
+            <p className="mb-4 rounded-xl bg-red-500/20 p-3 text-sm text-red-200">
+              {error}
+            </p>
+          ) : null}
 
           <label className="mb-4 block">
             <span className="mb-2 block text-sm">Email</span>
@@ -88,7 +98,10 @@ function Login() {
           </button>
 
           <p className="mt-4 text-center text-sm text-slate-400">
-            New here ? <Link to="/signup" className="font-semibold text-amber-400">Create an account</Link>
+            New here ?{" "}
+            <Link to="/signup" className="font-semibold text-amber-400">
+              Create an account
+            </Link>
           </p>
         </form>
       </div>

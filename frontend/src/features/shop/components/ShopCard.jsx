@@ -31,7 +31,7 @@ function ShopCard({ shop, onDelete }) {
         )}
         <div className="mt-4 flex flex-wrap gap-2">
           {/* TODO: implement the shop delete in the backend */}
-          
+
           <Link
             to={`/shop/${shop._id}`}
             className="inline-flex items-center rounded-lg bg-white/20 px-4 py-2 text-white font-medium hover:bg-white/30 transition"

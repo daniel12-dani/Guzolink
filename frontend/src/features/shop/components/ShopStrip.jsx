@@ -35,7 +35,7 @@ export default function ShopsStrip() {
         </div>
       </div>
 
-      <div className="flex gap-6 overflow-x-auto pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div className="flex gap-6 overflow-x-auto pb-4 [-ms-overflow-style:none] [scrollbar-none] [&::-webkit-scrollbar]:hidden">
         {MOCK_SHOPS.map((shop) => (
           <Link
             key={shop.id}

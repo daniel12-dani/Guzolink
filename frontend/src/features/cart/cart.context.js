@@ -1,5 +1,5 @@
 import { createContext, createElement, useContext, useEffect, useMemo, useState } from "react";
-import { storage } from "../../shared/lib/storage";
+import { storage } from "../../shared/lib/storage.js";
 
 const CartContext = createContext(null);
 

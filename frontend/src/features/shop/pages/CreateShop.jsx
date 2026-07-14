@@ -3,7 +3,7 @@ import { useState, useRef } from "react";
 import { useAuth } from "../../auth/auth.context.js";
 import { useShops } from "../shop.context.js";
 import { useCategories } from "../../categories/category.context.js";
-import ShopFormUi from "../components/ShopForm";
+import ShopFormUi from "../components/ShopForm.jsx";
 
 function CreateShop() {
   const user = useAuth()?.user;
@@ -34,7 +34,6 @@ function CreateShop() {
     setError("");
     setMessage("");
     if (fileInputRef.current) fileInputRef.current.value = "";
-
 
     if (!shopDetails.name || !shopDetails.contact) {
       setError("Name and contact are required.");
@@ -84,7 +83,7 @@ function CreateShop() {
       shopCategories={shopCategories}
       handleChange={handleChange}
       handleSubmit={handleSubmit}
-      message={message }
+      message={message}
       error={error}
     />
   );

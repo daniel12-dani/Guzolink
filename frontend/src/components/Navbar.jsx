@@ -1,6 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
-import { useCart } from "../features/cart/cart.context";
-import { useAuth } from "../features/auth/auth.context";
+import { useCart } from "../features/cart/cart.context.js";
+import { useAuth } from "../features/auth/auth.context.js";
 
 function Navbar() {
   const { cart } = useCart();
@@ -64,7 +64,6 @@ function Navbar() {
 
               <span className="hidden rounded-full bg-white/10 px-3 py-1 text-sm text-slate-200 sm:inline">
                 Hi, {user.username}
-              
               </span>
 
               <button

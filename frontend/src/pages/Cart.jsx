@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import { useAuth } from "../features/auth/auth.context";
-import { useCart } from "../features/cart/cart.context";
+import { useAuth } from "../features/auth/auth.context.js";
+import { useCart } from "../features/cart/cart.context.js";
 
 function Cart() {
   const { cart, removeFromCart, updateQuantity, total } = useCart();

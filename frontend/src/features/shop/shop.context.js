@@ -8,9 +8,9 @@ import {
   createElement,
 } from "react";
 
-import { request } from "../../shared/lib/apiClient";
+import { request } from "../../shared/lib/apiClient.js";
 import { useAuth } from "../auth/auth.context.js";
-import { storage } from "../../shared/lib/storage";
+import { storage } from "../../shared/lib/storage.js";
 
 const ShopContext = createContext(null);
 
@@ -76,7 +76,9 @@ function ShopProvider({ children }) {
       console.error("Error fetching shops:", err.message);
       setShopError(err.message || "Failed to load shops");
     } finally {
-      if (!isMountedRef.current) return;
+      if (!isMountedRef.current) {
+        return 
+      };
       setIsLoading(false);
       if (silent) setIsRefreshing(false);
     }
