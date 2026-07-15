@@ -2,6 +2,8 @@ import { useState, useRef } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useCategories } from "../../categories/category.context.js";
 import useShopProducts from "../hooks/useShopProducts.js";
+import Modal from "../../../components/Modal.jsx";
+
 
 export default function CreateProductCard() {
   const { shopId } = useParams();

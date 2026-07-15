@@ -1,77 +1,95 @@
 import { Link } from "react-router-dom";
-
-// STUB — this needs a real backend query before it's live.
-//
-// ShopContext's fetchShops() hits /api/shops, but that's scoped to
-// MyShops.jsx (the logged-in merchant's OWN shops) — it's not a public
-// "browse every shop" list. This section needs a genuinely different,
-// unfiltered endpoint (or GraphQL query, matching the pattern you used
-// for products: getAllShopProducts = everyone's, getShopProducts = one
-// shop's). Swap MOCK_SHOPS below for that once it exists.
-//
-// Also worth deciding before wiring this up: where should a shop card
-// link TO? /shop/:id currently points at ShopDashboard, which is the
-// MERCHANT's management view (create/delete products) — not something
-// a random visitor should land on. You'll likely want a separate public
-// storefront route, e.g. /store/:shopId, showing just that shop's
-// products with no edit controls.
-
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useShops } from "../shop.context.js";
 
 export default function ShopsStrip() {
+  // eslint-disable-next-line 
   const { fetchAllShops, allShopsError } = useShops();
+  const [shops, setShops] = useState([]);
 
-  // TODO: implement pagination for shops, currently fetching all shops at once
-  // use ui to change this values
-  let page = 1;
-  let limit = 10;
-  let data = []
+  const page = 1;
+  const limit = 10;
 
   useEffect(() => {
     const fetchShops = async () => {
       try {
-        const data = await fetchAllShops(page, limit);
+        const result = await fetchAllShops(page, limit);
+
+        if (result.success) {
+          setShops(result.shops);
+        }
       } catch (error) {
         console.error("Error fetching shops:", error);
       }
     };
+
     fetchShops();
   }, [fetchAllShops, page, limit]);
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-      <div className="mb-8 flex items-end justify-between">
+    <section className="mx-auto max-w-7xl px-6 py-20">
+      <div className="mb-10 flex items-end justify-between">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-amber-500">
-            Featured shops
+          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-amber-400">
+            Featured Shops
           </p>
-          <h2 className="mt-2 text-3xl font-bold text-white">
-            Meet the merchants
+
+          <h2 className="mt-3 text-4xl font-bold text-white">
+            Discover Amazing Merchants
           </h2>
+
+          <p className="mt-3 max-w-2xl text-slate-400">
+            Browse stores from local businesses and discover products from
+            merchants across the marketplace.
+          </p>
         </div>
+
+        <Link
+          to="/shops"
+          className="hidden rounded-xl border border-white/10 px-5 py-3 text-sm font-medium text-white transition hover:border-amber-400 hover:bg-white/5 md:block"
+        >
+          View All Shops
+        </Link>
       </div>
 
-      <div className="flex gap-6 overflow-x-auto pb-4 [-ms-overflow-style:none] [scrollbar-none] [&::-webkit-scrollbar]:hidden">
-        {data ? (
-          data.map((shop) => (
-            <Link
-              key={shop.id}
-              // TODO: this should point to a public storefront route, not the merchant's dashboard
-              // implement id based shop details hiding and showing the products of that shop only
-              to={`/store/${shop.id}/products`}
-              className="flex w-64 shrink-0 flex-col rounded-3xl border border-white/10 bg-white/5 p-6 transition hover:-translate-y-1 hover:border-white/20"
-            >
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-500/20 text-lg font-bold text-amber-300">
-                {shop.name.charAt(0)}
+      <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {shops.map((shop) => (
+          <Link
+            key={shop._id}
+            to={`/shops/${shop._id}/products`}
+            className="group overflow-hidden rounded-3xl border border-white/10 bg-slate-900 transition-all duration-300 hover:-translate-y-2 hover:border-amber-400/50 hover:shadow-2xl hover:shadow-amber-500/10"
+          >
+            {/* Banner */}
+            <div className="relative h-40 bg-linear-to-br from-amber-400 via-orange-500 to-red-500">
+              <div className="absolute bottom-4 left-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-2xl font-bold text-slate-900 shadow-lg">
+                {shop.name.charAt(0).toUpperCase()}
               </div>
-              <h3 className="text-lg font-semibold text-white">{shop.name}</h3>
-              <p className="mt-1 text-sm text-slate-400">{shop.location}</p>
-            </Link>
-          ))
-        ) : (
-          <p className="text-white">No shops available. {allShopsError && <span>{allShopsError}</span>}</p>
-        )}
+            </div>
+
+            <div className="space-y-4 p-6">
+              <div>
+                <h3 className="truncate text-xl font-bold text-white">
+                  {shop.name}
+                </h3>
+
+                <p className="mt-2 line-clamp-2 text-sm text-slate-400">
+                  {shop.description}
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2 text-sm text-slate-400">
+                <span>📍</span>
+                <span>{shop.location || "Location unavailable"}</span>
+              </div>
+
+              <div className="pt-2">
+                <span className="inline-flex items-center rounded-full bg-amber-500 px-4 py-2 text-sm font-semibold text-slate-900 transition group-hover:bg-amber-400">
+                  Visit Store →
+                </span>
+              </div>
+            </div>
+          </Link>
+        ))}
       </div>
     </section>
   );

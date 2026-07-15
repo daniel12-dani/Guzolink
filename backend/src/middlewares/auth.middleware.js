@@ -1,22 +1,19 @@
 import "../configs/env.config.js";
 import jwt from "jsonwebtoken";
+import UserModel from "../models/user.model.js";
 
 const SECRET = process.env.JW_SECRET || process.env.JWT_SECRET;
 
-export default function GenerateToken(user) {
-  if (!SECRET) {
-    throw new Error("JWT secret is missing. Set JW_SECRET in your .env file.");
-  }
+export function GenerateToken(user) {
   return jwt.sign(
     {
       id: user._id,
       email: user.email,
       role: user.role,
+      tokenVersion: user.tokenVersion,
     },
     SECRET,
-    {
-      expiresIn: "2h", // Token expires in 2 hours
-    },
+    { expiresIn: "2h" },
   );
 }
 
@@ -30,12 +27,11 @@ export function VerifyToken(token) {
   // console.log("Token Provided, verifying...", token);
   // console.log("The Secret: ", SECRET);
   return jwt.verify(token, SECRET);
+  
 }
-
-export function IsLoggedIn(req, res, next) {
+export async function IsLoggedIn(req, res, next) {
   const authHeader = req.headers.authorization;
 
-  // console.log("Auth Header: ", authHeader);
   if (!authHeader) {
     return res.status(401).json({
       success: false,
@@ -44,18 +40,20 @@ export function IsLoggedIn(req, res, next) {
   }
 
   const token = authHeader.split(" ")[1];
-  // console.log("Auth Token: ", token);
   if (!token) {
     return res.status(401).json({
       success: false,
       message: "Invalid Token Provided",
     });
   }
-  try {
-    const decoded_token = VerifyToken(token);
-    // console.log("Decoded token: ", decoded_token);
 
-    req.user = decoded_token;
+  try {
+    const currentUser = await AuthenticateToken(token);
+    if (!currentUser) {
+      return res.status(401).json({ success: false, message: "Invalid or expired token" });
+    }
+
+    req.user = currentUser; // now the full, fresh user document, not just the decoded payload
     return next();
   } catch (error) {
     if (error.name === "TokenExpiredError") {
@@ -68,3 +66,31 @@ export function IsLoggedIn(req, res, next) {
     });
   }
 }
+
+
+export const IsAdmin = function (req, res, next) {
+  if (req.user.role !== "admin") {
+    return res.status(403).json({
+      message: " Access Denied admins only",
+    });
+  }
+  next();
+};
+
+// auth.util.js
+export async function AuthenticateToken(token) {
+  const decoded = VerifyToken(token); // throws on invalid/expired
+  const currentUser = await UserModel.findById(decoded.id);
+  if (!currentUser || currentUser.tokenVersion !== decoded.tokenVersion) {
+    return null;
+  }
+  return currentUser;
+}
+
+export default {
+  GenerateToken,
+  VerifyToken,
+  IsLoggedIn,
+  IsAdmin,
+  AuthenticateToken,
+};

@@ -8,7 +8,8 @@ import ProductType from "../types/product.type.js";
 import { ProductResolvers } from "../resolvers/product.resolver.js";
 
 const ProductQueries = {
-  getAllShopProducts: {
+  // all market products
+  products: {
     type: new GraphQLList(ProductType),
     args: {
       // page/limit added for the "Load more" pagination on the home
@@ -17,9 +18,9 @@ const ProductQueries = {
       page: { type: GraphQLInt },
       limit: { type: GraphQLInt },
     },
-    resolve: ProductResolvers.getAllShopProducts,
+    resolve: ProductResolvers.products,
   },
-  getShopProducts: {
+  shopProducts: {
     // was: type: ProductType (singular) — wrong, a shop has MANY
     // products. This must be a list, matching what the resolver
     // actually returns and what the frontend's useShopProducts hook

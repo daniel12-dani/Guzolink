@@ -41,7 +41,7 @@ export default function HomePageProductCard({ product }) {
   const inStock = (product.stock ?? 0) > 0;
 
   return (
-    <article className="flex h-full w-64 justify-items-center flex-col rounded-3xl border border-white/10 bg-white/5 p-5 shadow-sm transition hover:-translate-y-1 hover:border-white/20 hover:shadow-lg">
+    <article className="group overflow-hidden justify-items-center flex-col rounded-3xl border border-white/10 bg-white/5 p-3 shadow-sm transition hover:-translate-y-1 hover:border-white/20 hover:shadow-lg">
       <div className="mb-2 flex items-center justify-between">
         {product.badge ? (
           <span className="rounded-full bg-amber-500/20 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-amber-300">
@@ -50,13 +50,10 @@ export default function HomePageProductCard({ product }) {
         ) : (
           <span />
         )}
-        {/* <span className="text-sm text-slate-400">
-          {product.category?.name || product.category}
-        </span> */}
       </div>
-
       <div className="relative mb-4">
         <ProductImage src={product.image} alt={product.name} />
+
         {/* Fallback shown by ProductImage's onError if the URL is broken */}
         <div
           style={{ display: "none" }}
@@ -79,36 +76,57 @@ export default function HomePageProductCard({ product }) {
         </div>
 
         {!inStock && (
-          <span className="absolute right-2 top-2 rounded-full bg-red-500/90 px-2 py-0.5 text-xs font-semibold text-red-950">
-            Out of stock
+          <span className="absolute right-2 top-2 rounded-full bg-red-500/90 px-2 py-1 text-xs font-semibold text-white">
+            Out of Stock
           </span>
         )}
       </div>
 
-      <h3 className="text-xl font-semibold text-white">{product.name}</h3>
-      <p className="mt-2 flex-1 text-sm text-slate-300 line-clamp-2">
+      <h3 className="text-lg font-semibold text-white line-clamp-2">
+        {product.name}
+      </h3>
+
+      <p className="mt-2 flex-1 text-sm leading-6 text-slate-300 line-clamp-3">
         {product.description}
       </p>
 
-      <div className="mt-4 flex items-center justify-between">
-        <span className="text-lg font-semibold text-amber-400">
-          ${product.price}
-        </span>
-        <div className="flex gap-2">
-          <Link
-            to={`/products/${product.id}`}
-            className="rounded-full border border-slate-600 px-3 py-2 text-sm font-medium text-slate-200 transition hover:bg-slate-700"
-          >
-            Details
-          </Link>
-          <button
-            onClick={() => addToCart(product)}
-            disabled={!inStock}
-            className="rounded-full bg-amber-500 px-3 py-2 text-sm font-semibold text-slate-900 transition hover:bg-amber-400 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            {inStock ? "Add" : "Sold out"}
-          </button>
+      <div className="mt-auto pt-4">
+        <div className="mb-3">
+          <span className="text-lg font-semibold text-amber-400">
+            ${product.price}
+          </span>
         </div>
+
+        {inStock ? (
+          <div className="flex gap-2">
+            <Link
+              to={`/products/${product.id}`}
+              className="flex flex-1 items-center justify-center rounded-full border border-slate-600 px-4 py-2 text-sm font-medium text-slate-200 transition hover:bg-slate-700"
+            >
+              Details
+            </Link>
+
+            <button
+              onClick={() => addToCart(product)}
+              className="rounded-full bg-amber-500 px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-amber-400"
+            >
+              Add
+            </button>
+          </div>
+        ) : (
+          <div className="flex flex-col gap-2">
+            <Link
+              to={`/products/${product.id}`}
+              className="flex items-center justify-center rounded-full border border-slate-600 px-4 py-2 text-sm font-medium text-slate-200 transition hover:bg-slate-700"
+            >
+              Details
+            </Link>
+
+            <div className="w-full rounded-full bg-red-500 py-2 text-center text-sm font-semibold uppercase tracking-wide text-white">
+              Sold Out
+            </div>
+          </div>
+        )}
       </div>
     </article>
   );

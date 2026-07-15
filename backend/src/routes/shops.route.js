@@ -5,18 +5,17 @@ import { IsLoggedIn } from "../middlewares/auth.middleware.js";
 import {
   CreateMerchantShop,
   GetMerchantShopDetails,
-  GetAllMerchantShops,
-  GetAllShops,
-  DeleteMerchantShop
+  GetMerchantShops,
+  DeleteMerchantShop,
+  UpdateMerchantShop,
+  GetAllShops
 } from "../controllers/shops.controller.js";
 
-ShopRoute.get("/all",  GetAllShops);
-
-ShopRoute.get("/", IsLoggedIn, GetAllMerchantShops);
+ShopRoute.get("/all", GetAllShops);
+ShopRoute.get("/", IsLoggedIn, GetMerchantShops);
 ShopRoute.get("/:id", IsLoggedIn, GetMerchantShopDetails);
 ShopRoute.post("/", IsLoggedIn, CreateMerchantShop);
-// ShopRoute.delete("/:id", IsLoggedIn, DeleteMerchantShop)
-
-// ShopRoute.post("/:id", IsLoggedIn, UpdateMerchantShop)
-
+ShopRoute.delete("/:id", IsLoggedIn, DeleteMerchantShop)
+ShopRoute.put("/:id", IsLoggedIn, UpdateMerchantShop)
+  
 export default ShopRoute;

@@ -1,8 +1,9 @@
 import Product from "../../models/product.model.js";
+import Shop from "../../models/shop.model.js";
 
 export const ProductResolvers = {
   // ─── queries ────────────────────────────────────────────────
-  getAllShopProducts: async (_, { page = 1, limit = 6 }) => {
+  products: async (_, { page = 1, limit = 6 }) => {
     const products = await Product.find()
       .skip((page - 1) * limit)
       .limit(limit);
@@ -16,7 +17,6 @@ export const ProductResolvers = {
   // ─── mutations ──────────────────────────────────────────────
   createProduct: async (parent, args, { user }) => {
     if (!user) throw new Error("You are not authenticated");
-
     const {
       name,
       price,
@@ -31,8 +31,18 @@ export const ProductResolvers = {
     // promotional item) as missing. Fine to leave for now since real
     // products won't be free, but worth remembering if that ever
     // changes — the fix would be `price === undefined` instead of `!price`.
+
     if (!name || !price || !category || !shopId) {
       throw new Error("Name, price, category, and shop are required");
+    }
+
+    const shop = await Shop.findById(shopId);
+    if (!shop) throw new Error("Shop not found");
+
+    const isOwner =
+      shop.owner?.toString() === (user._id || user.id)?.toString();
+    if (!isOwner && user.role !== "admin") {
+      throw new Error("You are not authorized to add products to this shop");
     }
 
     return await Product.create({
@@ -61,6 +71,7 @@ export const ProductResolvers = {
     // Only the product's creator (or an admin) may delete it.
     const isOwner =
       product.createdBy?.toString() === (user._id || user.id)?.toString();
+
     if (!isOwner && user.role !== "admin") {
       throw new Error("You are not authorized to delete this product");
     }

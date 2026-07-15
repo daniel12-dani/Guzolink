@@ -20,6 +20,7 @@ import Dashboard from "./features/auth/pages/Dashboard.jsx";
 import MyShops from "./features/shop/pages/MyShops.jsx";
 import CreateShop from "./features/shop/pages/CreateShop.jsx";
 import ShopDashboard from "./features/shop/pages/ShopDashboard.jsx";
+import ShopProducts from "./features/shop/pages/ShopProducts.jsx";
 
 // products
 import CreateProductCard from "./features/products/pages/CreateProduct.jsx";
@@ -30,7 +31,6 @@ import CreateProductCard from "./features/products/pages/CreateProduct.jsx";
 // import Checkout from "./pages/Checkout";
 
 function App() {
-  ``;
   return (
     <ApolloProvider client={client}>
       <div className="min-h-screen bg-linear-to-br from-slate-900 via-slate-800 to-slate-700 text-slate-100">
@@ -58,7 +58,7 @@ function App() {
           />
 
           <Route
-            path="shops"
+            path="/shops"
             element={
               <ProtectedRoute>
                 <MyShops />
@@ -81,7 +81,14 @@ function App() {
               </ProtectedRoute>
             }
           />
-
+          <Route
+            path="/shop/:shopId/product"
+            element={
+              <ProtectedRoute>
+                <ShopProducts />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/shop/:shopId/product/create"
             element={

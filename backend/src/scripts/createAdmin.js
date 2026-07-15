@@ -9,12 +9,12 @@ try {
   console.log(`Error while connecting to database ${error.message}`);
 }
 
-const hashed = await bcrypt.hash("admin1234567890", 10);
+const hashed = await bcrypt.hash(process.env.ADMIN_PASSWORD || "", 10);
 
 try {
   await UserModel.create({
-    username: "admin",
-    email: "fraolbulti1@gmail.com",
+    username: process.env.ADMIN_USERNAME || "",
+    email: process.env.ADMIN_EMAIL ||  "",
     password: hashed,
     role: "admin",
   });

@@ -1,13 +1,13 @@
 import express from "express";
 
 const UserRoute = express.Router();
-import { IsLoggedIn } from "../middlewares/auth.middleware.js";
-import IsAdmin from "../middlewares/role.middleware.js";
+import { IsLoggedIn, IsAdmin } from "../middlewares/auth.middleware.js";
 import {
   GetAllUsers,
   GetUserProfile,
   RegisterUser,
   LoginUser,
+  LogoutUser,
   DeleteUser,
   UpdateUser
 
@@ -15,15 +15,15 @@ import {
 
 // admin only
 UserRoute.get("/all", IsLoggedIn, IsAdmin, GetAllUsers);
-UserRoute.delete("/", IsAdmin, DeleteUser);
+UserRoute.delete("/:userId",  IsLoggedIn, IsAdmin, DeleteUser);
 
 
 // public only
-UserRoute.get("/profile/:id", IsLoggedIn, GetUserProfile);
+UserRoute.get("/profile/:userId", IsLoggedIn, GetUserProfile);
 UserRoute.post("/register", RegisterUser);
 UserRoute.post("/login",  LoginUser);
-UserRoute.post("/update/:id", IsLoggedIn, UpdateUser)
-
+UserRoute.post("/logout",  IsLoggedIn, LogoutUser);
+UserRoute.post("/update/:userId", IsLoggedIn, UpdateUser)
 
 // TODO: upcoming routes
 // UserRoute.post("/forgotPassword", IsLoggedIn, ForgotPassword)

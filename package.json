@@ -1,5 +1,9 @@
 {
   "devDependencies": {
     "nodemon": "^3.1.14"
+  },
+  "dependencies": {
+    "dataloader": "^2.2.3",
+    "ruru": "^2.0.1"
   }
 }

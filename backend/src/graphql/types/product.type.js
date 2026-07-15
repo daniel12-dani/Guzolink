@@ -5,7 +5,6 @@ import {
   GraphQLInt,
   GraphQLFloat,
 } from "graphql";
-import User from "../../models/user.model.js";
 import UserType from "./user.type.js";
 
 const ProductType = new GraphQLObjectType({
@@ -27,8 +26,8 @@ const ProductType = new GraphQLObjectType({
     // field silently resolved to null on every product.
     createdBy: {
       type: UserType,
-      resolve(parent) {
-        return User.findById(parent.createdBy);
+      resolve(parent, args, context) {
+        return context.userLoader.load(parent.createdBy);
       },
     },
   }),

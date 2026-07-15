@@ -1,7 +1,6 @@
 import express from  "express"
 const ShopCategoryRoute = express.Router()
-import { IsLoggedIn } from "../middlewares/auth.middleware.js"
-import IsAdmin from "../middlewares/role.middleware.js"
+import { IsLoggedIn , IsAdmin} from "../middlewares/auth.middleware.js"
 
 import { CreateShopCategory, GetAllShopCategories } from "../controllers/shopCategory.controller.js"
 

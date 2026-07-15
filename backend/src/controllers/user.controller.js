@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import UserModel from "../models/user.model.js";
 import ValidateUserRegisration from "../validators/user.validator.js";
-import GenerateToken from "../middlewares/auth.middleware.js";
+import {GenerateToken} from "../middlewares/auth.middleware.js";
 
 export async function GetAllUsers(req, res) {
 	try {
@@ -31,9 +31,9 @@ export async function GetAllUsers(req, res) {
 
 export async function GetUserProfile(req, res) {
 	try {
-		const { id } = req.params;
-
-		const ExistingUser = await UserModel.findOne({ _id: id });
+		const { userId } = req.params;
+	
+		const ExistingUser = await UserModel.findOne({ _id: userId });
 		if (!ExistingUser) {
 			return res.status(400).json({
 				success: false,
@@ -141,7 +141,7 @@ export async function LoginUser(req, res) {
 			});
 		}
 
-		const Token = GenerateToken(user);
+		const Token = GenerateToken(user); // this is the string to send to the client
 		return res.status(200).json({
 			success: true,
 			message: "Logged in successfully",
@@ -160,6 +160,19 @@ export async function LoginUser(req, res) {
 			message: "An error occurred while logging in",
 		});
 	}
+}
+// UserModel: add a field
+// tokenVersion: { type: Number, default: 0 }
+
+export async function LogoutUser(req, res) {
+  try {
+    // req.user should already be set by your auth middleware (user is logged in)
+    await UserModel.findByIdAndUpdate(req.user.id, { $inc: { tokenVersion: 1 } });
+    return res.status(200).json({ success: true, message: "Logged out successfully" });
+  } catch (error) {
+	console.log("Error logging out: ", error);
+    return res.status(500).json({ success: false, message: "Error logging out" });
+  }
 }
 
 export async function UpdateUser(req, res) {
@@ -218,15 +231,21 @@ export async function UpdateUser(req, res) {
 
 export async function DeleteUser(req, res) {
 	try {
-		const { user_id } = req.params;
-		const user = await UserModel.findOne({ user_id });
+		
+		const { userId } = req.params;
+		const user = await UserModel.findOne({ _id: userId });
+		
 		if (!user) {
 			return res.status(400).json({
 				success: false,
 				message: "User with given id not found!",
 			});
 		}
-		await UserModel.findOneAndDelete({ user_id });
+		await UserModel.findOneAndDelete({ _id: userId });
+		return res.status(200).json({
+			success: true,
+			message: "Profile deleted successfully",
+		})
 	} catch (error) {
 		console.log("Error Deleting user: ", error);
 		return res.status(500).json({
