@@ -48,15 +48,9 @@ export async function IsLoggedIn(req, res, next) {
   }
 
   try {
-    const decoded_token = VerifyToken(token);
-
-    // NEW: check against the DB to catch logged-out / stale tokens
-    const currentUser = await UserModel.findById(decoded_token.id);
+    const currentUser = await AuthenticateToken(token);
     if (!currentUser) {
-      return res.status(401).json({ success: false, message: "User not found" });
-    }
-    if (currentUser.tokenVersion !== decoded_token.tokenVersion) {
-      return res.status(401).json({ success: false, message: "Session expired, please log in again" });
+      return res.status(401).json({ success: false, message: "Invalid or expired token" });
     }
 
     req.user = currentUser; // now the full, fresh user document, not just the decoded payload
@@ -83,9 +77,20 @@ export const IsAdmin = function (req, res, next) {
   next();
 };
 
+// auth.util.js
+export async function AuthenticateToken(token) {
+  const decoded = VerifyToken(token); // throws on invalid/expired
+  const currentUser = await UserModel.findById(decoded.id);
+  if (!currentUser || currentUser.tokenVersion !== decoded.tokenVersion) {
+    return null;
+  }
+  return currentUser;
+}
+
 export default {
   GenerateToken,
   VerifyToken,
   IsLoggedIn,
   IsAdmin,
+  AuthenticateToken,
 };

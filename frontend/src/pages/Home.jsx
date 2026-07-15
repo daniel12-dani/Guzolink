@@ -5,6 +5,7 @@ import HowItWorksSection from "../components/HowItWorksSection.jsx";
 import MerchantCTA from "../components/MerchantCTA.jsx";
 import HomePageProductCard from "../features/products/components/HomePageProductCard.jsx";
 import useProducts from "../features/products/hooks/useProducts.js";
+import LoadingSpinnerModal from "../components/LoadingSpinnerModal.jsx";
 
 function Home() {
   const { products, loading, isLoadingMore, hasMore, loadMore, error } =
@@ -41,7 +42,7 @@ function Home() {
 
         {/* Full catalog */}
         <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div  id="products" className="mb-10 space-y-3">
+          <div id="products" className="mb-10 space-y-3">
             <p className="text-sm font-semibold uppercase tracking-[0.3em] text-amber-500">
               Shop all
             </p>
@@ -54,16 +55,19 @@ function Home() {
           </div>
 
           {loading ? (
-            <p className="text-white">Loading products...</p>
+            <LoadingSpinnerModal
+              isOpen={loading}
+              message="Loading products..."
+            />
           ) : error ? (
-            <p className="text-red-400">{error}</p>
+            <p className="text-red-400">{"Couldn't load products. " + error}</p>
           ) : products.length === 0 ? (
             <p className="text-slate-300">
               No products available at the moment.
             </p>
           ) : (
             <>
-              <div  className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+              <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
                 {products.map((product) => (
                   <HomePageProductCard key={product.id} product={product} />
                 ))}
