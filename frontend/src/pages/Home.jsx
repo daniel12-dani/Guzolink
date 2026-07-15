@@ -29,7 +29,7 @@ function Home() {
             <h2 className="mt-2 text-3xl font-bold text-white">
               Popular picks right now
             </h2>
-            <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+            <div className="mt-2 grid gap-2 md:grid-cols-2 xl:grid-cols-4">
               {featured.map((product) => (
                 <HomePageProductCard key={product.id} product={product} />
               ))}

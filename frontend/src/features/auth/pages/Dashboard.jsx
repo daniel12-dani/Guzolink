@@ -16,6 +16,7 @@ function Dashboard() {
 
   if (!user)
     return <p className="p-6 text-white">Loading profile configuration…</p>;
+  
   return <DashboardUI user={user} />;
 }
 

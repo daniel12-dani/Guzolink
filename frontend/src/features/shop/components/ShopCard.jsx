@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 function ShopCard({ shop, onDelete }) {
   return (
-    <div className="relative rounded-xl overflow-hidden shadow-lg transform transition-shadow duration-300 hover:scale-[1.01]">
+    <div className="relative w-64 justify-items-center rounded-xl overflow-hidden shadow-lg transform transition-shadow duration-300 hover:scale-[1.01]">
       <div className="relative rounded-xl overflow-hidden shadow-lg">
         <img
           src={shop.posterimage || "https://picsum.photos/200/300"}

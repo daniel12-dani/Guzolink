@@ -43,10 +43,11 @@ function ShopProvider({ children }) {
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const [shopError, setShopError] = useState(null);
+  const [allShopsError, setAllShopsError] = useState(null)
 
   // A ref (not state) that tracks whether this component is still
   // mounted. We use this instead of a per-effect `cancelled` flag
-  // because fetchShops is also called manually (e.g. a refresh button)
+  // because fetchUserShops is also called manually (e.g. a refresh button)
   // outside of the effect — a single ref covers both cases cleanly.
   const isMountedRef = useRef(true);
   useEffect(() => {
@@ -59,7 +60,7 @@ function ShopProvider({ children }) {
   // (silent: true, drives the small button spinner) from "this is the
   // very first load, we have nothing to show yet" (silent: false, drives
   // the full-page loading state).
-  const fetchShops = async ({ silent = false } = {}) => {
+  const fetchUserShops = async ({ silent = false } = {}) => {
     if (silent) setShopError(null);
     if (silent) setIsRefreshing(true);
 
@@ -104,7 +105,7 @@ function ShopProvider({ children }) {
       return;
     }
 
-    fetchShops(); // first-ever load, nothing cached — show full loading state
+    fetchUserShops(); // first-ever load, nothing cached — show full loading state
     // eslint-disable-next-line react-hooks/exhaustive-deps -- intentionally checking shops.length only on mount, not re-running when shops changes
   }, [isAuthLoading, token]); //shops.length used inside, not listed as dependency on purpose: we only want to run this effect once per auth resolution, not every time the shop list changes
 
@@ -156,7 +157,7 @@ function ShopProvider({ children }) {
     }
   };
 
-  const fetchSingleShop = async (id) => {
+  const fetchSingleShopDetails = async (id) => {
     setShopError(null);
     try {
       const data = await request(`/api/shops/${id}`);
@@ -175,22 +176,54 @@ function ShopProvider({ children }) {
     }
   };
 
+  const fetchAllShops = async (page = 1, limit = 10) => {
+    setAllShopsError(null);
+
+    try {
+      const data = await request(`/api/shops/all?page=${page}&limit=${limit}`);
+
+      if (data.success) {
+        return {
+          success: true,
+          shops: data.shops,
+        };
+      } else {
+        setAllShopsError(data.message || "Failed to fetch all shops.");
+
+        return {
+          success: false,
+          message: data.message || "Failed to load all shops",
+        };
+      }
+    } catch (error) {
+      console.error("Error fetching shops:", error.message);
+
+      setAllShopsError(error.message || "Failed to load all shops");
+
+      return {
+        success: false,
+        message: error.message || "Failed to load all shops",
+      };
+    }
+  };
+
   const value = useMemo(
     () => ({
       shops,
       shopError,
+      allShopsError,
       isLoading,
       isRefreshing,
-      fetchShops,
+      fetchUserShops,
       createShop,
       deleteShop,
-      fetchSingleShop,
+      fetchSingleShopDetails,
+      fetchAllShops,
     }),
-    [shops, isLoading, isRefreshing, shopError],
+    [shops, isLoading, isRefreshing, shopError, allShopsError],
   );
- // eslint-disable-next-line react-hooks/refs 
+  // eslint-disable-next-line react-hooks/refs
   return createElement(ShopContext.Provider, { value }, children);
-
 }
 
 function useShops() {

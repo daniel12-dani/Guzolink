@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth.context.js";
+import Modal from "../../../components/Modal.jsx";
+
 
 function Login() {
   const navigate = useNavigate();
@@ -30,7 +32,7 @@ function Login() {
       navigate("/profile/" + result.user.id);
       return;
     }
-
+    console.log("Login error:", result.message);
     setError(result.message || "Invalid email or password.");
   };
 
@@ -46,9 +48,6 @@ function Login() {
             Access your order history, save products for later, and breeze
             through checkout.
           </p>
-          <div className="rounded-2xl bg-slate-100 p-4 text-sm text-slate-600">
-            Your account is now checked against the backend API.
-          </div>
         </div>
 
         <form
@@ -57,10 +56,9 @@ function Login() {
         >
           <h2 className="mb-6 text-2xl font-semibold">Login</h2>
           {/* TODO: implement small notification model card that displays over the window */}
+         
           {error ? (
-            <p className="mb-4 rounded-xl bg-red-500/20 p-3 text-sm text-red-200">
-              {error}
-            </p>
+            <Modal isOpen={true} onClose={() => setError("")} title="Login Error" message={error} />
           ) : null}
 
           <label className="mb-4 block">

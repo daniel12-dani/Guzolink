@@ -9,12 +9,12 @@ function Navbar() {
   return (
     <header className="border-b border-white/10 bg-slate-900/50 backdrop-blur sticky top-0 z-50">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-        <Link
+        <NavLink 
           to="/"
           className="text-xl font-semibold tracking-tight text-white"
         >
           Guzolink
-        </Link>
+        </NavLink>
 
         <nav className="hidden items-center gap-6 text-sm font-medium text-slate-300 md:flex">
           <NavLink

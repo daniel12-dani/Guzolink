@@ -29,7 +29,7 @@ function ProductImage({ src, alt }) {
     <img
       src={src}
       alt={alt}
-      className="h-40 w-full rounded-xl object-cover"
+      className="h-40  w-40 rounded-xl object-cover"
       onError={(e) => {
         // If the URL 404s or is otherwise broken, swap to the same
         // placeholder rather than showing the browser's broken-image icon.
@@ -66,7 +66,7 @@ export default function ShopProductCard({
 
   return (
     <div className="mt-8">
-      <h3 className="mb-4 text-lg font-semibold text-white">Products</h3>
+      <h3 className="mb-2 w-full text-lg font-semibold text-white">Products</h3>
 
       {productsLoading ? (
         <p className="text-slate-300">Loading products...</p>
@@ -77,13 +77,13 @@ export default function ShopProductCard({
           No products yet. Create your first one above.
         </p>
       ) : (
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        <div className="flex flex-row gap-2 md:grid-cols-2 xl:grid-cols-3">
           {products.map((product) => {
             const inStock = (product.stock ?? 0) > 0;
             return (
               <div
                 key={product.id}
-                className="flex flex-col justify-between rounded-2xl border border-white/10 bg-white/5 p-4 transition hover:border-white/20"
+                className="flex flex-col  w-54 justify-items-center rounded-2xl border border-white/10 bg-white/5 p-4 transition hover:border-white/20"
               >
                 <div>
                   <div className="relative">
@@ -125,7 +125,6 @@ export default function ShopProductCard({
                     {product.name}
                   </h4>
                   <p className="mb-2 text-sm text-slate-400">
-                    {product.category?.name || product.category} ·{" "}
                     <span className="font-semibold text-amber-400">
                       ${product.price}
                     </span>

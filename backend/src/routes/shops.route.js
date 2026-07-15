@@ -6,13 +6,17 @@ import {
   CreateMerchantShop,
   GetMerchantShopDetails,
   GetAllMerchantShops,
+  GetAllShops,
+  DeleteMerchantShop
 } from "../controllers/shops.controller.js";
+
+ShopRoute.get("/all",  GetAllShops);
 
 ShopRoute.get("/", IsLoggedIn, GetAllMerchantShops);
 ShopRoute.get("/:id", IsLoggedIn, GetMerchantShopDetails);
-
 ShopRoute.post("/", IsLoggedIn, CreateMerchantShop);
-// ShopRoute.post("/:id", IsLoggedIn, UpdateMerchantShop)
 // ShopRoute.delete("/:id", IsLoggedIn, DeleteMerchantShop)
+
+// ShopRoute.post("/:id", IsLoggedIn, UpdateMerchantShop)
 
 export default ShopRoute;

@@ -41,8 +41,8 @@ export default function HomePageProductCard({ product }) {
   const inStock = (product.stock ?? 0) > 0;
 
   return (
-    <article className="flex h-full flex-col rounded-3xl border border-white/10 bg-white/5 p-5 shadow-sm transition hover:-translate-y-1 hover:border-white/20 hover:shadow-lg">
-      <div className="mb-4 flex items-center justify-between">
+    <article className="flex h-full w-64 justify-items-center flex-col rounded-3xl border border-white/10 bg-white/5 p-5 shadow-sm transition hover:-translate-y-1 hover:border-white/20 hover:shadow-lg">
+      <div className="mb-2 flex items-center justify-between">
         {product.badge ? (
           <span className="rounded-full bg-amber-500/20 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-amber-300">
             {product.badge}
@@ -50,9 +50,9 @@ export default function HomePageProductCard({ product }) {
         ) : (
           <span />
         )}
-        <span className="text-sm text-slate-400">
+        {/* <span className="text-sm text-slate-400">
           {product.category?.name || product.category}
-        </span>
+        </span> */}
       </div>
 
       <div className="relative mb-4">

@@ -6,12 +6,10 @@ export const ProductResolvers = {
     const products = await Product.find()
       .skip((page - 1) * limit)
       .limit(limit);
-    console.log("getAllShopProducts resolver called with page:", page, "limit:", limit, "products", products);
     return products;
   },
 
   shopProducts: async (parent, { shopId }) => {
-    console.log("shopProducts resolver called with shopId:", shopId);
     return await Product.find({ shop: shopId });
   },
 

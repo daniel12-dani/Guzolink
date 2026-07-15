@@ -2,7 +2,7 @@ name: GuzoLink CI/CD
 
 on:
   push:
-  # testing workflow initiall done on dev-deploy branch, then we can directly merge to the master
+    # testing workflow initiall done on dev-deploy branch, then we can directly merge to the master
     branches: ["master", "dev-deploy"]
 
 jobs:
@@ -33,6 +33,8 @@ jobs:
           context: ./frontend
           file: ./frontend/Dockerfile
           push: true
+          build-args: |
+            VITE_API_URL=/guzolink
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/guzolink-frontend:latest
 
       - name: Ensure deployment directory exists
