@@ -45,15 +45,20 @@ export async function CreateMerchantShop(req, res) {
   }
 }
 
-export async function GetAllMerchantShops(req, res) {
+export async function GetMerchantShops(req, res) {
   try {
     const userid = req.user.id;
-    const shops = await Shop.find({ owner: userid }).populate("category", "name");
+    const shops = await Shop.find({ owner: userid }).populate(
+      "category",
+      "name",
+    );
 
     if (!shops || shops.length === 0) {
-      return res
-        .status(404)
-        .json({ success: false, message: "No shops found for this user please add new shop", shops: [] });
+      return res.status(404).json({
+        success: false,
+        message: "No shops found for this user please add new shop",
+        shops: [],
+      });
     }
 
     return res
@@ -68,10 +73,9 @@ export async function GetAllMerchantShops(req, res) {
   }
 }
 
-
 export async function GetAllShops(req, res) {
   try {
-    // GET /shops?page=1&limit=10
+    // GET /shops/all?page=1&limit=10
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
 
@@ -94,7 +98,7 @@ export async function GetAllShops(req, res) {
         shops: [],
       });
     }
-
+    console.log("Total shops:", totalShops, "Current page:", page, "Limit:", limit);
     return res.status(200).json({
       success: true,
       message: "Shops retrieved successfully",
@@ -121,7 +125,10 @@ export async function GetAllShops(req, res) {
 export async function GetMerchantShopDetails(req, res) {
   try {
     const { id } = req.params;
-    const existingShop = await Shop.findOne({ _id: id }).populate("category", "name");
+    const existingShop = await Shop.findOne({ _id: id }).populate(
+      "category",
+      "name",
+    );
 
     if (!existingShop) {
       return res.status(400).json({
@@ -144,27 +151,89 @@ export async function GetMerchantShopDetails(req, res) {
   }
 }
 
-
 export async function DeleteMerchantShop(req, res) {
   try {
-    const userid = req.user.id;
-    const shopId = req.params;
-    const shop = await Shop.findOneAndDelete({ owner: userid, shopId: shopId })
+    const { id, role } = req.user;
+    const { shopId } = req.params;
 
-    if (!shop || shop.length === 0) {
-      return res
-        .status(404)
-        .json({ success: false, message: "No shop found for this user please add new shop", shop: [] });
+    // find the shop first
+    const shop = await Shop.findById(shopId);
+    if (!shop) {
+      return res.status(404).json({
+        success: false,
+        message: "No shop found for this user please add new shop",
+        shop: [],
+      });
     }
 
+    // check ownership
+
+    const isShopOwner = shop.createdBy?.toString() === id;
+    if (!isShopOwner && role !== "admin") {
+      return res.status(403).json({
+        success: false,
+        message: "You are not authorized to delete this shop.",
+      });
+    }
+    await Shop.findOneAndDelete({
+      _id: shopId,
+      createdBy: id,
+    });
     return res
       .status(200)
       .json({ success: true, message: "Shops deleted successfully" });
   } catch (error) {
     console.log("error occurred while getting all categories", error);
-    return res.status(404).json({
+    return res.status(500).json({
       success: false,
-      message: error.message,
+      message: error,
+    });
+  }
+}
+
+export async function UpdateMerchantShop(req, res) {
+  try {
+    const { id, role } = req.user;
+    const { shopId } = req.params;
+    const { name, description, contact, category } = req.body;
+
+    // find the shop first
+    const shop = await Shop.findById(shopId);
+
+    if (!shop) {
+      return res.status(404).json({
+        success: false,
+        message: "No shop found with this id ! for this user",
+        shop: [],
+      });
+    }
+
+    // check ownership
+    const isShopOwner = shop.createdBy.toString() === id;
+    if (!isShopOwner && role !== "admin") {
+      return res.status(403).json({
+        success: false,
+        message: "You are not authorized to update this shop.",
+      });
+    }
+
+    // Update the shop details
+    const updatedShop = await Shop.findOneAndUpdate(
+      { _id: shopId, createdBy: id },
+      { name, description, contact, category },
+      { returnDocument: "after" }, // Return the updated document
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Shop updated successfully",
+      shop: updatedShop,
+    });
+  } catch (error) {
+     console.log("error occurred while updating merchant shop", error);
+    return res.status(500).json({
+      success: false,
+      message: "error occurred while updating merchant shop",
     });
   }
 }

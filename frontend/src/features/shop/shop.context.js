@@ -181,11 +181,13 @@ function ShopProvider({ children }) {
 
     try {
       const data = await request(`/api/shops/all?page=${page}&limit=${limit}`);
+      // const data = await request(`/api/shops/all`, { method: "GET" });
+
 
       if (data.success) {
         return {
           success: true,
-          shops: data.shops,
+          shops: data.data,
         };
       } else {
         setAllShopsError(data.message || "Failed to fetch all shops.");

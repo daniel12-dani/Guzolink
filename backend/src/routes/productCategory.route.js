@@ -1,7 +1,6 @@
 import express from "express";
 const ProductCategoryRoute = express.Router();
-import { IsLoggedIn } from "../middlewares/auth.middleware.js";
-import IsAdmin from "../middlewares/role.middleware.js";
+import { IsLoggedIn , IsAdmin} from "../middlewares/auth.middleware.js";
 
 import { CreateProductCategory, GetAllProductCategories } from "../controllers/productCategory.controller.js";
 

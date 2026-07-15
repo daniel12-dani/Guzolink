@@ -5,7 +5,7 @@ import AppProviders from "./providers/AppProviders.jsx";
 import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <BrowserRouter basename={import.meta.env.BASE_URL_NAME || "/guzolink/"}>
+  <BrowserRouter basename={import.meta.env.BASE_URL || "/guzolink/"}>
     <AppProviders>
       <App />
     </AppProviders>
