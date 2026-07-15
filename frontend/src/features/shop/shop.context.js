@@ -180,7 +180,7 @@ function ShopProvider({ children }) {
     setAllShopsError(null);
 
     try {
-      const data = await request(`/api/shops/all?page=${page}&limit=${limit}`);
+      const data = await request(`/api/marketplace/shops/all?page=${page}&limit=${limit}`);
 
       if (data.success) {
         return {

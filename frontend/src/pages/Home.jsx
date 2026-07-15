@@ -17,20 +17,20 @@ function Home() {
     <div>
       <Hero />
 
-      <div className="space-y-16 py-16">
+      <div className="space-y-12 py-4">
         <CategoryStrip />
 
         {/* Featured teaser — reuses the same products array already
             fetched by useProducts, no extra network call */}
         {!loading && !error && featured.length > 0 && (
-          <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <section className="mx-auto max-w-7xl px-4 sm:px-3 lg:px-4 border border-amber-400  rounded-3xl bg-slate-800 p-6 shadow-sm">
             <p className="text-sm font-semibold uppercase tracking-[0.3em] text-amber-500">
               Featured
             </p>
             <h2 className="mt-2 text-3xl font-bold text-white">
               Popular picks right now
             </h2>
-            <div className="mt-2 grid gap-2 md:grid-cols-2 xl:grid-cols-4">
+            <div className="mt-2 grid gap-2 justify-items-center sm:grid-cols-2 xl:grid-cols-4">
               {featured.map((product) => (
                 <HomePageProductCard key={product.id} product={product} />
               ))}

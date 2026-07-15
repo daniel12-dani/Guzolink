@@ -41,7 +41,7 @@ export default function HomePageProductCard({ product }) {
   const inStock = (product.stock ?? 0) > 0;
 
   return (
-    <article className="flex h-full w-64 justify-items-center flex-col rounded-3xl border border-white/10 bg-white/5 p-5 shadow-sm transition hover:-translate-y-1 hover:border-white/20 hover:shadow-lg">
+    <article className="flex h-full w-54 justify-items-center flex-col rounded-3xl border border-white/10 bg-white/5 p-3 shadow-sm transition hover:-translate-y-1 hover:border-white/20 hover:shadow-lg">
       <div className="mb-2 flex items-center justify-between">
         {product.badge ? (
           <span className="rounded-full bg-amber-500/20 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-amber-300">
@@ -97,7 +97,7 @@ export default function HomePageProductCard({ product }) {
         <div className="flex gap-2">
           <Link
             to={`/products/${product.id}`}
-            className="rounded-full border border-slate-600 px-3 py-2 text-sm font-medium text-slate-200 transition hover:bg-slate-700"
+            className="rounded-full border border-slate-600 px-4 py-2 text-sm justify-items-center font-medium text-slate-200 transition hover:bg-slate-700"
           >
             Details
           </Link>
