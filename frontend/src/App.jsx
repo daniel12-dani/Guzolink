@@ -89,14 +89,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
-            path="/shops/:shopId/edit"
-            element={
-              <ProtectedRoute>
-                <ShopDashboard />
-              </ProtectedRoute>
-            }
-          />
+        
           <Route
             path="/shops/:shopId/products"
             element={

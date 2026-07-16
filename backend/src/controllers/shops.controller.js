@@ -34,6 +34,7 @@ export async function CreateMerchantShop(req, res) {
       name,
       contact,
       owner,
+      location,
       category,
       ...(posterImage ? { posterImage } : {}),
       ...(description ? { description } : {}),
@@ -211,10 +212,11 @@ export async function UpdateMerchantShop(req, res) {
   try {
     const { id, role } = req.user;
     const { id: shopId } = req.params; // route is "/:id", not "/:shopId"
-    const { name, description, contact, category } = req.body;
+    const { name, description, location, contact, category } = req.body;
     const posterimage = req.file ? publicPathFor("shops", req.file) : undefined;
 
     const shop = await Shop.findById(shopId);
+
     if (!shop) {
       return res
         .status(404)
@@ -226,6 +228,7 @@ export async function UpdateMerchantShop(req, res) {
     }
 
     const isShopOwner = shop.createdBy?.toString() === id;
+
     if (!isShopOwner && role !== "admin") {
       return res
         .status(403)
@@ -235,7 +238,8 @@ export async function UpdateMerchantShop(req, res) {
         });
     }
 
-    const update = { name, description, contact, category };
+    const update = { name, description, location, contact, category };
+
     if (posterimage !== undefined) update.posterimage = posterimage;
 
     const updatedShop = await Shop.findOneAndUpdate({ _id: shopId }, update, {

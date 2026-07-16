@@ -1,7 +1,10 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useShops } from "../shop.context.js";
 import { useAuth } from "../../auth/auth.context.js";
 import ShopCard from "../components/ShopCard.jsx";
+import EditShopModal from "../components/EditShopModal.jsx";
+import ConfirmModal from "../../../components/ConfirmModal.jsx";
 
 function MyShops() {
   const {
@@ -11,13 +14,23 @@ function MyShops() {
     isRefreshing,
     fetchUserShops,
     deleteShop,
+    updateShop,
+    isUpdatingShop,
+    updateShopError,
   } = useShops();
+
+  // auth
   const { user } = useAuth();
   // Full-page loading state — only true on a genuinely empty first load
   // (see ShopContext: cache-first means this almost never fires on a
   // return visit, only the very first time a merchant ever lands here).
   console.log("Fetched shops", shops);
+
+    const [pendingDelete, setPendingDelete] = useState(null);
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [editingShop, setEditingShop] = useState(null);
   
+
   if (isLoading) {
     return (
       <p className="text-red-600 rounded-2xl text-center font-bold mb-4 border border-red-500 p-5">
@@ -25,6 +38,16 @@ function MyShops() {
       </p>
     );
   }
+  const handleConfirmDelete = async () => {
+    if (!pendingDelete) return;
+    setIsDeleting(true);
+    try {
+      await deleteShop(pendingDelete.id);
+      setPendingDelete(null);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   const isOwner = Boolean(user);
 
@@ -85,6 +108,29 @@ function MyShops() {
           ))
         )}
       </div>
+       <ConfirmModal
+              open={!!pendingDelete}
+              title="Delete this shop?"
+              message={
+                pendingDelete
+                  ? `"${pendingDelete.name}" will be permanently removed. This can't be undone.`
+                  : ""
+              }
+              confirmLabel="Delete"
+              isDangerous
+              isConfirming={isDeleting}
+              onCancel={() => setPendingDelete(null)}
+              onConfirm={handleConfirmDelete}
+            />
+            
+      <EditShopModal
+        open={!!editingShop}
+        shop={editingShop}
+        isUpdating={isUpdatingShop}
+        updateError={updateShopError}
+        onClose={() => setEditingShop(null)}
+        onSave={(id, data) => updateShop(id, data)}
+      />
     </div>
   );
 }
