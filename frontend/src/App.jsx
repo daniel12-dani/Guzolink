@@ -30,9 +30,9 @@ import CreateProductCard from "./features/products/pages/CreateProductPage.jsx";
 // import ProductDetails from "./features/products/pages/ProductDetails";
 
 // shoping and marketing
-// import Cart from "./pages/Cart";
 import Cart from "./pages/Cart.jsx";
-// import Checkout from "./pages/Checkout";
+import Checkout from "./pages/Checkout.jsx";
+
 
 function App() {
   return (
@@ -107,6 +107,23 @@ function App() {
             element={
               <ProtectedRoute>
                 <CreateProductCard />
+              </ProtectedRoute>
+            }
+          />
+          {/* shopping and marketing related */}
+          <Route
+            path="/cart"
+            element={
+              <ProtectedRoute>
+                <Cart />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/checkout"
+            element={
+              <ProtectedRoute>
+                <Checkout />
               </ProtectedRoute>
             }
           />
