@@ -17,16 +17,18 @@ import {
   useEffect,
   useMemo,
   useState,
+
 } from "react";
+import {useNavigate} from "react-router-dom";
 import { request } from "../../shared/lib/apiClient.js";
 import { storage } from "../../shared/lib/storage.js";
 import { isTokenExpired, decodeToken } from "../../shared/lib/tokenUtils.js";
-
+import {client} from "../../providers/ApolloClient.js";
 const AuthContext = createContext(null);
 
 function AuthProvider({ children }) {
   const [user, setUser] = useState(() => storage.user.get());
-
+  const navigate = useNavigate();
   // Any component that needs to know "has auth finished deciding yet?"
   // reads this. It MUST be set to false on every exit path of the
   // bootstrap effect below — otherwise consumers wait forever.
@@ -100,7 +102,7 @@ function AuthProvider({ children }) {
       if (isTokenExpired(storedToken)) {
         storage.token.remove();
         storage.user.remove();
-        storage.shops.remove(); // same reasoning as logout() — see there
+        storage.shops.set([]); // same reasoning as logout() — see there
         if (!cancelled) {
           setUser(null);
           setIsAuthLoading(false);
@@ -128,7 +130,7 @@ function AuthProvider({ children }) {
         // Token doesn't even carry an id we can use — treat as invalid.
         storage.token.remove();
         storage.user.remove();
-        storage.shops.remove();
+        storage.shops.set([]);
         if (!cancelled) {
           setUser(null);
           setIsAuthLoading(false);
@@ -148,7 +150,7 @@ function AuthProvider({ children }) {
         // the stale token rather than leaving the app in a broken state.
         storage.token.remove();
         storage.user.remove();
-        storage.shops.remove();
+        storage.shops.set([]);
         setUser(null);
       }
       setIsAuthLoading(false);
@@ -222,6 +224,7 @@ function AuthProvider({ children }) {
       };
 
       storage.token.set(data.bearerToken);
+      await client.clearStore(); // Clear Apollo Client cache
       setUser(sessionUser);
 
       return {
@@ -283,7 +286,7 @@ function AuthProvider({ children }) {
     }
   };
 
-  const logout = () => {
+  const logout = async () => {
     storage.token.remove();
     storage.user.remove();
     // Also clear any other per-account caches (shops, etc). Without this,
@@ -291,8 +294,10 @@ function AuthProvider({ children }) {
     // cache-first logic would show them the PREVIOUS merchant's shops
     // until they happened to hit refresh — a real data-leak-shaped bug,
     // not just a stale-UI annoyance.
-    storage.shops.remove();
+    storage.shops.set([]);
+    await client.clearStore(); // Clear Apollo Client cache
     setUser(null);
+    navigate("/");
   };
 
   // token is exposed separately from `user` because consumers like

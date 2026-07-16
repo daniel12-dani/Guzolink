@@ -16,6 +16,7 @@ const ShopContext = createContext(null);
 
 function ShopProvider({ children }) {
   const { token, isAuthLoading } = useAuth();
+  const prevTokenRef = useRef(token);
 
   // --- Caching strategy: "stale-while-revalidate" -----------------------
   // Unlike the user object (which barely changes and we trust once
@@ -43,7 +44,7 @@ function ShopProvider({ children }) {
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const [shopError, setShopError] = useState(null);
-  const [allShopsError, setAllShopsError] = useState(null)
+  const [allShopsError, setAllShopsError] = useState(null);
 
   // A ref (not state) that tracks whether this component is still
   // mounted. We use this instead of a per-effect `cancelled` flag
@@ -76,7 +77,7 @@ function ShopProvider({ children }) {
       }
     } catch (err) {
       if (!isMountedRef.current) return;
-      console.error("Error fetching shops:", err.message);
+      // console.error("Error fetching shops:", err.message);
       setShopError(err.message || "Failed to load shops");
     } finally {
       if (isMountedRef.current) {
@@ -88,9 +89,19 @@ function ShopProvider({ children }) {
 
   useEffect(() => {
     if (isAuthLoading) return; // wait for auth to resolve first
+    const tokenChanged = prevTokenRef.current !== token;
+    prevTokenRef.current = token;
     if (!token) {
       // eslint-disable-next-line react-hooks/set-state-in-effect -- resetting loading state when auth resolves to "no user", not reacting to our own state change
+      setShops([]); // clear out any cached shops if the user logs out
+      storage.shops.set([]);
       setIsLoading(false);
+      return;
+    }
+    if (tokenChanged) {
+      setShops([]);
+      storage.shops.set([]);
+      fetchUserShops();
       return;
     }
 
@@ -182,7 +193,6 @@ function ShopProvider({ children }) {
     try {
       const data = await request(`/api/shops/all?page=${page}&limit=${limit}`);
       // const data = await request(`/api/shops/all`, { method: "GET" });
-
 
       if (data.success) {
         return {

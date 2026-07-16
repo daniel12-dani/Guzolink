@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useCart } from "../features/cart/cart.context.js";
 import { useAuth } from "../features/auth/auth.context.js";
@@ -23,7 +23,25 @@ function Navbar() {
       setIsLoggingOut(false);
     }
   };
+  // navlink on click set the shutter hidden
+  useEffect(() => {
+    const handleNavLinkClick = () => {
+      setIsMenuOpen(false);
+    };
 
+    // Add event listener to all NavLink elements
+    const navLinks = document.querySelectorAll("a");
+    navLinks.forEach((link) => {
+      link.addEventListener("click", handleNavLinkClick);
+    });
+
+    // Cleanup event listeners on unmount
+    return () => {
+      navLinks.forEach((link) => {
+        link.removeEventListener("click", handleNavLinkClick);
+      });
+    };
+  }, []);
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-slate-900/50 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">

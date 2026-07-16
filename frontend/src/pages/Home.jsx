@@ -6,7 +6,7 @@ import MerchantCTA from "../components/MerchantCTA.jsx";
 import HomePageProductCard from "../features/products/components/HomePageProductCard.jsx";
 import useProducts from "../features/products/hooks/useProducts.js";
 import LoadingSpinnerModal from "../components/LoadingSpinnerModal.jsx";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 
 
@@ -30,6 +30,26 @@ function Home() {
       behavior: "smooth",
     });
   };
+
+  const scrollUp = () => {
+    scrollRef.current?.scrollBy({
+      top: 100,
+      behavior: "smooth",
+    });
+  };
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY === 0) {
+        scrollUp();
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <div>
       <Hero />

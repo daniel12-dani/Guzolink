@@ -50,6 +50,7 @@ export default function ShopProductCard({
   isUpdating,
   updateError,
   productCategories,
+  isOwner,
 }) {
   const [pendingDelete, setPendingDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -139,20 +140,22 @@ export default function ShopProductCard({
                   </p>
                 </div>
 
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => setEditingProduct(product)}
-                    className="rounded-lg bg-amber-500/20 px-3 py-1.5 text-sm font-medium text-amber-300 transition hover:bg-amber-500/40"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => setPendingDelete(product)}
-                    className="rounded-lg bg-red-500/20 px-3 py-1.5 text-sm font-medium text-red-300 transition hover:bg-red-500/40"
-                  >
-                    Delete
-                  </button>
-                </div>
+                {isOwner && (
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => setEditingProduct(product)}
+                      className="rounded-lg bg-amber-500/20 px-3 py-1.5 text-sm font-medium text-amber-300 transition hover:bg-amber-500/40"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => setPendingDelete(product)}
+                      className="rounded-lg bg-red-500/20 px-3 py-1.5 text-sm font-medium text-red-300 transition hover:bg-red-500/40"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                )}
               </div>
             );
           })}
