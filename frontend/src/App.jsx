@@ -49,7 +49,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/cart" 
-          elemet={
+          element={
           <protectedRoute>
             <Cart/>
             </protectedRoute>}/>
