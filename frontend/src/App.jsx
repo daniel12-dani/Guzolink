@@ -49,9 +49,9 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/cart" 
           element={
-          <protectedRoute>
+          <ProtectedRoute>
             <Cart/>
-            </protectedRoute>}/>
+            </ProtectedRoute>}/>
           <Route
             path="/profile/:userId"
             element={
