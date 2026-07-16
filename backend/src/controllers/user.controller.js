@@ -34,7 +34,10 @@ export async function GetUserProfile(req, res) {
   try {
     const { userId } = req.params;
 
-    const ExistingUser = await UserModel.findOne({ _id: userId });
+    const ExistingUser = await UserModel.findOne({ _id: userId }).populate(
+      "shop",
+      "name description owner",
+    );
     if (!ExistingUser) {
       return res.status(400).json({
         success: false,
@@ -53,6 +56,7 @@ export async function GetUserProfile(req, res) {
         phone: ExistingUser.phone,
         address: ExistingUser.address,
         profileImage: ExistingUser.profileImage,
+        shop: ExistingUser.shop,
       },
     });
   } catch (error) {
@@ -132,7 +136,10 @@ export async function LoginUser(req, res) {
       });
     }
 
-    const user = await UserModel.findOne({ email });
+    const user = await UserModel.findOne({ email }).populate(
+      "shop",
+      "name description owner",
+    );
     if (!user) {
       return res.status(401).json({
         success: false,
@@ -161,6 +168,7 @@ export async function LoginUser(req, res) {
         phone: user.phone,
         address: user.address,
         profileImage: user.profileImage,
+        shop: user.shop,
       },
     });
   } catch (error) {
@@ -219,7 +227,7 @@ export async function UpdateUser(req, res) {
 
     const updated_user = await UserModel.findByIdAndUpdate(userId, update, {
       returnDocument: "after",
-    }).select("-password -__v");
+    }).select("-password -__v").populate("shop", "name description owner");
 
     // return plain fields so frontend can read .id reliably
     return res.status(200).json({
@@ -232,6 +240,8 @@ export async function UpdateUser(req, res) {
         email: updated_user.email,
         role: updated_user.role,
         profileImage: updated_user.profileImage,
+        address: updated_user.address,
+        shop: updated_user.shop,
       },
     });
   } catch (error) {
