@@ -9,22 +9,25 @@ import {
   LoginUser,
   LogoutUser,
   DeleteUser,
-  UpdateUser
-
+  UpdateUser,
 } from "../controllers/user.controller.js";
+import { userUpload } from "../middlewares/upload.middleware.js";
 
 // admin only
 UserRoute.get("/all", IsLoggedIn, IsAdmin, GetAllUsers);
-UserRoute.delete("/:userId",  IsLoggedIn, IsAdmin, DeleteUser);
-
+UserRoute.delete("/:userId", IsLoggedIn, IsAdmin, DeleteUser);
 
 // public only
 UserRoute.get("/profile/:userId", IsLoggedIn, GetUserProfile);
 UserRoute.post("/register", RegisterUser);
-UserRoute.post("/login",  LoginUser);
-UserRoute.post("/logout",  IsLoggedIn, LogoutUser);
-UserRoute.post("/update/:userId", IsLoggedIn, UpdateUser)
-
+UserRoute.post("/login", LoginUser);
+UserRoute.post("/logout", IsLoggedIn, LogoutUser);
+UserRoute.post(
+  "/update/:userId",
+  IsLoggedIn,
+  userUpload.single("profileImage"),
+  UpdateUser,
+);
 // TODO: upcoming routes
 // UserRoute.post("/forgotPassword", IsLoggedIn, ForgotPassword)
 

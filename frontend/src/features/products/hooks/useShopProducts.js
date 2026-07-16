@@ -1,4 +1,3 @@
-// features/products/hooks/useShopProducts.js
 import { gql } from "@apollo/client";
 import { useQuery, useMutation } from "@apollo/client/react";
 import { useState } from "react";

@@ -240,9 +240,9 @@ function AuthProvider({ children }) {
     }
   };
 
-  const updateUser = async (username, phone, address, profileimage) => {
+  const updateUser = async (username, phone, address, profileImage) => {
     try {
-      const profile = profileimage ? profileimage : null;
+      const profile = profileImage ? profileImage : null;
 
       const updatedUserInfo = await request(`/api/user/update/${user.id}`, {
         method: "POST",

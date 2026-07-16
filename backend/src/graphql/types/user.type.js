@@ -15,7 +15,7 @@ const UserType = new GraphQLObjectType({
         phone: { type: GraphQLString },
         address: { type: GraphQLString },
         role: {type:GraphQLString},
-        profileimage : {type:GraphQLString},
+        profileImage : {type:GraphQLString},
     })
 })
 

@@ -1,87 +1,72 @@
-import { useNavigate } from "react-router-dom";
-import { useState, useRef } from "react";
-import { useAuth } from "../../auth/auth.context.js";
-import { useShops } from "../shop.context.js";
+import { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { useCategories } from "../../categories/category.context.js";
-import { Link } from "react-router-dom";
 
-function CreateShop() {
-  const user = useAuth()?.user;
-  const { createShop } = useShops();
-  const { shopCategories = [] } = useCategories();
-  const [posterImageFile, setPosterImageFile] = useState(null);
-  const navigate = useNavigate();
-
-  const [shopDetails, setShopDetails] = useState({
+export default function EditShopModal({
+  open,
+  shop,
+  isUpdating,
+  updateError,
+  onClose,
+  onSave,
+}) {
+  const {
+    shopCategories = [],
+    createShopCategory,
+    creatingCategory,
+  } = useCategories();
+  const [formData, setFormData] = useState({
     name: "",
     description: "",
     contact: "",
-    category: "", // Leave blank initially
+    category: "",
     location: "",
     posterImage: "",
   });
-
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
+  const [formError, setFormError] = useState("");
+  const cancelButtonRef = useRef(null);
   const fileInputRef = useRef(null);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setShopDetails((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleShopCreateSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    setMessage("");
-
-    // if (fileInputRef.current) fileInputRef.current.value = "";
-
-    if (!shopDetails.name || !shopDetails.contact) {
-      setError("Name and contact are required.");
-      return;
-    }
-
-    const finalCategory = shopDetails.category || shopCategories[0]?._id || "";
-
-    const payload = {
-      ...shopDetails,
-      category: finalCategory,
-      posterImage: posterImageFile, // This will be the file object if a file was selected
-    };
-    try {
-      const shopCreationData = await createShop(payload);
-
-      if (shopCreationData.success) {
-        setMessage(`Shop "${shopDetails.name}" created successfully!`);
-        navigate(`/profile/${user?.id || user?._id}`);
-      } else {
-        setError(
-          shopCreationData.message ||
-            "Unable to create shop. Please try again.",
-        );
-      }
-    } catch (err) {
-      // 3. THIS CATCHES THE "Shop with this name already exists" THROWN ERROR!
-      console.error("Caught form submission error:", err);
-
-      // Read the exact message thrown from your apiClient / backend
-      setError(
-        err.message || "An unexpected error occurred while creating the shop.",
-      );
-    } finally {
-      if (fileInputRef.current) fileInputRef.current.value = "";
-      setPosterImageFile(null);
-    }
-  };
-
-  const { createShopCategory, creatingCategory } = useCategories();
+  const [posterImageFile, setPosterImageFile] = useState(null);
 
   const [isAddingCategory, setIsAddingCategory] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState("");
   const [categoryError, setCategoryError] = useState("");
-
   const ADD_NEW_VALUE = "__add_new__";
+
+  useEffect(() => {
+    if (!shop) return;
+    // eslint-disable-next-line
+    setFormData({
+      name: shop.name ?? "",
+      description: shop.description ?? "",
+      contact: shop.contact ?? "",
+      category: shop.category?._id ?? shop.category ?? "",
+      location: shop.location ?? "",
+      posterImage: shop.posterImage ?? "",
+    });
+    setPosterImageFile(null);
+    setFormError("");
+    setIsAddingCategory(false);
+    setNewCategoryName("");
+    setCategoryError("");
+  }, [shop]);
+
+  useEffect(() => {
+    if (!open) return;
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    cancelButtonRef.current?.focus();
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [open, onClose]);
+
+  if (!open || !shop) return null;
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   const handleCategorySelectChange = (e) => {
     if (e.target.value === ADD_NEW_VALUE) {
@@ -89,15 +74,14 @@ function CreateShop() {
       setCategoryError("");
       return;
     }
-    handleChange(e); // normal category selection, unchanged
+    handleChange(e);
   };
 
   const handleCreateCategory = async () => {
     setCategoryError("");
     try {
       const created = await createShopCategory(newCategoryName);
-      // select the newly created category on the form automatically
-      handleChange({ target: { name: "category", value: created._id } });
+      setFormData((prev) => ({ ...prev, category: created._id }));
       setNewCategoryName("");
       setIsAddingCategory(false);
     } catch (err) {
@@ -111,99 +95,91 @@ function CreateShop() {
     setCategoryError("");
   };
 
-  return (
-    <div className="min-h-screen bg-slate-50 px-4 py-16 text-slate-800">
-      <div className="mx-auto flex max-w-5xl flex-col gap-8 rounded-3xl border border-slate-200 bg-white p-8 shadow-sm lg:flex-row lg:items-center">
-        <div className="flex-1 space-y-4">
-          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-amber-600">
-            Add new Guzolink shop
-          </p>
-          <h1 className="text-4xl font-bold">Create new shop</h1>
-          <p className="max-w-xl text-lg text-slate-600">
-            Enter information about your shop to reach millions of customers.
-          </p>
-        </div>
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setFormError("");
+    if (!formData.name || !formData.contact) {
+      setFormError("Name and contact are required.");
+      return;
+    }
+    try {
+      await onSave(shop._id, { ...formData, posterImageFile });
+      onClose();
+    } catch (err) {
+      setFormError(err.message || "An unexpected error occurred while saving.");
+    }
+  };
 
-        {message && (
-          <p className="mt-4 rounded-xl bg-emerald-50 p-3 text-sm text-emerald-700">
-            {message}
-          </p>
-        )}
-        {/* Error Banner */}
-        {error && (
-          <p className="mt-4 rounded-xl bg-rose-50 p-3 text-sm text-rose-700 border border-rose-200">
-            {error}
-          </p>
-        )}
-        <Link
-          to={"/profile/" + user.id}
-          className="inline-flex items-center gap-1 text-sm text-slate-400 hover:text-white transition mb-2 mt-4"
+  return createPortal(
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
+      onClick={onClose}
+      role="presentation"
+    >
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="edit-shop-modal-title"
+        className="w-full max-w-lg rounded-2xl border border-white/10 bg-slate-800 p-6 shadow-xl max-h-[90vh] overflow-y-auto"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h3
+          id="edit-shop-modal-title"
+          className="text-lg font-semibold text-white mb-4"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M15 19l-7-7 7-7"
-            />
-          </svg>
-          Back to dashboard
-        </Link>
-        <form
-          onSubmit={handleShopCreateSubmit}
-          className="flex-1 rounded-3xl bg-slate-900 p-6 text-white shadow-xl space-y-4"
-        >
-          {/* Shop Name */}
+          Edit Shop
+        </h3>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {(formError || updateError) && (
+            <div className="p-4 rounded-lg bg-red-950/40 border border-red-800 text-red-400 text-sm">
+              {formError || updateError}
+            </div>
+          )}
+
           <label className="block text-sm text-slate-300">
-            <span className="mb-2 block">Shop name</span>
+            <span className="mb-2 block">
+              Shop name <span className="text-red-500">*</span>
+            </span>
             <input
               name="name"
-              value={shopDetails.name}
+              value={formData.name}
               onChange={handleChange}
               className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-sm text-white outline-none"
               required
             />
           </label>
 
-          {/* Description */}
           <label className="block text-sm text-slate-300">
             <span className="mb-2 block">Description</span>
             <textarea
               name="description"
-              value={shopDetails.description}
+              value={formData.description}
               onChange={handleChange}
               rows="3"
-              className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-sm text-white outline-none"
-              placeholder="Brief description..."
+              className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-sm text-white outline-none resize-none"
             />
           </label>
 
-          {/* Contact Details */}
           <label className="block text-sm text-slate-300">
-            <span className="mb-2 block">Contact (email or phone)</span>
+            <span className="mb-2 block">
+              Contact <span className="text-red-500">*</span>
+            </span>
             <input
               name="contact"
-              value={shopDetails.contact}
+              value={formData.contact}
               onChange={handleChange}
               className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-sm text-white outline-none"
               required
             />
           </label>
 
-          {/* Category Dropdown */}
           <label className="block text-sm text-slate-300">
             <span className="mb-2 block">Category</span>
-
             {!isAddingCategory ? (
               <select
                 name="category"
-                value={shopDetails.category}
+                value={formData.category}
                 onChange={handleCategorySelectChange}
                 className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-sm text-white outline-none"
               >
@@ -255,35 +231,32 @@ function CreateShop() {
             )}
           </label>
 
-          {/* Location */}
           <label className="block text-sm text-slate-300">
             <span className="mb-2 block">Location</span>
             <input
               name="location"
-              value={shopDetails.location}
+              value={formData.location}
               onChange={handleChange}
-              className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-sm text-white outline-none"
               placeholder="City, Country"
+              className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-sm text-white outline-none"
             />
           </label>
 
-          {/* Poster Image */}
-          <div className="mb-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <label className="block text-sm text-slate-300">
               <span className="mb-2 block">Poster Image URL</span>
               <input
                 type="text"
                 name="posterImage"
-                value={shopDetails.posterImage}
+                value={formData.posterImage}
                 onChange={handleChange}
                 className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-sm text-white outline-none"
                 placeholder="https://example.com/image.jpg"
                 disabled={!!posterImageFile}
               />
             </label>
-
             <label className="block text-sm text-slate-300">
-              <span className="mb-2 block">Upload Poster Image</span>
+              <span className="mb-2 block">Upload New Poster Image</span>
               <input
                 type="file"
                 ref={fileInputRef}
@@ -296,28 +269,26 @@ function CreateShop() {
             </label>
           </div>
 
-          {/* Submission and Preview Actions */}
-          <div className="flex items-center gap-4">
+          <div className="flex justify-end gap-3 pt-2">
+            <button
+              ref={cancelButtonRef}
+              type="button"
+              onClick={onClose}
+              className="rounded-lg border border-slate-600 px-4 py-2 text-sm font-medium text-slate-200 transition hover:bg-slate-700"
+            >
+              Cancel
+            </button>
             <button
               type="submit"
-              disabled={!shopDetails.name || !shopDetails.contact}
-              className="w-full rounded-xl bg-amber-500 px-4 py-3 font-semibold text-slate-950 transition hover:bg-amber-400 disabled:cursor-not-allowed disabled:bg-amber-300"
+              disabled={isUpdating}
+              className="rounded-lg bg-amber-500 px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-amber-400 disabled:cursor-not-allowed disabled:opacity-50"
             >
-              Create Shop
+              {isUpdating ? "Saving..." : "Save Changes"}
             </button>
-
-            {shopDetails.posterImage && (
-              <img
-                src={shopDetails.posterImage}
-                alt="preview"
-                className="h-12 w-12 rounded-md object-cover shrink-0"
-              />
-            )}
           </div>
         </form>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
-
-export default CreateShop;

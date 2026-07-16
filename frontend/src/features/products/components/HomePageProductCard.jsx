@@ -28,7 +28,7 @@ function ProductImage({ src, alt }) {
 export default function HomePageProductCard({ product }) {
   const { addToCart } = useCart();
   const inStock = (product.stock ?? 0) > 0;
-
+  // console.log("product", product);
   return (
     <article className="group flex flex-col overflow-hidden rounded-xl border border-white/10 bg-white/5 p-2 transition hover:-translate-y-0.5 hover:border-white/20">
       <Link to={`/products/${product.id}`} className="relative block">

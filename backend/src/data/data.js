@@ -29,7 +29,7 @@ const shopexamples = [
 		"contact": "555-1234",	
 		"category": "Food & Beverage",
 		"location": "123 Main St, Anytown USA",
-		"posterimage": "https://example.com/images/joes-pizza.jpg",
+		"posterImage": "https://example.com/images/joes-pizza.jpg",
 	},
 	{
 		"name": "Urban Cafe",
@@ -37,7 +37,7 @@ const shopexamples = [
 		"contact": "555-2345",	
 		"category": "Food & Beverage",
 		"location": "456 Oak Ave, Anytown USA",
-		"posterimage": "https://example.com/images/urban-cafe.jpg",
+		"posterImage": "https://example.com/images/urban-cafe.jpg",
 	},
 	{
 		"name": "Style Haven",
@@ -45,7 +45,7 @@ const shopexamples = [
 		"contact": "555-3456",	
 		"category": "Fashion & Apparel",
 		"location": "789 Elm St, Anytown USA",
-		"posterimage": "https://example.com/images/style-haven.jpg",
+		"posterImage": "https://example.com/images/style-haven.jpg",
 	},
 	{
 		"name": "TechHub Electronics",
@@ -53,7 +53,7 @@ const shopexamples = [
 		"contact": "555-4567",	
 		"category": "Electronics & Gadgets",
 		"location": "321 Pine Rd, Anytown USA",
-		"posterimage": "https://example.com/images/techhub.jpg",
+		"posterImage": "https://example.com/images/techhub.jpg",
 	},
 	{
 		"name": "Glow Beauty Studio",
@@ -61,7 +61,7 @@ const shopexamples = [
 		"contact": "555-5678",	
 		"category": "Health & Beauty",
 		"location": "654 Maple Dr, Anytown USA",
-		"posterimage": "https://example.com/images/glow-beauty.jpg",
+		"posterImage": "https://example.com/images/glow-beauty.jpg",
 	},
 	{
 		"name": "Green Space Home",
@@ -69,7 +69,7 @@ const shopexamples = [
 		"contact": "555-6789",	
 		"category": "Home & Garden",
 		"location": "987 Cedar Ln, Anytown USA",
-		"posterimage": "https://example.com/images/green-space.jpg",
+		"posterImage": "https://example.com/images/green-space.jpg",
 	},
 	{
 		"name": "Taste of Asia",
@@ -77,7 +77,7 @@ const shopexamples = [
 		"contact": "555-7890",	
 		"category": "Food & Beverage",
 		"location": "111 Birch St, Anytown USA",
-		"posterimage": "https://example.com/images/taste-asia.jpg",
+		"posterImage": "https://example.com/images/taste-asia.jpg",
 	},
 	{
 		"name": "Denim Dreams",
@@ -85,7 +85,7 @@ const shopexamples = [
 		"contact": "555-8901",	
 		"category": "Fashion & Apparel",
 		"location": "222 Spruce Ave, Anytown USA",
-		"posterimage": "https://example.com/images/denim-dreams.jpg",
+		"posterImage": "https://example.com/images/denim-dreams.jpg",
 	},
 	{
 		"name": "DigitalZone Store",
@@ -93,7 +93,7 @@ const shopexamples = [
 		"contact": "555-9012",	
 		"category": "Electronics & Gadgets",
 		"location": "333 Willow Rd, Anytown USA",
-		"posterimage": "https://example.com/images/digitalzone.jpg",
+		"posterImage": "https://example.com/images/digitalzone.jpg",
 	},
 	{
 		"name": "Wellness Center",
@@ -101,7 +101,7 @@ const shopexamples = [
 		"contact": "555-0123",	
 		"category": "Health & Beauty",
 		"location": "444 Ash Dr, Anytown USA",
-		"posterimage": "https://example.com/images/wellness.jpg",
+		"posterImage": "https://example.com/images/wellness.jpg",
 	},
 	{
 		"name": "Garden Paradise",
@@ -109,7 +109,7 @@ const shopexamples = [
 		"contact": "555-1357",	
 		"category": "Home & Garden",
 		"location": "555 Alder Ln, Anytown USA",
-		"posterimage": "https://example.com/images/garden-paradise.jpg",
+		"posterImage": "https://example.com/images/garden-paradise.jpg",
 	},
 	{
 		"name": "Burger King's",
@@ -117,7 +117,7 @@ const shopexamples = [
 		"contact": "555-2468",	
 		"category": "Food & Beverage",
 		"location": "666 Fir St, Anytown USA",
-		"posterimage": "https://example.com/images/burger-kings.jpg",
+		"posterImage": "https://example.com/images/burger-kings.jpg",
 	},
 	{
 		"name": "Designer Outlet",
@@ -125,7 +125,7 @@ const shopexamples = [
 		"contact": "555-3579",	
 		"category": "Fashion & Apparel",
 		"location": "777 Hemlock Ave, Anytown USA",
-		"posterimage": "https://example.com/images/designer-outlet.jpg",
+		"posterImage": "https://example.com/images/designer-outlet.jpg",
 	},
 	{
 		"name": "Smart Devices Co",
@@ -133,7 +133,7 @@ const shopexamples = [
 		"contact": "555-4680",	
 		"category": "Electronics & Gadgets",
 		"location": "888 Juniper Rd, Anytown USA",
-		"posterimage": "https://example.com/images/smart-devices.jpg",
+		"posterImage": "https://example.com/images/smart-devices.jpg",
 	},
 	{
 		"name": "Beauty & Spa",
@@ -141,7 +141,7 @@ const shopexamples = [
 		"contact": "555-5791",	
 		"category": "Health & Beauty",
 		"location": "999 Laurel Dr, Anytown USA",
-		"posterimage": "https://example.com/images/beauty-spa.jpg",
+		"posterImage": "https://example.com/images/beauty-spa.jpg",
 	},
 	{
 		"name": "Cozy Home Furnishings",
@@ -149,7 +149,7 @@ const shopexamples = [
 		"contact": "555-6802",	
 		"category": "Home & Garden",
 		"location": "1010 Magnolia Ln, Anytown USA",
-		"posterimage": "https://example.com/images/cozy-home.jpg",
+		"posterImage": "https://example.com/images/cozy-home.jpg",
 	},
 	{
 		"name": "Sushi Express",
@@ -157,7 +157,7 @@ const shopexamples = [
 		"contact": "555-7913",	
 		"category": "Food & Beverage",
 		"location": "1111 Nutmeg St, Anytown USA",
-		"posterimage": "https://example.com/images/sushi-express.jpg",
+		"posterImage": "https://example.com/images/sushi-express.jpg",
 	},
 	{
 		"name": "Shoe Paradise",
@@ -165,7 +165,7 @@ const shopexamples = [
 		"contact": "555-8024",	
 		"category": "Fashion & Apparel",
 		"location": "1212 Oak Ave, Anytown USA",
-		"posterimage": "https://example.com/images/shoe-paradise.jpg",
+		"posterImage": "https://example.com/images/shoe-paradise.jpg",
 	},
 	{
 		"name": "Mobile World",
@@ -173,7 +173,7 @@ const shopexamples = [
 		"contact": "555-9135",	
 		"category": "Electronics & Gadgets",
 		"location": "1313 Pine Rd, Anytown USA",
-		"posterimage": "https://example.com/images/mobile-world.jpg",
+		"posterImage": "https://example.com/images/mobile-world.jpg",
 	},
 	{
 		"name": "Organic Health Plus",
@@ -181,7 +181,7 @@ const shopexamples = [
 		"contact": "555-0246",	
 		"category": "Health & Beauty",
 		"location": "1414 Quartz Dr, Anytown USA",
-		"posterimage": "https://example.com/images/organic-health.jpg",
+		"posterImage": "https://example.com/images/organic-health.jpg",
 	},
 	{
 		"name": "Indoor Garden Kits",
@@ -189,6 +189,6 @@ const shopexamples = [
 		"contact": "555-1357",	
 		"category": "Home & Garden",
 		"location": "1515 Rosewood Ln, Anytown USA",
-		"posterimage": "https://example.com/images/indoor-garden.jpg",
+		"posterImage": "https://example.com/images/indoor-garden.jpg",
 	},
 ]

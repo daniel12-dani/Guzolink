@@ -41,7 +41,7 @@ const ShopSchema = new mongoose.Schema(
     location: {
       type: String,
     },
-    posterimage: {
+    posterImage: {
       type: String,
       default: "",
     },

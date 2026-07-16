@@ -47,7 +47,7 @@ async function seedBooks() {
 		price: book.price,
 		language: book.language,
 		publisher: book.publisher,
-		posterimage: book.posterimage,
+		posterImage: book.posterImage,
 	}));
 
 	await BookModel.insertMany(preparedBooks);

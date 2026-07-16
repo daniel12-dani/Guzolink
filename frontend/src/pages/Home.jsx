@@ -81,11 +81,12 @@ function Home() {
               ref={scrollRef}
               className="flex gap-4 overflow-x-auto scroll-smooth pb-4 snap-x snap-mandatory"
             >
-              { products.length === 0 ?  featured.map((product) => (
+              { featured.map((product) => (
                 <div key={product.id} className="w-52 shrink-0 snap-start">
                   <HomePageProductCard product={product} />
                 </div>
-              )): null}
+                
+              ))}
             </div>
           </section>
         )}

@@ -9,7 +9,7 @@ function UpdateUserInfo() {
     countryCode: "+251",
     phone: "",
     address: "",
-    profileimage: null,
+    profileImage: null,
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -29,7 +29,7 @@ function UpdateUserInfo() {
       formData.username,
       formData.countryCode + formData.phone,
       formData.address,
-      formData.profileimage,
+      formData.profileImage,
     );
     setLoading(false);
 

@@ -3,7 +3,8 @@ services:
     image: fraolbmax/guzolink-backend:latest
     container_name: guzolink-backend
     restart: unless-stopped
-
+    volumes:
+      - uploadss_data:/app/uploads
     env_file:
       - /home/fraol/secrets/guzolink-app.env
 
@@ -14,7 +15,7 @@ services:
       - "127.0.0.1:5000:5000"
 
     healthcheck:
-      test: ["CMD", "wget", "--spider", "-q", "http://localhost:5003/health"]
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:5000/health"]
       interval: 30s
       timeout: 5s
       retries: 3
@@ -40,3 +41,4 @@ services:
 
 volumes:
   mongodb_data:
+  uploads_data:

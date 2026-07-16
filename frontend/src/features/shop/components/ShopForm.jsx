@@ -212,8 +212,8 @@ function ShopFormUi({
               <span className="mb-2 block">Poster Image URL</span>
               <input
                 type="text"
-                name="posterimage"
-                value={shopDetails.posterimage}
+                name="posterImage"
+                value={shopDetails.posterImage}
                 onChange={handleChange}
                 className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-sm text-white outline-none"
                 placeholder="https://example.com/image.jpg"
@@ -225,7 +225,7 @@ function ShopFormUi({
               <span className="mb-2 block">Upload Poster Image</span>
               <input
                 type="file"
-                name="posterimage"
+                name="posterImage"
                 ref={fileInputRef}
                 onChange={handleChange}
                 className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-sm text-white outline-none"
@@ -243,9 +243,9 @@ function ShopFormUi({
               Create Shop
             </button>
 
-            {shopDetails.posterimage && (
+            {shopDetails.posterImage && (
               <img
-                src={shopDetails.posterimage}
+                src={shopDetails.posterImage}
                 alt="preview"
                 className="h-12 w-12 rounded-md object-cover shrink-0"
               />

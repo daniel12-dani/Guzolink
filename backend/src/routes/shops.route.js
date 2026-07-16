@@ -11,11 +11,13 @@ import {
   GetAllShops
 } from "../controllers/shops.controller.js";
 
+import {shopUpload} from "../middlewares/upload.middleware.js";
+
 ShopRoute.get("/all", GetAllShops);
 ShopRoute.get("/", IsLoggedIn, GetMerchantShops);
 ShopRoute.get("/:id", IsLoggedIn, GetMerchantShopDetails);
-ShopRoute.post("/", IsLoggedIn, CreateMerchantShop);
-ShopRoute.delete("/:id", IsLoggedIn, DeleteMerchantShop)
-ShopRoute.put("/:id", IsLoggedIn, UpdateMerchantShop)
-  
+ShopRoute.post("/", IsLoggedIn, shopUpload.single("posterImage"), CreateMerchantShop);
+ShopRoute.put("/:id", IsLoggedIn, shopUpload.single("posterImage"), UpdateMerchantShop);
+ShopRoute.delete("/:id", IsLoggedIn, DeleteMerchantShop);
+
 export default ShopRoute;
