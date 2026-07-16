@@ -18,8 +18,8 @@ const UserSchema = new mongoose.Schema(
       required: true,
     },
     phone: {
-      type: Number,
-      default: +251900000000,
+      type: String,
+      default: "",
     },
     address: {
       type: String,

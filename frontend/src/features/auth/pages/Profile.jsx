@@ -7,17 +7,25 @@ function ProfileCard() {
   // Guard clause against initial null auth state
   if (!user) return null;
 
-  const profileImage = user.profilePicture || "https://picsum.photos/300/300";
-
+  const getImageUrl = (imagePath) => {
+    if (!imagePath) return "https://picsum.photos/200/300";
+    const productionBackendUrl = import.meta.env.VITE_API_URL || "";
+    return `${productionBackendUrl}${imagePath}`;
+  };
+  // console.log("ProfileCard user object: ", user);
   return (
     <div className="w-full max-w-xl mx-auto rounded-2xl border border-slate-700/50 bg-slate-800/60 backdrop-blur-md text-slate-100 p-6 shadow-xl mb-8">
       {/* Header Profile Section */}
       <div className="flex flex-col sm:flex-row items-center gap-6 pb-6 border-b border-slate-700/50">
         <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-2 border-amber-500/30 p-1 bg-slate-900 shrink-0">
           <img
-            src={profileImage}
-            alt={`${user.username || "User"}'s profile`}
+            src={getImageUrl(user.profileImage)}
+            alt={user.username}
             className="w-full h-full object-cover rounded-full"
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = "https://picsum.photos/200/300";
+            }}
           />
         </div>
 

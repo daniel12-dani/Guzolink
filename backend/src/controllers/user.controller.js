@@ -34,7 +34,10 @@ export async function GetUserProfile(req, res) {
   try {
     const { userId } = req.params;
 
-    const ExistingUser = await UserModel.findOne({ _id: userId });
+    const ExistingUser = await UserModel.findOne({ _id: userId }).populate(
+      "shop",
+      "name description owner",
+    );
     if (!ExistingUser) {
       return res.status(400).json({
         success: false,
@@ -51,7 +54,9 @@ export async function GetUserProfile(req, res) {
         email: ExistingUser.email,
         role: ExistingUser.role,
         phone: ExistingUser.phone,
+        address: ExistingUser.address,
         profileImage: ExistingUser.profileImage,
+        shop: ExistingUser.shop,
       },
     });
   } catch (error) {
@@ -62,8 +67,11 @@ export async function GetUserProfile(req, res) {
 export async function RegisterUser(req, res) {
   console.log("Registering user: ");
   try {
-    const { username, email, password, phone, address, profileImage } =
-      req.body;
+    const { username, email, password, phone, address } = req.body;
+    const profileImage = req.file
+      ? publicPathFor("users", req.file)
+      : undefined;
+
     const validation = ValidateUserRegisration(req.body);
     if (!validation.valid) {
       return res.status(400).json({
@@ -128,7 +136,10 @@ export async function LoginUser(req, res) {
       });
     }
 
-    const user = await UserModel.findOne({ email });
+    const user = await UserModel.findOne({ email }).populate(
+      "shop",
+      "name description owner",
+    );
     if (!user) {
       return res.status(401).json({
         success: false,
@@ -154,6 +165,10 @@ export async function LoginUser(req, res) {
         username: user.username,
         email: user.email,
         role: user.role,
+        phone: user.phone,
+        address: user.address,
+        profileImage: user.profileImage,
+        shop: user.shop,
       },
     });
   } catch (error) {
@@ -187,12 +202,14 @@ export async function LogoutUser(req, res) {
 export async function UpdateUser(req, res) {
   try {
     // TODO: email update is not allowed for now, but we can implement it later with email confirmation.
-    const { id } = req.params;
+    const { userId } = req.params;
     // TODO: implement password reset
-    const { username, phone, email, address } = req.body; // read from body, not params
-    const profileimage = req.file ? publicPathFor(req.file.path) : undefined;
+    const { username, phone, address } = req.body; // read from body, not params
+    const profileImage = req.file
+      ? publicPathFor("users", req.file)
+      : undefined;
 
-    const user = await UserModel.findById(id);
+    const user = await UserModel.findById(userId);
     if (!user) {
       return res.status(404).json({
         success: false,
@@ -203,14 +220,14 @@ export async function UpdateUser(req, res) {
     const update = {};
 
     if (username !== undefined) update.username = username;
-    if (email !== undefined) update.email = email;
+    // if (email !== undefined) update.email = email;
     if (phone !== undefined) update.phone = phone;
     if (address !== undefined) update.address = address;
-    if (profileimage !== undefined) update.profileImage = profileimage;
+    if (profileImage !== undefined) update.profileImage = profileImage;
 
-    const updated_user = await UserModel.findByIdAndUpdate(id, update, {
+    const updated_user = await UserModel.findByIdAndUpdate(userId, update, {
       returnDocument: "after",
-    }).select("-password -__v");
+    }).select("-password -__v").populate("shop", "name description owner");
 
     // return plain fields so frontend can read .id reliably
     return res.status(200).json({
@@ -223,6 +240,8 @@ export async function UpdateUser(req, res) {
         email: updated_user.email,
         role: updated_user.role,
         profileImage: updated_user.profileImage,
+        address: updated_user.address,
+        shop: updated_user.shop,
       },
     });
   } catch (error) {

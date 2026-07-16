@@ -1,11 +1,15 @@
+// UploadProductImage.js
+import { API_BASE_URL } from "../../../config/api.js"; // adjust relative path to match your project
+import { storage } from "../../../shared/lib/storage.js";
+
 export default async function uploadProductImage(file) {
   const body = new FormData();
-  body.append("image", file); // must match multer.single("image") field name
+  body.append("image", file);
 
-  const token = localStorage.getItem("bearerToken"); // confirm this matches your auth storage key
-  const res = await fetch("/api/products/upload-image", {
+  const token = storage.token.get();
+  const res = await fetch(`${API_BASE_URL}/api/products/upload-image`, {
     method: "POST",
-    headers: { Authorization: `Bearer ${token}` },
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
     body,
   });
 
