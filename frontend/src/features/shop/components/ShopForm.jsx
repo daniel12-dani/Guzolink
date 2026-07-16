@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../../auth/auth.context.js";
 
+import { useState } from "react";
+import { useCategories } from "../../categories/category.context.js"; // adjust path
+
 function ShopFormUi({
   message,
   error,
@@ -11,6 +14,42 @@ function ShopFormUi({
   fileInputRef,
 }) {
   const { user } = useAuth();
+  const { createShopCategory, creatingCategory } = useCategories();
+
+  const [isAddingCategory, setIsAddingCategory] = useState(false);
+  const [newCategoryName, setNewCategoryName] = useState("");
+  const [categoryError, setCategoryError] = useState("");
+
+  const ADD_NEW_VALUE = "__add_new__";
+
+  const handleCategorySelectChange = (e) => {
+    if (e.target.value === ADD_NEW_VALUE) {
+      setIsAddingCategory(true);
+      setCategoryError("");
+      return;
+    }
+    handleChange(e); // normal category selection, unchanged
+  };
+
+  const handleCreateCategory = async () => {
+    setCategoryError("");
+    try {
+      const created = await createShopCategory(newCategoryName);
+      // select the newly created category on the form automatically
+      handleChange({ target: { name: "category", value: created._id } });
+      setNewCategoryName("");
+      setIsAddingCategory(false);
+    } catch (err) {
+      setCategoryError(err.message || "Failed to create category");
+    }
+  };
+
+  const handleCancelAddCategory = () => {
+    setIsAddingCategory(false);
+    setNewCategoryName("");
+    setCategoryError("");
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 px-4 py-16 text-slate-800">
       <div className="mx-auto flex max-w-5xl flex-col gap-8 rounded-3xl border border-slate-200 bg-white p-8 shadow-sm lg:flex-row lg:items-center">
@@ -99,18 +138,60 @@ function ShopFormUi({
           {/* Category Dropdown */}
           <label className="block text-sm text-slate-300">
             <span className="mb-2 block">Category</span>
-            <select
-              name="category"
-              value={shopDetails.category}
-              onChange={handleChange}
-              className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-sm text-white outline-none"
-            >
-              {shopCategories.map((category) => (
-                <option key={category._id} value={category._id}>
-                  {category.name}
+
+            {!isAddingCategory ? (
+              <select
+                name="category"
+                value={shopDetails.category}
+                onChange={handleCategorySelectChange}
+                className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-sm text-white outline-none"
+              >
+                <option value="" disabled>
+                  Select a category
                 </option>
-              ))}
-            </select>
+                {shopCategories.map((category) => (
+                  <option key={category._id} value={category._id}>
+                    {category.name}
+                  </option>
+                ))}
+                <option value={ADD_NEW_VALUE} className="text-amber-400">
+                  + Add new category
+                </option>
+              </select>
+            ) : (
+              <div className="space-y-2 rounded-xl border border-slate-700 bg-slate-800 p-3">
+                <input
+                  type="text"
+                  autoFocus
+                  value={newCategoryName}
+                  onChange={(e) => setNewCategoryName(e.target.value)}
+                  placeholder="New category name"
+                  className="w-full rounded-lg border border-slate-600 bg-slate-900 px-3 py-2 text-sm text-white outline-none"
+                  disabled={creatingCategory}
+                />
+                {categoryError && (
+                  <p className="text-xs text-rose-400">{categoryError}</p>
+                )}
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={handleCreateCategory}
+                    disabled={creatingCategory || !newCategoryName.trim()}
+                    className="rounded-lg bg-amber-500 px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-amber-400 disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    {creatingCategory ? "Adding..." : "Add category"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleCancelAddCategory}
+                    disabled={creatingCategory}
+                    className="rounded-lg border border-slate-600 px-4 py-2 text-sm text-slate-300 transition hover:bg-slate-700 disabled:opacity-50"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            )}
           </label>
 
           {/* Location */}

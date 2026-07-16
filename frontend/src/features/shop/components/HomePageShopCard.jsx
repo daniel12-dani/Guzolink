@@ -12,25 +12,25 @@ export default function ShopsStrip() {
   const scrollRef = useRef(null);
 
   useEffect(() => {
-    let cancelled = false;
+  let cancelled = false;
 
-    const fetchShops = async () => {
-      setLoading(true);
-      try {
-        const result = await fetchAllShops(1, 10);
-        if (!cancelled && result.success) setShops(result.shops);
-      } catch (error) {
-        console.error("Error fetching shops:", error);
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
-    };
+  const fetchShops = async () => {
+    setLoading(true);
+    try {
+      const result = await fetchAllShops(1, 10);
+      if (!cancelled && result.success) setShops(result.shops ?? []);
+    } catch (error) {
+      console.error("Error fetching shops:", error);
+    } finally {
+      if (!cancelled) setLoading(false);
+    }
+  };
 
-    fetchShops();
-    return () => {
-      cancelled = true;
-    };
-  }, [fetchAllShops, retryKey]);
+  fetchShops();
+  return () => {
+    cancelled = true;
+  };
+}, [fetchAllShops, retryKey]);
 
   const handleRetry = useCallback(() => setRetryKey((k) => k + 1), []);
   const scrollBy = (dir) =>

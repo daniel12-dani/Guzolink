@@ -11,6 +11,6 @@ export default function RegisterRoutes(app) {
   app.use("/api/orders", OrderRoute);
   app.use("/api/shops", ShopRoute);
   app.use("/api/products", ProductGraphQLRoute);
-  app.use("/api/shop-category", ShopCategoryRoute);
-  app.use("/api/product-category", ProductCategoryRoute);
+  app.use("/api/shopCategory", ShopCategoryRoute);
+  app.use("/api/productCategory", ProductCategoryRoute);
 }

@@ -4,10 +4,10 @@ import ShopCategory from "../models/shopCategory.model.js";
 export async function CreateMerchantShop(req, res) {
   try {
     const owner = req.user.id;
-    const { name, description, contact } = req.body;
+    const { name,  contact } = req.body;
     const { category } = req.body; // category should be an existing category ObjectId
 
-    if (!name || !description || !contact || !category) {
+    if (!name  || !contact || !category) {
       return res
         .status(400)
         .json({ success: false, message: "All fields are required" });
@@ -30,7 +30,6 @@ export async function CreateMerchantShop(req, res) {
 
     const shop = await Shop.create({
       name,
-      description,
       contact,
       owner,
       category,
@@ -190,7 +189,6 @@ export async function DeleteMerchantShop(req, res) {
     }
     await Shop.findOneAndDelete({
       _id: shopId,
-      createdBy: id,
     });
     return res
       .status(200)
@@ -232,7 +230,7 @@ export async function UpdateMerchantShop(req, res) {
 
     // Update the shop details
     const updatedShop = await Shop.findOneAndUpdate(
-      { _id: shopId, createdBy: id },
+      { _id: shopId },
       { name, description, contact, category },
       { returnDocument: "after" }, // Return the updated document
     );

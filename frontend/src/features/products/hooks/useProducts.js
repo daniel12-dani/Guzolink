@@ -43,7 +43,7 @@ export default function useProducts() {
     const batch = data?.products;
     if (!batch) return;
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setProducts(batch);
+    setProducts(batch ?? []);
     setHasMore(batch.length === PAGE_SIZE);
   }, [data]);
 

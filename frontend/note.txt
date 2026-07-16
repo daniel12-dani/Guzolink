@@ -1,0 +1,15 @@
+alright lets map this correctly, 
+
+we dont have route currently that takes the user to marketplace or product details page but be with me, 
+
+stranger comes in sees some product clicks add button to card, just becuase use cart state is there it adds to cart but when clicking the product card it takes to this url
+
+http://localhost:5173/products/6a549563b8ec1c10313bada8
+
+
+
+which is good but we need some thing better 
+
+another thing 
+
+say the user scrolls down to see the shops

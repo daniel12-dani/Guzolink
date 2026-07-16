@@ -12,7 +12,7 @@ import { useEffect, useRef } from "react";
 function Home() {
   const { products, loading, isLoadingMore, hasMore, loadMore, error } =
     useProducts();
-  const featured = products.slice(0, -1);
+  const featured = (products?? []).slice(0, -1)
   const scrollRef = useRef(null);
 
   const scrollLeft = () => {
@@ -81,11 +81,11 @@ function Home() {
               ref={scrollRef}
               className="flex gap-4 overflow-x-auto scroll-smooth pb-4 snap-x snap-mandatory"
             >
-              {featured.map((product) => (
+              { products.length === 0 ?  featured.map((product) => (
                 <div key={product.id} className="w-52 shrink-0 snap-start">
                   <HomePageProductCard product={product} />
                 </div>
-              ))}
+              )): null}
             </div>
           </section>
         )}

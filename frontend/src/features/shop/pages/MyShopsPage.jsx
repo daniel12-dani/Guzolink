@@ -17,6 +17,7 @@ function MyShops() {
   // (see ShopContext: cache-first means this almost never fires on a
   // return visit, only the very first time a merchant ever lands here).
   console.log("Fetched shops", shops);
+  
   if (isLoading) {
     return (
       <p className="text-red-600 rounded-2xl text-center font-bold mb-4 border border-red-500 p-5">
@@ -25,10 +26,7 @@ function MyShops() {
     );
   }
 
-  const isOwner =
-    user &&
-    shops &&
-    (user.id || user._id)?.toString() === shops.owner?.toString();
+  const isOwner = Boolean(user);
 
   return (
     <div className="mx-auto p-6 sm:px-6 lg:px-8 rounded 3xl border border-white/10 bg-slate-800 shadow-sm transform transition-all duration-300 hover:scale-[1.01]">

@@ -17,7 +17,7 @@ export default function useProductCategories() {
 
     (async () => {
       try {
-        const data = await request("/api/product-category");
+        const data = await request("/api/productCategory");
         if (cancelled) return;
         // NOTE: confirm the actual response key here — adjust
         // `data.categories` to whatever your endpoint really returns
