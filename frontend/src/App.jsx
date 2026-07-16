@@ -45,8 +45,11 @@ function App() {
           <Route path="/support" element={<ContactUs />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/cart" element={<Cart />} />
-           {/* element={<ProtectedRoute><Cart/></ProtectedRoute>}/> */}
+          <Route path="/cart" 
+          element={
+          <ProtectedRoute>
+            <Cart/>
+            </ProtectedRoute>}/>
           <Route
             path="/profile/:userId"
             element={
