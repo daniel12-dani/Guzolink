@@ -2,6 +2,7 @@
 import { gql } from "@apollo/client";
 import { useQuery, useMutation } from "@apollo/client/react";
 import { useState } from "react";
+import { GET_PRODUCTS } from "./useProducts.js";
 
 const GET_SHOP_PRODUCTS = gql`
   query GetShopProducts($shopId: ID!) {
@@ -115,6 +116,9 @@ export default function useShopProducts(shopId) {
         price: parseFloat(productFields.price),
         stock: parseInt(productFields.stock, 10),
       },
+      refetchQueries: [
+        { query: GET_PRODUCTS, variables: { page: 1, limit: 6 } },
+      ],
     });
     refetch();
     return result;

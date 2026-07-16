@@ -87,18 +87,31 @@ export async function GetAllShops(req, res) {
     // Fetch paginated shops
     const shops = await Shop.find({})
       .populate("category", "name")
-      .skip(skip)
       .sort({ createdAt: -1 })
+      .skip(skip)
       .limit(limit);
 
     if (shops.length === 0) {
-      return res.status(404).json({
-        success: false,
+      return res.status(200).json({
+        success: true,
         message: "No shops found",
         shops: [],
+        pagination: {
+          totalItems: totalShops,
+          totalPages: Math.ceil(totalShops / limit),
+          currentPage: page,
+          pageSize: limit,
+        },
       });
     }
-    console.log("Total shops:", totalShops, "Current page:", page, "Limit:", limit);
+    console.log(
+      "Total shops:",
+      totalShops,
+      "Current page:",
+      page,
+      "Limit:",
+      limit,
+    );
     return res.status(200).json({
       success: true,
       message: "Shops retrieved successfully",
@@ -230,7 +243,7 @@ export async function UpdateMerchantShop(req, res) {
       shop: updatedShop,
     });
   } catch (error) {
-     console.log("error occurred while updating merchant shop", error);
+    console.log("error occurred while updating merchant shop", error);
     return res.status(500).json({
       success: false,
       message: "error occurred while updating merchant shop",

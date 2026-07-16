@@ -1,13 +1,11 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useShops } from "../shop.context.js";
-import { useAuth } from "../../../features/auth/auth.context.js";
 import useShopProducts from "../../products/hooks/useShopProducts.js";
-import ShopProductCard from "../../../features/products/components/ShopProductCard.jsx";
+import ShopProductCard from "../../products/components/ShopProductCard.jsx";
 
 function ShopProducts() {
   const { shopId } = useParams();
-  const { user } = useAuth();
   const { fetchSingleShopDetails, shopError } = useShops();
   const [shop, setShop] = useState(null);
 
@@ -24,9 +22,7 @@ function ShopProducts() {
   const {
     products,
     loading: productsLoading,
-    isRefreshing,
     error: productsError,
-    fetchProducts, // the silent-refetch wrapper from useShopProducts
     deleteProduct,
   } = useShopProducts(shopId);
 
@@ -66,6 +62,7 @@ function ShopProducts() {
         productsError={productsError}
         products={products}
         deleteProduct={deleteProduct}
+        productCategories={shop.productCategories || []}
       />
     </div>
   );

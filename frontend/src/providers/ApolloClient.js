@@ -61,5 +61,37 @@ const httpLink = new HttpLink({
 
 export const client = new ApolloClient({
   link: ApolloLink.from([timeoutLink, httpLink]),
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    typePolicies: {
+      Query: {
+        fields: {
+          products: {
+            // keyArgs: false means all `products(page, limit)` calls
+            // write into ONE shared cache list, rather than caching a
+            // separate list per page/limit combo (which is what caused
+            // "existing 6, incoming 5" to look like a mismatch).
+            keyArgs: false,
+            merge(existing = [], incoming, { args }) {
+              const page = args?.page ?? 1;
+              const limit = args?.limit ?? 6;
+
+              // page 1 = a fresh load or a cache-and-network revalidation
+              // of the home page — replace entirely rather than append,
+              // so a newly created product (or a deleted one) is reflected
+              // instead of stacking onto stale cached entries.
+              if (page === 1) return incoming;
+
+              // page > 1 = fetchMore — append incoming to the tail
+              const merged = existing.slice(0);
+              const offset = (page - 1) * limit;
+              for (let i = 0; i < incoming.length; i++) {
+                merged[offset + i] = incoming[i];
+              }
+              return merged;
+            },
+          },
+        },
+      },
+    },
+  }),
 });
