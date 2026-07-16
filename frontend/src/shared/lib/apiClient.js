@@ -1,28 +1,21 @@
 import { API_BASE_URL } from "../../config/api";
 import { storage } from "./storage.js";
-
 export async function request(path, options = {}) {
   const token = storage.token.get();
-  const { headers: extraHeaders, body, ...restOptions } = options;
+  const { headers: extraHeaders, ...restOptions } = options;
 
-  const isFormData = body instanceof FormData;
-
-  const headers = {
-    ...(token ? { Authorization: `Bearer ${token}` } : {}),
-    ...(extraHeaders || {}),
-  };
-
-  if (!isFormData) {
-    headers["Content-Type"] = "application/json";
-  }
+  const isFormData = restOptions.body instanceof FormData;
 
   const response = await fetch(`${API_BASE_URL}${path}`, {
+    method: "GET",
     credentials: "include",
-    body,
     ...restOptions,
-    headers,
+    headers: {
+      ...(!isFormData ? { "Content-Type": "application/json" } : {}),
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...(extraHeaders || {}),
+    },
   });
-
   // eslint-disable-next-line
   let data = null;
   try {

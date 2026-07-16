@@ -15,7 +15,7 @@ function ShopCard({ shop, isOwner }) {
     if (!pendingDelete) return;
     setIsDeleting(true);
     try {
-      await deleteShop(pendingDelete.id);
+      await deleteShop(pendingDelete._id);
       setPendingDelete(null);
     } finally {
       setIsDeleting(false);
@@ -29,7 +29,7 @@ function ShopCard({ shop, isOwner }) {
     return `${productionBackendUrl}${imagePath}`;
   };
 
-  console.log("ShopCard rendering with shop image:", shop.posterImage, "isOwner:", isOwner);
+  // console.log("ShopCard rendering with shop image:", shop.posterImage, "isOwner:", isOwner);
 
   return (
     <div className="relative w-64 justify-items-center rounded-xl overflow-hidden shadow-lg transform transition-shadow duration-300 hover:scale-[1.01]">

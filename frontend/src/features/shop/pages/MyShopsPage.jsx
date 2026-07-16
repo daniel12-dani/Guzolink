@@ -22,7 +22,12 @@ function MyShops() {
     );
   }
 
-  const isOwner = Boolean(user);
+  // const isOwner =
+  //   user &&
+  //   shops &&
+  //   (user.id || user._id)?.toString() === shops.owner?.toString();
+  const isOwner = Boolean(user)
+  console.log("is owner: ", isOwner)
 
   return (
     <div className="mx-auto p-6 sm:px-6 lg:px-8 rounded 3xl border border-white/10 bg-slate-800 shadow-sm transform transition-all duration-300 hover:scale-[1.01]">

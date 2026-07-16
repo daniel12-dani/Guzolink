@@ -12,6 +12,7 @@ function ProfileCard() {
     const productionBackendUrl = import.meta.env.VITE_API_URL || "";
     return `${productionBackendUrl}${imagePath}`;
   };
+  // console.log("ProfileCard user object: ", user);
   return (
     <div className="w-full max-w-xl mx-auto rounded-2xl border border-slate-700/50 bg-slate-800/60 backdrop-blur-md text-slate-100 p-6 shadow-xl mb-8">
       {/* Header Profile Section */}

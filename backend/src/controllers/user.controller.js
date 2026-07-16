@@ -51,6 +51,7 @@ export async function GetUserProfile(req, res) {
         email: ExistingUser.email,
         role: ExistingUser.role,
         phone: ExistingUser.phone,
+        address: ExistingUser.address,
         profileImage: ExistingUser.profileImage,
       },
     });
@@ -157,6 +158,9 @@ export async function LoginUser(req, res) {
         username: user.username,
         email: user.email,
         role: user.role,
+        phone: user.phone,
+        address: user.address,
+        profileImage: user.profileImage,
       },
     });
   } catch (error) {

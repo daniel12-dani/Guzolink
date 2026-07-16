@@ -18,7 +18,7 @@ function CreateShop() {
     contact: "",
     category: "", // Leave blank initially
     location: "",
-    posterImage: "",
+    posterImageFile: null,
   });
 
   const [message, setMessage] = useState("");
@@ -47,7 +47,7 @@ function CreateShop() {
     const payload = {
       ...shopDetails,
       category: finalCategory,
-      posterImage: posterImageFile, // This will be the file object if a file was selected
+      posterImageFile,
     };
     try {
       const shopCreationData = await createShop(payload);

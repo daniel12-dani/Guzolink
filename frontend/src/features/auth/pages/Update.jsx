@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import { useAuth } from "../auth.context";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import uploadUserProfileImage from "../utils/UploadUserProfileImage.js";
 
 function UpdateUserInfo() {
   const { user, updateUser, logout } = useAuth();
@@ -24,9 +23,9 @@ function UpdateUserInfo() {
   // Set initial state values once the user loads
   useEffect(() => {
     if (!user) return;
-    
+
     // Attempt to split user phone number if they already have one configured
-    let rawPhone = user.phone || "";
+    let rawPhone = String(user.phone ?? "");
     let extractedPhone = rawPhone;
     let extractedCode = "+251";
 
@@ -41,7 +40,7 @@ function UpdateUserInfo() {
         extractedPhone = rawPhone.slice(4);
       }
     }
-    // eslint-disable-next-line 
+    // eslint-disable-next-line
     setFormData({
       username: user.username || "",
       countryCode: extractedCode,
@@ -62,35 +61,23 @@ function UpdateUserInfo() {
     event.preventDefault();
     setFormError("");
     setIsUpdating(true);
-
     try {
-      let finalImageUrl = formData.profileImage;
-
-      // Handle raw file upload if user selected an image from local storage
-      if (imageFile) {
-        setIsUploadingImage(true);
-        // Assuming your upload utility sends file and returns public path or URL string
-        finalImageUrl = await uploadUserProfileImage(imageFile);
-        setIsUploadingImage(false);
-      }
-
-      const fullPhoneNumber = formData.phone ? `${formData.countryCode}${formData.phone}` : "";
-
+      const fullPhoneNumber = formData.phone
+        ? `${formData.countryCode}${formData.phone}`
+        : "";
       const result = await updateUser(
         formData.username,
         fullPhoneNumber,
         formData.address,
-        finalImageUrl
+        imageFile,
       );
-
       if (result.success) {
         logout();
-        navigate("/login");
+        navigate(`/profile/${result.user.id}`);
         return;
       }
       setFormError(result.message || "Unable to update your account.");
     } catch (err) {
-      setIsUploadingImage(false);
       setFormError(err.message || "An unexpected error occurred while saving.");
     } finally {
       setIsUpdating(false);
