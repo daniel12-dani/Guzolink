@@ -208,7 +208,9 @@ function ShopProvider({ children }) {
         };
       }
     } catch (error) {
-      console.error("Error fetching shops:", error.message);
+      // console.error("Error fetching shops:", error.message);
+      console.error("Error fetching shops:");
+
 
       setAllShopsError(error.message || "Failed to load all shops");
 
