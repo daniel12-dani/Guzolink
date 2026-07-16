@@ -24,7 +24,7 @@ function MyShops() {
       <div>
         <div className="flex items-center justify-between mb-4 mt-6">
           <Link
-            to="/shop/create"
+            to="/shops/create"
             className="inline-flex items-center rounded-lg bg-amber-500 px-4 py-2 text-sm font-medium text-slate-900 hover:bg-amber-400 transition"
           >
             + Add New Shop

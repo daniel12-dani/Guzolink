@@ -1,24 +1,21 @@
 import { API_BASE_URL } from "../../config/api";
 import { storage } from "./storage.js";
-
 export async function request(path, options = {}) {
   const token = storage.token.get();
-
-  console.log("Our api base url", API_BASE_URL);
+  const { headers: extraHeaders, ...restOptions } = options;
 
   const response = await fetch(`${API_BASE_URL}${path}`, {
-    method: options.method || "GET",
+    method: "GET",
     credentials: "include",
+    ...restOptions,
     headers: {
       "Content-Type": "application/json",
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      ...(options.headers || {}),
+      ...(extraHeaders || {}),
     },
-    ...options,
   });
   // eslint-disable-next-line 
   let data = null;
-
   try {
     data = await response.json();
   } catch {

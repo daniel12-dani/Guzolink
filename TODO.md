@@ -1,2 +1,0 @@
-#TODO
-[] deploy to azure

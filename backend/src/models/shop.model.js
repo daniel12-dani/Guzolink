@@ -22,10 +22,12 @@ const ShopSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "ShopCategory",
       required: true,
+      unique: true,
     },
     products: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Product",
+      
     },
     orders: {
       type: mongoose.Schema.Types.ObjectId,

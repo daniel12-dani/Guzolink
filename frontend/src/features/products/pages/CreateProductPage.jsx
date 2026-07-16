@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { useCategories } from "../../categories/category.context.js";
 import useShopProducts from "../hooks/useShopProducts.js";
 
+
 export default function CreateProductCard() {
   const { shopId } = useParams();
   const navigate = useNavigate();
@@ -58,7 +59,7 @@ export default function CreateProductCard() {
         ...formData,
         shop: shopId, // Inject shopId from the URL route parameter
       });
-
+      
       setSuccessMessage("Product successfully created!");
 
       // Reset form fields
@@ -73,7 +74,7 @@ export default function CreateProductCard() {
 
       // Redirect back to the shop dashboard after a brief delay
       setTimeout(() => {
-        navigate(`/shop/${shopId}`);
+        navigate(`/shops/${shopId}`);
       }, 1500);
     } catch (err) {
       setFormError(
@@ -94,7 +95,7 @@ export default function CreateProductCard() {
     <div className="max-w-2xl mx-auto my-8 p-6 bg-slate-900 border border-slate-800 rounded-xl shadow-xl text-slate-100">
       {/* Back button link matching your design language */}
       <Link
-        to={`/shop/${shopId}`}
+        to={`/shops/${shopId}/products`}
         className="inline-flex items-center gap-1 text-sm text-slate-400 hover:text-white transition mb-6"
       >
         <svg

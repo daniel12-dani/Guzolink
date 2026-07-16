@@ -17,12 +17,13 @@ import UpdateUserInfo from "./features/auth/pages/Update.jsx";
 import Dashboard from "./features/auth/pages/Dashboard.jsx";
 
 // shops
-import MyShops from "./features/shop/pages/MyShops.jsx";
-import CreateShop from "./features/shop/pages/CreateShop.jsx";
-import ShopDashboard from "./features/shop/pages/ShopDashboard.jsx";
+import MyShops from "./features/shop/pages/MyShopsPage.jsx";
+import CreateShop from "./features/shop/pages/CreateShopPage.jsx";
+import ShopDashboard from "./features/shop/pages/ShopDashboardPage.jsx";
+import ShopProducts from "./features/shop/pages/ShopProductsPage.jsx";
 
 // products
-import CreateProductCard from "./features/products/pages/CreateProduct.jsx";
+import CreateProductCard from "./features/products/pages/CreateProductPage.jsx";
 // import ProductDetails from "./features/products/pages/ProductDetails";
 
 // shoping and marketing
@@ -30,12 +31,13 @@ import CreateProductCard from "./features/products/pages/CreateProduct.jsx";
 // import Checkout from "./pages/Checkout";
 
 function App() {
-  ``;
   return (
     <ApolloProvider client={client}>
       <div className="min-h-screen bg-linear-to-br from-slate-900 via-slate-800 to-slate-700 text-slate-100">
         <Navbar />
         <Routes>
+
+        {/* auth related */}
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
@@ -57,8 +59,10 @@ function App() {
             }
           />
 
+          {/* shop related */}
+
           <Route
-            path="shops"
+            path="/shops"
             element={
               <ProtectedRoute>
                 <MyShops />
@@ -66,7 +70,7 @@ function App() {
             }
           />
           <Route
-            path="/shop/create"
+            path="/shops/create"
             element={
               <ProtectedRoute>
                 <CreateShop />
@@ -74,16 +78,24 @@ function App() {
             }
           />
           <Route
-            path="/shop/:shopId"
+            path="/shops/:shopId"
             element={
               <ProtectedRoute>
                 <ShopDashboard />
               </ProtectedRoute>
             }
           />
-
           <Route
-            path="/shop/:shopId/product/create"
+            path="/shops/:shopId/products"
+            element={
+              <ProtectedRoute>
+                <ShopProducts />
+              </ProtectedRoute>
+            }
+          />
+          {/* product related */}
+          <Route
+            path="/shops/:shopId/products/create"
             element={
               <ProtectedRoute>
                 <CreateProductCard />
