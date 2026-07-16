@@ -12,6 +12,7 @@ import Home from "./pages/Home.jsx";
 import ContactUs from "./pages/ContactUs.jsx";
 import AboutUs from "./pages/AboutUs.jsx";
 
+
 // auth
 import Login from "./features/auth/pages/Login.jsx";
 import Signup from "./features/auth/pages/Signup.jsx";
@@ -30,6 +31,7 @@ import CreateProductCard from "./features/products/pages/CreateProductPage.jsx";
 
 // shoping and marketing
 // import Cart from "./pages/Cart";
+import Cart from "./pages/Cart.jsx";
 // import Checkout from "./pages/Checkout";
 
 function App() {
@@ -40,10 +42,16 @@ function App() {
         <Routes>
           {/* auth related */}
           <Route path="/" element={<Home />} />
-          <Route path="/aboutus" element={<AboutUs />} />
-          <Route path="/support" element={<ContactUs />} />
+          <Route path="/aboutus" element={<AboutUs/>}/>
+           <Route path="/support" element={<ContactUs/>}/> 
+           
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/cart" 
+          element={
+          <protectedRoute>
+            <Cart/>
+            </protectedRoute>}/>
           <Route
             path="/profile/:userId"
             element={

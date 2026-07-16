@@ -1,3 +1,5 @@
+import {Link} from "react-router-dom"
+
 const VALUES = [
   {
     title: "Merchants first",
@@ -123,18 +125,18 @@ function AboutUs() {
               </h2>
             </div>
             <div className="flex shrink-0 flex-wrap gap-3">
-              <a
-                href="/signup"
+              <Link
+                to="/signup"
                 className="rounded-full bg-amber-500 px-6 py-3 font-semibold text-slate-900 transition hover:bg-amber-400"
               >
                 Create an account
-              </a>
-              <a
-                href="/support"
+              </Link>
+              <Link
+                to="/support"
                 className="rounded-full border border-white/20 px-6 py-3 font-semibold text-white transition hover:bg-white/10"
               >
                 Contact us
-              </a>
+              </Link>
             </div>
           </div>
         </section>
