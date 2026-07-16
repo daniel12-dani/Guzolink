@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-function ShopCard({ shop, onDelete }) {
+function ShopCard({ shop, onDelete, isOwner }) {
   return (
     <div className="relative w-64 justify-items-center rounded-xl overflow-hidden shadow-lg transform transition-shadow duration-300 hover:scale-[1.01]">
       <div className="relative rounded-xl overflow-hidden shadow-lg">
@@ -29,8 +29,11 @@ function ShopCard({ shop, onDelete }) {
         {shop.rating !== undefined && (
           <p className="mt-1 text-sm text-amber-500">Rating: {shop.rating}/5</p>
         )}
+       
+       
+
+        {isOwner && ( 
         <div className="mt-4 flex flex-wrap gap-2">
-          {/* TODO: implement the shop delete in the backend */}
 
           <Link
             to={`/shops/${shop._id}`}
@@ -50,7 +53,7 @@ function ShopCard({ shop, onDelete }) {
           >
             Delete
           </button>
-        </div>
+        </div>)}
       </div>
     </div>
   );

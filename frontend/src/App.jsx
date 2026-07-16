@@ -92,7 +92,7 @@ function App() {
                 <ShopProducts />
               </ProtectedRoute>
             }
-          />
+          />b
           {/* product related */}
           <Route
             path="/shops/:shopId/products/create"

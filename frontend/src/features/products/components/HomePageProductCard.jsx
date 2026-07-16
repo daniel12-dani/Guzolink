@@ -49,7 +49,7 @@ export default function HomePageProductCard({ product }) {
         )}
       </Link>
 
-      <Link to={`/products/${product.id}`} className="mt-2 line-clamp-2 min-h-[2.5rem] text-sm text-slate-200 hover:text-white">
+      <Link to={`/products/${product.id}`} className="mt-2 line-clamp-2 min-h-10 text-sm text-slate-200 hover:text-white">
         {product.name}
       </Link>
 
