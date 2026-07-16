@@ -128,7 +128,7 @@ function ShopProvider({ children }) {
       Object.entries(rest).forEach(([key, value]) => {
         if (value !== undefined && value !== null) formData.append(key, value);
       });
-      formData.append("posterimage", posterImageFile);
+      formData.append("posterImage", posterImageFile);
       return formData;
     }
     return JSON.stringify(rest);
@@ -181,6 +181,7 @@ function ShopProvider({ children }) {
       console.error("Error deleting shop:", err);
     }
   };
+  
   const updateShop = async (id, shopInfo) => {
     setIsUpdatingShop(true);
     setUpdateShopError(null);
@@ -217,6 +218,8 @@ function ShopProvider({ children }) {
       setIsUpdatingShop(false);
     }
   };
+
+
   const fetchSingleShopDetails = async (id) => {
     setShopError(null);
     try {

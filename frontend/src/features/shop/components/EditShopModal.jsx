@@ -21,7 +21,7 @@ export default function EditShopModal({
     contact: "",
     category: "",
     location: "",
-    posterimage: "",
+    posterImage: "",
   });
   const [formError, setFormError] = useState("");
   const cancelButtonRef = useRef(null);
@@ -42,7 +42,7 @@ export default function EditShopModal({
       contact: shop.contact ?? "",
       category: shop.category?._id ?? shop.category ?? "",
       location: shop.location ?? "",
-      posterimage: shop.posterimage ?? "",
+      posterImage: shop.posterImage ?? "",
     });
     setPosterImageFile(null);
     setFormError("");
@@ -247,8 +247,8 @@ export default function EditShopModal({
               <span className="mb-2 block">Poster Image URL</span>
               <input
                 type="text"
-                name="posterimage"
-                value={formData.posterimage}
+                name="posterImage"
+                value={formData.posterImage}
                 onChange={handleChange}
                 className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-sm text-white outline-none"
                 placeholder="https://example.com/image.jpg"

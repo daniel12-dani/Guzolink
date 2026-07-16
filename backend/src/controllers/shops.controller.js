@@ -7,8 +7,9 @@ export async function CreateMerchantShop(req, res) {
     const owner = req.user.id;
     const { name, contact } = req.body;
     const { category, description, location } = req.body;
-    const posterImage = req.file ? publicPathFor(req.file.path) : undefined;
+    const posterImage = req.file ? publicPathFor("shops", req.file) : undefined;
 
+    console.log(posterImage, "posterImage path for shop creation");
     if (!name || !contact || !category) {
       return res
         .status(400)
@@ -65,6 +66,7 @@ export async function GetMerchantShops(req, res) {
         shops: [],
       });
     }
+    console.log(shops[0].posterImage, "posterImage path for shop creation");
 
     return res
       .status(200)
@@ -213,53 +215,44 @@ export async function UpdateMerchantShop(req, res) {
     const { id, role } = req.user;
     const { id: shopId } = req.params; // route is "/:id", not "/:shopId"
     const { name, description, location, contact, category } = req.body;
-    const posterimage = req.file ? publicPathFor("shops", req.file) : undefined;
-
+    const posterImage = req.file ? publicPathFor("shops", req.file) : undefined;
     const shop = await Shop.findById(shopId);
 
     if (!shop) {
-      return res
-        .status(404)
-        .json({
-          success: false,
-          message: "No shop found with this id",
-          shop: [],
-        });
+      return res.status(404).json({
+        success: false,
+        message: "No shop found with this id",
+        shop: [],
+      });
     }
 
     const isShopOwner = shop.createdBy?.toString() === id;
 
     if (!isShopOwner && role !== "admin") {
-      return res
-        .status(403)
-        .json({
-          success: false,
-          message: "You are not authorized to update this shop.",
-        });
+      return res.status(403).json({
+        success: false,
+        message: "You are not authorized to update this shop.",
+      });
     }
 
     const update = { name, description, location, contact, category };
 
-    if (posterimage !== undefined) update.posterimage = posterimage;
+    if (posterImage !== undefined) update.posterImage = posterImage;
 
     const updatedShop = await Shop.findOneAndUpdate({ _id: shopId }, update, {
       returnDocument: "after",
     });
 
-    return res
-      .status(200)
-      .json({
-        success: true,
-        message: "Shop updated successfully",
-        shop: updatedShop,
-      });
+    return res.status(200).json({
+      success: true,
+      message: "Shop updated successfully",
+      shop: updatedShop,
+    });
   } catch (error) {
     console.log("error occurred while updating merchant shop", error);
-    return res
-      .status(500)
-      .json({
-        success: false,
-        message: "error occurred while updating merchant shop",
-      });
+    return res.status(500).json({
+      success: false,
+      message: "error occurred while updating merchant shop",
+    });
   }
 }

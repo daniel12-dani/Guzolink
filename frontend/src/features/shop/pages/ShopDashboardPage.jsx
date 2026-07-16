@@ -61,7 +61,7 @@ function ShopDashboard() {
     <div className="flex flex-col mx-auto p-6 sm:px-6 lg:px-8 rounded 3xl border border-white/10 bg-slate-800 shadow-sm">
       <div className="relative rounded-xl overflow-hidden shadow-lg">
         <img
-          src={shop.posterimage || "https://picsum.photos/200/300?random=1"}
+          src={shop.posterImage || "https://picsum.photos/200/300?random=1"}
           alt={shop.name}
           className="w-full h-48 object-cover "
           onError={(e) => {

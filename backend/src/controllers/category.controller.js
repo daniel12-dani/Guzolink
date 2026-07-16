@@ -34,7 +34,7 @@ export async function CreateCategory(req, res) {
 		)
 			.populate({
 				path: "books",
-				select: "name description publishdate posterimage category ",
+				select: "name description publishdate posterImage category ",
 				populate: {
 					path: "category",
 					select: "name",

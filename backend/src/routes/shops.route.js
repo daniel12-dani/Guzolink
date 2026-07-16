@@ -16,8 +16,8 @@ import {shopUpload} from "../middlewares/upload.middleware.js";
 ShopRoute.get("/all", GetAllShops);
 ShopRoute.get("/", IsLoggedIn, GetMerchantShops);
 ShopRoute.get("/:id", IsLoggedIn, GetMerchantShopDetails);
-ShopRoute.post("/", IsLoggedIn, shopUpload.single("shopImage"), CreateMerchantShop);
-ShopRoute.put("/:id", IsLoggedIn, shopUpload.single("shopImage"), UpdateMerchantShop);
+ShopRoute.post("/", IsLoggedIn, shopUpload.single("posterImage"), CreateMerchantShop);
+ShopRoute.put("/:id", IsLoggedIn, shopUpload.single("posterImage"), UpdateMerchantShop);
 ShopRoute.delete("/:id", IsLoggedIn, DeleteMerchantShop);
 
 export default ShopRoute;

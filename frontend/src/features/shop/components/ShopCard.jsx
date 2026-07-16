@@ -21,18 +21,17 @@ function ShopCard({ shop, isOwner }) {
       setIsDeleting(false);
     }
   };
-
+  console.log("ShopCard rendering with shop image:", shop.posterImage, "isOwner:", isOwner);
   return (
     <div className="relative w-64 justify-items-center rounded-xl overflow-hidden shadow-lg transform transition-shadow duration-300 hover:scale-[1.01]">
       <div className="relative rounded-xl overflow-hidden shadow-lg">
         <img
-          src={shop.posterimage || "https://picsum.photos/200/300"}
+          src={shop.posterImage || "https://picsum.photos/200/300"}
           alt={shop.name}
           className="w-full h-48 object-cover"
           onError={(e) => {
-            // Prevents infinite loops if the fallback fails
             e.currentTarget.onerror = null;
-            e.currentTarget.src = "https://placeholder.com";
+            e.currentTarget.src = "https://picsum.photos/200/300";
           }}
         />
       </div>
