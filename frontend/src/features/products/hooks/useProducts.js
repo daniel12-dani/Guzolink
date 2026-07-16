@@ -11,7 +11,7 @@ import { useState, useEffect } from "react";
 
 const PAGE_SIZE = 6;
 
-const GET_PRODUCTS = gql`
+export const GET_PRODUCTS = gql`
   query GetProducts($page: Int!, $limit: Int!) {
     products(page: $page, limit: $limit) {
       id
@@ -36,6 +36,7 @@ export default function useProducts() {
 
   const { loading, error, data, fetchMore } = useQuery(GET_PRODUCTS, {
     variables: { page: 1, limit: PAGE_SIZE },
+    fetchPolicy: "cache-and-network",
   });
 
   useEffect(() => {

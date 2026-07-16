@@ -33,13 +33,13 @@ function ShopCard({ shop, onDelete }) {
           {/* TODO: implement the shop delete in the backend */}
 
           <Link
-            to={`/shop/${shop._id}`}
+            to={`/shops/${shop._id}`}
             className="inline-flex items-center rounded-lg bg-white/20 px-4 py-2 text-white font-medium hover:bg-white/30 transition"
           >
             Manage
           </Link>
           <Link
-            to={`/shop/${shop._id}/edit`}
+            to={`/shops/${shop._id}/edit`}
             className="inline-flex items-center rounded-lg bg-amber-500 px-4 py-2 text-slate-900 font-medium hover:bg-amber-400 transition"
           >
             Edit

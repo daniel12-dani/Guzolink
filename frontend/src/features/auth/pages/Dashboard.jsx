@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 // good dashboard that can contain , the user info, the shops and the summary of analysis, current finances.
 
 import ProfileCard from "../pages/Profile.jsx";
-import MyShops from "../../shop/pages/MyShops.jsx";
+import MyShops from "../../shop/pages/MyShopsPage.jsx";
 import { Link } from "react-router-dom";
 
 function Dashboard() {

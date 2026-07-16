@@ -2,7 +2,6 @@ import { useState } from "react";
 import ConfirmModal from "../../../components/ConfirmModal.jsx";
 import EditProductModal from "./EditProductModal.jsx";
 
-
 function ProductImage({ src, alt }) {
   // Graceful fallback: if there's no image URL, or it fails to load,
   // show a quiet placeholder instead of a broken-image icon.
@@ -116,20 +115,28 @@ export default function ShopProductCard({
                       </svg>
                     </div>
 
-                   <span
+                    <span
                       className={`absolute right-2 top-2 rounded-full px-2 py-0.5 text-xs font-semibold ${
-                        inStock ? "bg-emerald-500/90 text-emerald-950" : "bg-red-500/90 text-red-950"
+                        inStock
+                          ? "bg-emerald-500/90 text-emerald-950"
+                          : "bg-red-500/90 text-red-950"
                       }`}
                     >
                       {inStock ? `${product.stock} in stock` : "Out of stock"}
                     </span>
                   </div>
 
-                  <h4 className="mt-3 text-lg font-semibold text-white">{product.name}</h4>
+                  <h4 className="mt-3 text-lg font-semibold text-white">
+                    {product.name}
+                  </h4>
                   <p className="mb-2 text-sm text-slate-400">
-                    <span className="font-semibold text-amber-400">${product.price}</span>
+                    <span className="font-semibold text-amber-400">
+                      ${product.price}
+                    </span>
                   </p>
-                  <p className="mb-4 line-clamp-2 text-sm text-slate-300">{product.description}</p>
+                  <p className="mb-4 line-clamp-2 text-sm text-slate-300">
+                    {product.description}
+                  </p>
                 </div>
 
                 <div className="flex gap-2">
@@ -152,10 +159,14 @@ export default function ShopProductCard({
         </div>
       )}
 
-     <ConfirmModal
+      <ConfirmModal
         open={!!pendingDelete}
         title="Delete this product?"
-        message={pendingDelete ? `"${pendingDelete.name}" will be permanently removed. This can't be undone.` : ""}
+        message={
+          pendingDelete
+            ? `"${pendingDelete.name}" will be permanently removed. This can't be undone.`
+            : ""
+        }
         confirmLabel="Delete"
         isDangerous
         isConfirming={isDeleting}
@@ -174,6 +185,5 @@ export default function ShopProductCard({
         onSave={updateProduct}
       />
     </div>
-    
   );
 }

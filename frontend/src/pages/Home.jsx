@@ -11,7 +11,7 @@ function Home() {
   const { products, loading, isLoadingMore, hasMore, loadMore, error } =
     useProducts();
 
-  const featured = products.slice(0, 4);
+  const featured = products.slice(0, -1);
   const scrollRef = useRef(null);
 
   const scrollLeft = () => {
@@ -70,7 +70,7 @@ function Home() {
               className="flex gap-4 overflow-x-auto scroll-smooth pb-4 snap-x snap-mandatory"
             >
               {featured.map((product) => (
-                <div key={product.id} className="w-52 flex-shrink-0 snap-start">
+                <div key={product.id} className="w-52 fshrink-0 snap-start">
                   <HomePageProductCard product={product} />
                 </div>
               ))}
