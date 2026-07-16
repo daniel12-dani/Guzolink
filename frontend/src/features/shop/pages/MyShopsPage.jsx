@@ -16,7 +16,7 @@ function MyShops() {
 
   if (isLoading) {
     return (
-      <p className="text-red-600 rounded-2xl text-center font-bold mb-4 border border-red-500 p-5">
+      <p className="text-red-600 rounded-2xl text-center font-bold mb-2 border border-red-500 p-5">
         Loading your shops...
       </p>
     );
@@ -30,8 +30,7 @@ function MyShops() {
   console.log("is owner: ", isOwner)
 
   return (
-    <div className="mx-auto p-6 sm:px-6 lg:px-8 rounded 3xl border border-white/10 bg-slate-800 shadow-sm transform transition-all duration-300 hover:scale-[1.01]">
-      <div className="p-3 space-x-12 sm:space-x-3 sm:flex sm:flex-wrap "></div>
+    <div className="mx-auto p-6 sm:px-6 lg:px-8 rounded 3xl border border-white/10 bg-slate-800 shadow-sm ">
       <div>
         <div className="flex items-center justify-between mb-4 mt-6">
           <Link
