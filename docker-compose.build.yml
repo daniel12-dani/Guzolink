@@ -7,7 +7,7 @@ services:
     container_name: guzolink-backend
     restart: unless-stopped
     volumes:
-          - uploadss_data:/app/uploads
+          - uploads_data:/app/uploads
     env_file:
       - ./backend/.env.production
 
