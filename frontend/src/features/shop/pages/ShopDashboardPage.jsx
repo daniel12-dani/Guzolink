@@ -4,7 +4,9 @@ import { useShops } from "../shop.context.js";
 import { useAuth } from "../../auth/auth.context.js";
 import useShopProducts from "../../products/hooks/useShopProducts.js";
 import ShopProductCard from "../../products/components/ShopProductCard.jsx";
+import { useCategories } from "../../categories/category.context.js";
 
+// inside the component:
 function RefreshIcon({ spinning }) {
   return (
     <svg
@@ -29,11 +31,19 @@ function ShopDashboard() {
   const { user } = useAuth();
   const { fetchSingleShopDetails, shopError } = useShops();
   const [shop, setShop] = useState(null);
-
+  // const isOwner = Boolean(user);
   const isOwner =
     user &&
     shop &&
     (user.id || user._id)?.toString() === shop.owner?.toString();
+  // console.log(
+  //   "ShopDashboard: user",
+  //   user,
+  //   "isOwner",
+  //   isOwner,
+  //   "shopId",
+  //   shopId,
+  // );
 
   useEffect(() => {
     const loadShop = async () => {
@@ -44,6 +54,7 @@ function ShopDashboard() {
     };
     loadShop();
   }, [shopId, fetchSingleShopDetails]);
+  const { productCategories } = useCategories();
 
   const {
     products,
@@ -52,23 +63,30 @@ function ShopDashboard() {
     error: productsError,
     fetchProducts, // the silent-refetch wrapper from useShopProducts
     deleteProduct,
+    updateProduct, // add
+    isUpdating, // add
+    updateError, // add
   } = useShopProducts(shopId);
 
   if (shopError) return <p className="p-6 text-red-600">{shopError}</p>;
   if (!shop) return <p className="p-6 text-white">Loading…</p>;
 
+  const getImageUrl = (imagePath) => {
+    if (!imagePath) return "https://picsum.photos/200/300";
+    const productionBackendUrl = import.meta.env.VITE_API_URL || "";
+    return `${productionBackendUrl}${imagePath}`;
+  };
+
   return (
     <div className="flex flex-col mx-auto p-6 sm:px-6 lg:px-8 rounded 3xl border border-white/10 bg-slate-800 shadow-sm">
       <div className="relative rounded-xl overflow-hidden shadow-lg">
         <img
-          src={shop.posterImage || "https://picsum.photos/200/300?random=1"}
+          src={getImageUrl(shop.posterImage)}
           alt={shop.name}
-          className="w-full h-48 object-cover "
+          className="w-full h-48 object-cover"
           onError={(e) => {
-            // Prevents infinite loops if the fallback fails
             e.currentTarget.onerror = null;
-            e.currentTarget.src =
-              "https://placeholder.com/200x300.png?text=No+Image";
+            e.currentTarget.src = "https://picsum.photos/200/300";
           }}
         />
         <Link
@@ -91,9 +109,12 @@ function ShopDashboard() {
           </svg>
           Back to shops
         </Link>
+
         {/* Shop Details */}
         <div className="p-4 mt-4 mb-4 rounded-2xl bg-white/10 backdrop-blur border-t border-white/10">
           <h3 className="text-xl font-semibold text-white">{shop.name}</h3>
+          {/* <p className="text-xl font-semibold text-white">{shop._id}</p> */}
+
           {shop.location && (
             <p className="text-sm text-slate-300">{shop.location}</p>
           )}
@@ -109,13 +130,14 @@ function ShopDashboard() {
             ShopProductCard — that component just renders whatever
             products it's given, it shouldn't own the fetch action. */}
         <div className="flex items-center gap-3">
-          <Link
-            to={`products/create`}
-            className="inline-flex items-center rounded-lg bg-amber-500 px-5 py-2.5 text-sm font-semibold text-slate-900 hover:bg-amber-400 transition"
-          >
-            + Add Product
-          </Link>
-
+          {isOwner && (
+            <Link
+              to={`products/create`}
+              className="inline-flex items-center rounded-lg bg-amber-500 px-5 py-2.5 text-sm font-semibold text-slate-900 hover:bg-amber-400 transition"
+            >
+              + Add Product
+            </Link>
+          )}
           <button
             type="button"
             onClick={fetchProducts}
@@ -132,7 +154,11 @@ function ShopDashboard() {
         productsLoading={productsLoading}
         productsError={productsError}
         products={products}
-        deleteProduct={deleteProduct} 
+        deleteProduct={deleteProduct}
+        updateProduct={updateProduct}
+        isUpdating={isUpdating}
+        updateError={updateError}
+        productCategories={productCategories}
         isOwner={isOwner}
       />
     </div>

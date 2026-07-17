@@ -188,7 +188,7 @@ export async function DeleteMerchantShop(req, res) {
 
     // check ownership
 
-    const isShopOwner = shop.createdBy?.toString() === id;
+    const isShopOwner = shop.owner?.toString() === id;
     if (!isShopOwner && role !== "admin") {
       return res.status(403).json({
         success: false,
@@ -226,7 +226,7 @@ export async function UpdateMerchantShop(req, res) {
       });
     }
 
-    const isShopOwner = shop.createdBy?.toString() === id;
+    const isShopOwner = shop.owner?.toString() === id;
 
     if (!isShopOwner && role !== "admin") {
       return res.status(403).json({

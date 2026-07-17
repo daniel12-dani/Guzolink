@@ -17,13 +17,12 @@ import {
   useEffect,
   useMemo,
   useState,
-
 } from "react";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { request } from "../../shared/lib/apiClient.js";
 import { storage } from "../../shared/lib/storage.js";
 import { isTokenExpired, decodeToken } from "../../shared/lib/tokenUtils.js";
-import {client} from "../../providers/ApolloClient.js";
+import { client } from "../../providers/ApolloClient.js";
 const AuthContext = createContext(null);
 
 function AuthProvider({ children }) {
@@ -45,7 +44,7 @@ function AuthProvider({ children }) {
   // --- userprofile: declared ABOVE the bootstrap effect on purpose -----
   // (fixes the "accessed before declared" lint error — the effect below
   // references this, so source order should read top-to-bottom)
-  const userprofile = async (userId) => {
+  const userProfile = async (userId) => {
     try {
       const data = await request(`/api/user/profile/${userId}`, {
         method: "GET",
@@ -115,6 +114,18 @@ function AuthProvider({ children }) {
       // initialized. Nothing further to do.
       if (user) {
         if (!cancelled) setIsAuthLoading(false);
+        userProfile(user.id || user._id).then((result) => {
+          if (cancelled) return;
+          if (result.success) {
+            const refreshed = { ...result.user, token: storedToken };
+            storage.user.set(refreshed);
+            setUser(refreshed);
+          }
+          // if it fails (e.g. network hiccup), just keep showing the cached
+          // user rather than logging them out — this is a background
+          // refresh, not an auth check
+        });
+
         return;
       }
 
@@ -138,11 +149,18 @@ function AuthProvider({ children }) {
         return;
       }
 
-      const result = await userprofile(userId);
+      const result = await userProfile(userId);
       if (cancelled) return;
 
       if (result.success) {
-        const restoredUser = { ...result.user, token: storedToken };
+        const restoredUser = {
+          ...result.user,
+          token: storedToken,
+          phone: result.user?.phone || "",
+          address: result.user?.address || "",
+          profileImage: result.user?.profileImage || "",
+          email: result.user?.email || "",
+        };
         storage.user.set(restoredUser);
         setUser(restoredUser);
       } else {
@@ -182,6 +200,9 @@ function AuthProvider({ children }) {
         username: data.user?.username,
         email: data.user?.email,
         role: data.user?.role,
+        phone: data.user?.phone,
+        address: data.user?.address,
+        profileImage: data.user?.profileImage,
         token: data.bearerToken,
       };
 
@@ -216,10 +237,7 @@ function AuthProvider({ children }) {
       }
 
       const sessionUser = {
-        id: data.user?.id,
-        username: data.user?.username,
-        email: data.user?.email,
-        role: data.user?.role,
+        ...data.user,
         token: data.bearerToken,
       };
 
@@ -239,49 +257,44 @@ function AuthProvider({ children }) {
       };
     }
   };
+  const buildUserUpdateBody = ({
+    username,
+    phone,
+    address,
+    profileImageFile,
+  }) => {
+    if (profileImageFile) {
+      const formData = new FormData();
+      if (username !== undefined) formData.append("username", username);
+      if (phone !== undefined) formData.append("phone", phone);
+      if (address !== undefined) formData.append("address", address);
+      formData.append("profileImage", profileImageFile);
+      return formData;
+    }
+    return JSON.stringify({ username, phone, address });
+  };
 
-  const updateUser = async (username, phone, address, profileImage) => {
+  const updateUser = async (username, phone, address, profileImageFile) => {
     try {
-      const profile = profileImage ? profileImage : null;
-
-      const updatedUserInfo = await request(`/api/user/update/${user.id}`, {
+      const data = await request(`/api/user/update/${user.id || user._id}`, {
         method: "POST",
-        body: JSON.stringify({ username, phone, address, profile }),
+        body: buildUserUpdateBody({
+          username,
+          phone,
+          address,
+          profileImageFile,
+        }),
       });
-
-      if (!updatedUserInfo.success) {
-        return {
-          success: false,
-          message: updatedUserInfo.message || "Unable to update your account",
-        };
+      if (data.success) {
+        setUser(data.user); // data.user.profileImage is already the correct, current path
+        storage.user.set(data.user);
+        return { success: true, user: data.user, message: data.message };
       }
-
-      const updatedSessionUser = {
-        id: updatedUserInfo.user?.id,
-        username: updatedUserInfo.user?.username,
-        email: updatedUserInfo.user?.email,
-        role: updatedUserInfo.user?.role,
-        // Keep the existing token unless the backend explicitly issued a
-        // new one on this endpoint. Check with your backend team whether
-        // /api/user/update returns a fresh bearerToken — if it does, use
-        // it here; if not, this fallback to the current token is correct.
-        token: updatedUserInfo.bearerToken || user.token,
-      };
-
-      storage.user.set(updatedSessionUser);
-      if (updatedUserInfo.bearerToken) {
-        storage.token.set(updatedUserInfo.bearerToken);
-      }
-      setUser(updatedSessionUser);
-
-      return {
-        success: true,
-        user: updatedSessionUser,
-      };
-    } catch (error) {
+      return { success: false, message: data.message };
+    } catch (err) {
       return {
         success: false,
-        message: error.message || "Invalid operation",
+        message: err.message || "Failed to update profile",
       };
     }
   };
@@ -312,7 +325,7 @@ function AuthProvider({ children }) {
       login,
       logout,
       updateUser,
-      userprofile,
+      userProfile,
     }),
     [user, isAuthLoading],
   );

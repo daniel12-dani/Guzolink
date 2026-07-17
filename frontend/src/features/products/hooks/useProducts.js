@@ -22,6 +22,9 @@ export const GET_PRODUCTS = gql`
       category
       shop
       image
+      createdBy {
+        id
+      }
       createdAt
       updatedAt
     }
@@ -42,7 +45,7 @@ export default function useProducts() {
   useEffect(() => {
     const batch = data?.products;
     if (!batch) return;
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+    // eslint-disable-next-line
     setProducts(batch ?? []);
     setHasMore(batch.length === PAGE_SIZE);
   }, [data]);

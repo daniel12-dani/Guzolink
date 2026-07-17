@@ -12,7 +12,6 @@ import Home from "./pages/Home.jsx";
 import ContactUs from "./pages/ContactUs.jsx";
 import AboutUs from "./pages/AboutUs.jsx";
 
-
 // auth
 import Login from "./features/auth/pages/Login.jsx";
 import Signup from "./features/auth/pages/Signup.jsx";
@@ -30,9 +29,9 @@ import CreateProductCard from "./features/products/pages/CreateProductPage.jsx";
 // import ProductDetails from "./features/products/pages/ProductDetails";
 
 // shoping and marketing
-// import Cart from "./pages/Cart";
 import Cart from "./pages/Cart.jsx";
-// import Checkout from "./pages/Checkout";
+import Checkout from "./pages/Checkout.jsx";
+
 
 function App() {
   return (
@@ -42,16 +41,15 @@ function App() {
         <Routes>
           {/* auth related */}
           <Route path="/" element={<Home />} />
-          <Route path="/aboutus" element={<AboutUs/>}/>
-           <Route path="/support" element={<ContactUs/>}/> 
-           
+          <Route path="/aboutus" element={<AboutUs />} />
+          <Route path="/support" element={<ContactUs />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/cart" 
           element={
-          <ProtectedRoute>
+          <protectedRoute>
             <Cart/>
-            </ProtectedRoute>}/>
+            </protectedRoute>}/>
           <Route
             path="/profile/:userId"
             element={
@@ -107,6 +105,23 @@ function App() {
             element={
               <ProtectedRoute>
                 <CreateProductCard />
+              </ProtectedRoute>
+            }
+          />
+          {/* shopping and marketing related */}
+          <Route
+            path="/cart"
+            element={
+              <ProtectedRoute>
+                <Cart />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/checkout"
+            element={
+              <ProtectedRoute>
+                <Checkout />
               </ProtectedRoute>
             }
           />

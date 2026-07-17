@@ -34,7 +34,7 @@ export default function CreateProductCard() {
   // eslint-disable-next-line
   const [isUploadingImage, setIsUploadingImage] = useState(false);
 
-      // category add handle
+  // category add handle
   const handleCategorySelectChange = (e) => {
     if (e.target.value === ADD_NEW_VALUE) {
       setIsAddingCategory(true);
@@ -345,9 +345,10 @@ export default function CreateProductCard() {
         {/* Button Actions */}
         <div className="pt-2">
           <button
+            id="create-product-button"
             type="submit"
             disabled={isCreating}
-            className="w-full md:w-auto px-6 py-3 font-semibold text-sm bg-amber-500 hover:bg-amber-400 active:bg-amber-600 text-slate-900 rounded-lg shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-150 flex items-center justify-center gap-2"
+            className="w-full md:w-auto px-6 py-3 font-semibold text-sm bg-amber-600 hover:bg-amber-200 active:bg-amber-600 text-slate-900 rounded-lg shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-150 flex items-center justify-center gap-2"
           >
             {isCreating ? (
               <>
