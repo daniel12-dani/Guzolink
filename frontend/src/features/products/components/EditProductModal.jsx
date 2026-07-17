@@ -145,7 +145,7 @@ export default function EditProductModal({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
-                Price ($) <span className="text-red-500">*</span>
+                Price (birr) <span className="text-red-500">*</span>
               </label>
               <input type="number" name="price" step="0.01" min="0" value={formData.price} onChange={handleChange}
                 className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-lg text-slate-100 outline-none focus:border-amber-500" required />

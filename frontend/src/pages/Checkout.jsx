@@ -1,14 +1,17 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "../features/cart/cart.context.js";
+import { useAuth } from "../features/auth/auth.context.js";
 
 function Checkout() {
-  const { cart, clearCart, total } = useCart
+  const {user} = useAuth();
+  const { cart, clearCart, total } = useCart();
   const [submitted, setSubmitted] = useState(false);
+  // fill the info prior using user info
   const [formData, setFormData] = useState({
-    name: "",
-    address: "",
-    city: "",
+    name: user?.username || "",
+    address: user?.address || "",
+    city: user?.city || "",
     card: "",
   });
 
@@ -38,7 +41,7 @@ function Checkout() {
             sent to your email.
           </p>
           <Link
-            to="/products"
+            to="/"
             className="mt-8 inline-flex rounded-xl bg-slate-900 px-5 py-3 font-semibold text-white"
           >
             Continue shopping
@@ -122,7 +125,7 @@ function Checkout() {
                   <span>
                     {item.name} × {item.quantity}
                   </span>
-                  <span>${(item.price * item.quantity).toFixed(2)}</span>
+                  <span>birr{(item.price * item.quantity).toFixed(2)}</span>
                 </div>
               ))
             )}

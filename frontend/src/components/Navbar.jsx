@@ -3,6 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 import { useCart } from "../features/cart/cart.context.js";
 import { useAuth } from "../features/auth/auth.context.js";
 import ConfirmModal from "./ConfirmModal.jsx"; // adjust path to match where it actually lives
+import GuzoMark from "./GuzoMark.jsx"; // adjust path to match where it actually lives
 
 function Navbar() {
   const { cart } = useCart();
@@ -47,8 +48,13 @@ function Navbar() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
         <NavLink
           to="/"
-          className="text-xl font-semibold tracking-tight text-white"
+          className="flex items-center gap-2 text-xl font-semibold tracking-tight text-white"
         >
+          <GuzoMark
+            size={32}
+            circleClassName="fill-amber-500"
+            footClassName="fill-slate-950"
+          />
           Guzolink
         </NavLink>
 
@@ -178,8 +184,13 @@ function Navbar() {
             <NavLink to="/cart" className={linkClass}>
               Cart ({cart.length})
             </NavLink>
+
             <NavLink to="/aboutus" className={linkClass}>
               About us
+            </NavLink>
+
+            <NavLink to="/marketplace" className={linkClass}>
+              Marketplace
             </NavLink>
             <NavLink to="/support" className={linkClass}>
               Contact us

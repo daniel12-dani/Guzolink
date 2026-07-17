@@ -1,12 +1,27 @@
 import { useAuth } from "../features/auth/auth.context.js";
 import { Link } from "react-router-dom";
+import GuzoMark from "./GuzoMark.jsx"; // adjust path to match where it actually lives
 
 function Hero() {
   const { user } = useAuth();
   return (
-    <section className="px-4 py-20 text-white sm:px-6 lg:px-8">
-      <div className="mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
+    <section className="relative overflow-hidden px-4 py-20 text-white sm:px-6 lg:px-8">
+      {/* Background watermark — plain footprint, slate-toned to sit quietly
+          behind the content instead of competing with the amber accents. */}
+      <GuzoMark
+        plain
+        footClassName="fill-slate-700/20"
+        className="pointer-events-none absolute -right-24 -top-24 hidden w-[32rem] rotate-12 sm:block lg:w-[40rem]"
+      />
+
+      <div className="relative mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
         <div className="space-y-6">
+          <GuzoMark
+            size={70}
+            circleClassName="fill-amber-500"
+            footClassName="fill-slate-950"
+          />
+
           <p className="text-sm font-semibold uppercase tracking-[0.3em] text-amber-400">
             New season essentials
           </p>

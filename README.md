@@ -1,190 +1,121 @@
-# Guzolink
+<div align="center">
 
-A lightweight marketplace platform where local merchants create online shops and sell products. The project includes a Node.js + Express backend and a Vite-based frontend.
-<!-- home image inside imgs/home.png -->
+<img src="./imgs/guzo-logo-lockup.png" alt="Guzolink" width="360" />
 
+### A lightweight marketplace platform where local merchants create online shops and sell products
 
+[![CI](https://github.com/<owner>/<repo>/actions/workflows/ci.yml/badge.svg)](https://github.com/<owner>/<repo>/actions/workflows/ci.yml)
+[![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](./LICENSE)
+[![Node](https://img.shields.io/badge/Node-18%2B-339933?logo=node.js&logoColor=white)](https://nodejs.org)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](#contributing)
 
-## Team & Authors
-
-* **Fraol Bulti**
-* **Daniel**
-* **Gemechis Bekena**
+</div>
 
 ---
 
 ## Overview
 
-This repository contains a full-stack application named Guzolink. The backend provides REST APIs for merchant and shop management, product catalog, orders, customers, and payments. The frontend is a Vite-powered client that lets merchants manage shops and customers browse and buy products.
-
-### Project Previews
-
-| Marketplace Storefront | Merchant Dashboard |
-| --- | --- |
-|  |  |
-
----
-
-## Frontend Flow
-
-The frontend follows a render-then-init pattern: the router selects a page, the page returns markup, and an init function attaches event handlers. Key flows include merchant onboarding, shop management, product CRUD, and customer checkout.
-
----
+Guzolink pairs a **Node.js + Express** REST API with a **Vite-powered** frontend. Merchants register, open a shop, and manage a product catalog; customers browse, cart, and check out. Core domains: merchants, shops, products, orders, and payments.
 
 ## Tech Stack
 
-* **Backend:** Node.js, Express, Mongoose (MongoDB)
-* **Frontend:** Vite, Vanilla JS, Tailwind CSS
-* **Payments:** Stripe (or pluggable provider)
-* **Dev Tooling:** nodemon, Jest, Supertest
+<div align="left">
 
----
+![Node.js](https://img.shields.io/badge/Node.js-339933?logo=node.js&logoColor=white)
+![Express](https://img.shields.io/badge/Express-000000?logo=express&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-47A248?logo=mongodb&logoColor=white)
+![Mongoose](https://img.shields.io/badge/Mongoose-880000?logo=mongoose&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?logo=tailwindcss&logoColor=white)
+![Stripe](https://img.shields.io/badge/Stripe-635BFF?logo=stripe&logoColor=white)
+![Jest](https://img.shields.io/badge/Jest-C21325?logo=jest&logoColor=white)
+![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?logo=githubactions&logoColor=white)
+
+</div>
+
+| Layer           | Stack                                  |
+| --------------- | -------------------------------------- |
+| **Backend**     | Node.js · Express · Mongoose (MongoDB) |
+| **Frontend**    | Vite · Vanilla JS · Tailwind CSS       |
+| **Payments**    | Stripe (pluggable provider)            |
+| **Dev tooling** | nodemon · Jest · Supertest             |
+| **CI/CD**       | GitHub Actions                         |
 
 ## Repository Layout
 
 ```text
-├── backend/            # Express API server, models for merchants, shops, products, orders
-├── guzolink_client/    # Vite frontend application for merchants and customers
-├── imgs/               # Application screenshots and assets used in README
-└── scripts/            # Utility scripts (e.g., seed data, create demo merchant)
-
+├── backend/            # Express API — merchants, shops, products, orders
+├── guzolink_client/    # Vite frontend — merchant dashboard & storefront
+├── imgs/               # Screenshots and README assets
+└── scripts/            # Utility scripts (seed data, demo merchant)
 ```
-
----
 
 ## Quick Start
 
-### Prerequisites
-
-* Node.js (v18+ recommended)
-* npm
-* MongoDB (local or remote instance running)
-
-### 1) Backend Setup
-
-Install dependencies and start the API server:
+**Prerequisites:** Node.js 18+, npm, a running MongoDB instance.
 
 ```bash
+# Backend
 cd backend
 npm install
+npm run dev          # dev server with auto-reload
+npm run start         # production server (defaults to PORT 9000)
 
-# Development environment with auto-reload (nodemon)
-npm run dev
-
-# Start production-ready server
-npm run start
-
-```
-
-*The server defaults to port `9000` unless the `PORT` environment variable is set.*
-
-### 2) Frontend Setup
-
-Install and run the Vite dev server:
-
-```bash
+# Frontend
 cd guzolink_client
 npm install
 npm run dev
-
 ```
 
-The frontend runs via Vite and points to the backend API layer as configured.
+## Environment Variables
 
----
-
-## Environment Variables (Backend)
-
-Place environment variables in one of these locations (the project checks them in priority order):
-
-1. `backend/envs/.env.local` (Development)
-2. `backend/envs/.env.prod` (Production)
-3. `backend/.env`
-
-### Example Configuration (`backend/envs/.env.local.example`)
-
-Create your local file based on this template:
+Backend config resolves in priority order: `backend/envs/.env.local` → `backend/envs/.env.prod` → `backend/.env`.
 
 ```env
-# Server Configuration
 PORT=9000
 JWT_SECRET=your_super_secret_jwt_key_here
 JWT_EXPIRES_IN=1d
 
-# Database Connection
 DB_URI=mongodb://localhost:27017/Guzolink
 HOST=localhost
 DB_NAME=Guzolink
 
-# Third-Party Payments Integrations
 PAYMENTS_PROVIDER_KEY=sk_test_yourStripeKeyHere
-
 ```
 
----
+## API Reference
 
-## Core API Reference
+| Method   | Endpoint             | Description                    | Auth  |
+| -------- | -------------------- | ------------------------------ | :---: |
+| `POST`   | `/api/auth/register` | Register a new merchant        |   –   |
+| `POST`   | `/api/auth/login`    | Authenticate and receive a JWT |   –   |
+| `GET`    | `/api/shops`         | List active shops              |   –   |
+| `POST`   | `/api/shops`         | Create a shop                  |   ✅   |
+| `GET`    | `/api/products`      | Fetch product catalog          |   –   |
+| `POST`   | `/api/products`      | Add a product                  |   ✅   |
+| `PUT`    | `/api/products/:id`  | Update a product               |   ✅   |
+| `DELETE` | `/api/products/:id`  | Remove a product               |   ✅   |
 
-Below is a reference outlining the primary REST endpoints accessible on the backend:
+## Scripts
 
-| Method | Endpoint | Description | Auth Required |
-| --- | --- | --- | --- |
-| **POST** | `/api/auth/register` | Registers a new local merchant account | No |
-| **POST** | `/api/auth/login` | Authenticates merchant and returns JWT token | No |
-| **GET** | `/api/shops` | Lists all active marketplace online shops | No |
-| **POST** | `/api/shops` | Creates a new vendor shop storefront | **Yes** (Merchant) |
-| **GET** | `/api/products` | Fetches a global or shop-specific product catalog | No |
-| **POST** | `/api/products` | Adds a new product inventory item to a shop | **Yes** (Merchant) |
-| **PUT** | `/api/products/:id` | Updates an existing product listing details | **Yes** (Merchant) |
-| **DELETE** | `/api/products/:id` | Removes a product item from the storefront catalog | **Yes** (Merchant) |
-
----
-
-## Useful Scripts
-
-### Backend Scripts
-
-* `npm run dev` — Starts the `nodemon` development server with auto-reload.
-* `npm start` — Runs the application standard Node process execution.
-* `npm test` — Executes the test suites using Jest runner framework.
-
-### Frontend Scripts (`guzolink_client`)
-
-* `npm run dev` — Launches local Vite dev instance.
-* `npm run build` — Compiles and optimizes assets into distribution files for deployment.
-* `npm run preview` — Statically serves the locally built production output for verification.
-
----
-
-## Create Demo Merchant
-
-The backend includes a utility script to instantly build a demo merchant, sample shop, and initial mock products for swift sandbox experimentation:
-
-```bash
-cd backend
-node src/scripts/createDemoMerchant.js
-
-```
-
----
-
-## Testing
-
-Backend unit and integration tests use Jest + Supertest. From the `backend` directory, run:
-
-```bash
-npm test
-
-```
-
----
+| Command                                  | Where              | Does                                     |
+| ---------------------------------------- | ------------------ | ---------------------------------------- |
+| `npm run dev`                            | `backend/`         | Start dev server (nodemon)               |
+| `npm start`                              | `backend/`         | Start production server                  |
+| `npm test`                               | `backend/`         | Run Jest + Supertest suite               |
+| `node src/scripts/createDemoMerchant.js` | `backend/`         | Seed a demo merchant, shop, and products |
+| `npm run dev`                            | `guzolink_client/` | Start Vite dev server                    |
+| `npm run build`                          | `guzolink_client/` | Build production assets                  |
+| `npm run preview`                        | `guzolink_client/` | Preview the production build locally     |
 
 ## Contributing
 
-Contributions are welcome! Please feel free to open an issue or submit a pull request with a clear description of changes and their corresponding rationale.
+Issues and PRs are welcome — please include a clear description of the change and its rationale.
 
----
+## Team
+
+Fraol Bulti · Daniel · Gemechis Bekena
 
 ## License
 
-This project is open-source and provided under the terms of the `ISC` license (see the accompanying `LICENSE` file for details).
+[ISC](./LICENSE)

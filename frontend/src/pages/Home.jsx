@@ -12,7 +12,7 @@ import { useEffect, useRef } from "react";
 function Home() {
   const { products, loading, isLoadingMore, hasMore, loadMore, error } =
     useProducts();
-  const featured = (products?? []).slice(0, -1)
+  const featured = (products?? []).slice(0, 4)
   const scrollRef = useRef(null);
 
   const scrollLeft = () => {
@@ -93,8 +93,8 @@ function Home() {
 
         <ShopsStrip />
 
-        <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div id="products" className="mb-10 space-y-3">
+        <section id="products" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div  className="mb-10 space-y-3">
             <p className="text-sm font-semibold uppercase tracking-[0.3em] text-amber-500">
               Shop all
             </p>

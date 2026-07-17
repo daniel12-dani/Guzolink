@@ -33,7 +33,6 @@ import CreateProductCard from "./features/products/pages/CreateProductPage.jsx";
 import Cart from "./pages/Cart.jsx";
 import Checkout from "./pages/Checkout.jsx";
 
-
 function App() {
   return (
     <ApolloProvider client={client}>
@@ -46,12 +45,7 @@ function App() {
           <Route path="/support" element={<ContactUs />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/marketplace" element={<Marketplace />}/>
-          <Route path="/cart" 
-          element={
-          <protectedRoute>
-            <Cart/>
-            </protectedRoute>}/>
+         
           <Route
             path="/profile/:userId"
             element={
@@ -127,6 +121,8 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route path="/marketplace" element={<Marketplace />} />
+          
         </Routes>
         <Footer />
       </div>

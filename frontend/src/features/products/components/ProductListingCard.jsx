@@ -133,7 +133,7 @@ export default function ProductListingCard({ product, shopName }) {
           ${product.price}
         </span>
         <div className="flex gap-2">
-          <Link
+          {/* <Link
             to={`/products/${product.id}`}
             className="rounded-full border border-slate-600 px-3 py-2 text-sm font-medium text-slate-200 transition hover:bg-slate-700"
           >

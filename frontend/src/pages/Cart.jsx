@@ -148,7 +148,7 @@ function Cart() {
             up here.
           </p>
           <Link
-            to="/products"
+            to="/"
             className="mt-4 inline-flex rounded-full bg-amber-500 px-6 py-3 font-semibold text-slate-900 transition hover:bg-amber-400"
           >
             Browse products
@@ -229,7 +229,7 @@ function Cart() {
               </Link>
             )}
             <Link
-              to="/products"
+              to="/"
               className="block w-full rounded-full border border-white/20 px-4 py-3 text-center font-semibold text-white transition hover:bg-white/10"
             >
               Continue shopping
