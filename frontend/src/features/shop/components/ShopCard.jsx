@@ -15,18 +15,27 @@ function ShopCard({ shop, isOwner }) {
     if (!pendingDelete) return;
     setIsDeleting(true);
     try {
-      await deleteShop(pendingDelete.id);
+      await deleteShop(pendingDelete._id);
       setPendingDelete(null);
     } finally {
       setIsDeleting(false);
     }
   };
-  console.log("ShopCard rendering with shop image:", shop.posterImage, "isOwner:", isOwner);
+
+  // Professional URL Resolver
+  const getImageUrl = (imagePath) => {
+    if (!imagePath) return "https://picsum.photos/200/300";
+    const productionBackendUrl = import.meta.env.VITE_API_URL || "";
+    return `${productionBackendUrl}${imagePath}`;
+  };
+
+  // console.log("ShopCard rendering with shop image:", shop.posterImage, "isOwner:", isOwner);
+
   return (
     <div className="relative w-64 justify-items-center rounded-xl overflow-hidden shadow-lg transform transition-shadow duration-300 hover:scale-[1.01]">
       <div className="relative rounded-xl overflow-hidden shadow-lg">
         <img
-          src={shop.posterImage || "https://picsum.photos/200/300"}
+          src={getImageUrl(shop.posterImage)}
           alt={shop.name}
           className="w-full h-48 object-cover"
           onError={(e) => {

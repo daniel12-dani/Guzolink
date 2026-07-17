@@ -20,8 +20,8 @@ App.use(
   })
 );
 // ---------- Body parser ----------
-App.use(express.json());
-App.use(express.urlencoded({ extended: true }));
+App.use(express.json({limit: "50mb"}));
+App.use(express.urlencoded({limit: "50mb", extended: true }));
 App.use(morgan("common"));
 
 // static files

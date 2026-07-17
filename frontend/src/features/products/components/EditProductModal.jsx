@@ -103,6 +103,7 @@ export default function EditProductModal({
         image = await uploadProductImage(imageFile);
         setIsUploadingImage(false);
       }
+      
       await onSave(product.id, { ...formData, image });
       onClose();
     } catch (err) {

@@ -3,9 +3,15 @@ import ConfirmModal from "../../../components/ConfirmModal.jsx";
 import EditProductModal from "./EditProductModal.jsx";
 
 function ProductImage({ src, alt }) {
-  // Graceful fallback: if there's no image URL, or it fails to load,
-  // show a quiet placeholder instead of a broken-image icon.
-  if (!src) {
+  const getImageUrl = (imagePath) => {
+    if (!imagePath) return null;
+    const backendUrl = import.meta.env.VITE_API_URL || "";
+    return `${backendUrl}${imagePath}`;
+  };
+
+  const resolvedSrc = getImageUrl(src);
+
+  if (!resolvedSrc) {
     return (
       <div className="flex h-40 w-full items-center justify-center rounded-xl bg-slate-900/60 text-slate-600">
         <svg
@@ -28,7 +34,7 @@ function ProductImage({ src, alt }) {
 
   return (
     <img
-      src={src}
+      src={resolvedSrc}
       alt={alt}
       className="h-40  w-40 rounded-xl object-cover"
       onError={(e) => {
@@ -66,9 +72,9 @@ export default function ShopProductCard({
       setIsDeleting(false);
     }
   };
-
+  console.log("productsLoading", products);
   return (
-    <div className="mt-8">
+    <div className="mt-8 w-full rounded-2xl border border-white/10 bg-white/5 p-6">
       <h3 className="mb-2 w-full text-lg font-semibold text-white">Products</h3>
 
       {productsLoading ? (
@@ -89,7 +95,7 @@ export default function ShopProductCard({
             return (
               <div
                 key={product.id}
-                className="flex flex-col w-full rounded-2xl border border-white/10 bg-white/5 p-4 transition hover:border-white/20"
+                className="flex flex-col w-40 rounded-2xl border border-white/10 bg-white/5 p-4 transition hover:border-white/20"
               >
                 <div>
                   <div className="relative">
