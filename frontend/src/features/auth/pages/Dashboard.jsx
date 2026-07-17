@@ -52,7 +52,7 @@ function Dashboard() {
 
           {/* shops */}
           <Link to="/shops">
-            <h2 className="text-2xl font-bold text-center border border-slate-500 rounded-2xl text-white mb-4">
+            <h2 className="text-2xl font-bold text-center border border-slate-600 rounded-2xl text-white mb-2 p-2">
               My Shops
             </h2>
           </Link>

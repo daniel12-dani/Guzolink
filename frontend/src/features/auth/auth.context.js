@@ -316,6 +316,58 @@ function AuthProvider({ children }) {
   // token is exposed separately from `user` because consumers like
   // ShopContext only need the token string for request headers — they
   // shouldn't have to reach into user.token everywhere.
+  const getAllUsers = async () => {
+    try {
+      const data = await request("/api/user/all", {
+        method: "GET",
+      });
+
+      if (!data.success) {
+        return {
+          success: false,
+          message: data.message || "Unable to fetch users",
+        };
+      }
+
+      return {
+        success: true,
+        users: data.users,
+        message: data.message || "Users fetched successfully",
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: error.message || "Unable to fetch users",
+      };
+    }
+  }
+
+  const deleteUser = async (userId) => { 
+    try{
+      console.log("Deleting user with ID:", userId);
+      const data = await request(`/api/user/${userId}`, {
+        method: "DELETE",
+      });
+
+      if (!data.success) {
+        return {
+          success: false,
+          message: data.message || "Unable to delete user",
+        };
+      }
+
+      return {
+        success: true,
+        message: data.message || "User deleted successfully",
+      };  
+    } catch (error) {
+      return {
+        success: false,
+        message: error.message || "Unable to delete user",
+      };
+    }
+  }
+
   const value = useMemo(
     () => ({
       user,
@@ -326,6 +378,8 @@ function AuthProvider({ children }) {
       logout,
       updateUser,
       userProfile,
+      getAllUsers,
+      deleteUser,
     }),
     [user, isAuthLoading],
   );

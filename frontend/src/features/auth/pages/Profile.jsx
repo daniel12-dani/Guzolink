@@ -1,9 +1,29 @@
+import { useState } from "react";
 import { useAuth } from "../auth.context.js";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import ConfirmModal from "../../../components/ConfirmModal.jsx"; // adjust path to match where it actually lives
 
 function ProfileCard() {
-  const { user } = useAuth();
+  const { user, deleteUser, logout } = useAuth();
+  const navigate = useNavigate();
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
+  const isAdmin = user?.role === "admin"; // Check if the user is an admin
+
+  const handleConfirmLogout = async () => {
+    setIsLoggingOut(true);
+    try {
+      if (!isAdmin) {
+        await deleteUser(user.id || user._id);
+      }
+      setShowLogoutConfirm(false);
+      await logout();
+      navigate("/login");
+    } finally {
+      setIsLoggingOut(false);
+    }
+  };
   // Guard clause against initial null auth state
   if (!user) return null;
 
@@ -55,19 +75,36 @@ function ProfileCard() {
             {user.phone || "Not provided"}
           </span>
         </div>
-        <div>
-          <p className="text-sm tracking-tight text-gray-500 mb-2">
-            You can update your info with this button
-          </p>
+        <p className="text-sm tracking-tight text-gray-500 mb-2">
+          You can update your info with this button
+        </p>
+        <div className="grid grid-cols-2 justify-items-center gap-4 space-y-1 bg-slate-900/40 p-3 rounded-xl border border-slate-700/30">
           <Link
             to={`/update/${user.id || user._id}`}
             className="inline-flex items-center justify-center rounded-xl bg-amber-500 px-5 py-2.5 text-sm font-semibold text-slate-950 shadow-md hover:bg-amber-400 active:scale-[0.98] transition-all duration-200"
           >
             Update Profile
           </Link>
+          {!isAdmin && (
+            <button
+              onClick={() => setShowLogoutConfirm(true)}
+              className="inline-flex items-center justify-center rounded-xl bg-red-500 px-5 py-2.5 text-sm font-semibold text-slate-950 shadow-md hover:bg-red-400 active:scale-[0.98] transition-all duration-200"
+            >
+              Delete Account
+            </button>
+          )}
         </div>
       </div>
-
+      <ConfirmModal
+        open={showLogoutConfirm}
+        title="Log out?"
+        message="You'll NEVER RECOVER your account."
+        confirmLabel="Delete Account"
+        isDangerous={true}
+        isConfirming={isLoggingOut}
+        onCancel={() => setShowLogoutConfirm(false)}
+        onConfirm={handleConfirmLogout}
+      />
       {/* Financial Section Placeholder Slot */}
       {/* <div className="mt-4 pt-4 border-t border-slate-700/30">
         <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Financial Overview</h3>

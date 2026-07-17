@@ -26,11 +26,11 @@ function MyShops() {
   //   user &&
   //   shops &&
   //   (user.id || user._id)?.toString() === shops.owner?.toString();
-  const isOwner = Boolean(user)
-  console.log("is owner: ", isOwner)
+  const isOwner = Boolean(user);
+  console.log("is owner: ", isOwner);
 
   return (
-    <div className="mx-auto p-6 sm:px-6 lg:px-8 rounded 3xl border border-white/10 bg-slate-800 shadow-sm ">
+    <div className="mx-auto p-2 sm:px-2 lg:px-8 rounded 3xl border border-white/10 bg-slate-800 shadow-sm ">
       <div>
         <div className="flex items-center justify-between mb-4 mt-6">
           <Link
@@ -69,7 +69,7 @@ function MyShops() {
           </button>
         </div>
       </div>
-      <div className="flex flex-row gap-2 md:grid-cols-2 lg:grid-cols-3 border border-white/10 rounded-2xl p-4">
+      <div className=" lg:flex sm:grid justify-items-center gap-2 mb-4 grid-cols-2 sm:grid-cols-1  border border-white/10 rounded-2xl p-4">
         {!shops || shops.length === 0 ? (
           <p className="text-red-600 rounded-2xl text-center font-bold mb-4 border border-red-500 p-5">
             You have no shops yet . {shopError && `Error: ${shopError}`}

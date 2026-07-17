@@ -15,13 +15,13 @@ import { userUpload } from "../middlewares/upload.middleware.js";
 
 // admin only
 UserRoute.get("/all", IsLoggedIn, IsAdmin, GetAllUsers);
-UserRoute.delete("/:userId", IsLoggedIn, IsAdmin, DeleteUser);
 
 // public only
 UserRoute.get("/profile/:userId", IsLoggedIn, GetUserProfile);
 UserRoute.post("/register", userUpload.single("profileImage"), RegisterUser);
 UserRoute.post("/login", LoginUser);
 UserRoute.post("/logout", IsLoggedIn, LogoutUser);
+UserRoute.delete("/:userId", IsLoggedIn,  DeleteUser);
 UserRoute.post(
   "/update/:userId",
   IsLoggedIn,

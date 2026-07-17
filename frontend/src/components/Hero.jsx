@@ -35,7 +35,7 @@ function Hero() {
           <div className="flex flex-wrap gap-3">
         
             <Link
-              to="#products"
+              to="/marketplace"
               className="rounded-full bg-amber-500 px-5 py-3 font-semibold text-slate-950 transition hover:bg-amber-400"
             >
               Shop now

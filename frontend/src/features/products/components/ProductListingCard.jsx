@@ -1,8 +1,15 @@
-import { Link } from "react-router-dom";
 import { useCart } from "../../cart/cart.context.js";
-
+import { Link } from "react-router-dom";
 function ProductImage({ src, alt }) {
-  if (!src) {
+  const getImageUrl = (imagePath) => {
+     if (!imagePath) return null;
+     const backendUrl = import.meta.env.VITE_API_URL || "";
+     return `${backendUrl}${imagePath}`;
+   };
+ 
+   const resolvedSrc = getImageUrl(src);
+ 
+   if (!resolvedSrc) {
     return (
       <div className="flex h-40 w-full items-center justify-center rounded-2xl bg-slate-900/60 text-slate-600">
         <svg
@@ -25,7 +32,7 @@ function ProductImage({ src, alt }) {
 
   return (
     <img
-      src={src}
+      src={resolvedSrc}
       alt={alt}
       className="h-40 w-full rounded-2xl object-cover"
       onError={(e) => {
@@ -44,7 +51,10 @@ function RatingStars({ rating }) {
 
   const rounded = Math.round(rating);
   return (
-    <div className="flex items-center gap-1 text-amber-400" title={`${rating} out of 5`}>
+    <div
+      className="flex items-center gap-1 text-amber-400"
+      title={`${rating} out of 5`}
+    >
       {Array.from({ length: 5 }).map((_, i) => (
         <svg
           key={i}
@@ -125,7 +135,11 @@ export default function ProductListingCard({ product, shopName }) {
             : "text-red-400"
         }`}
       >
-        {inStock ? (lowStock ? `Only ${stock} left` : "In stock") : "Out of stock"}
+        {inStock
+          ? lowStock
+            ? `Only ${stock} left`
+            : "In stock"
+          : "Out of stock"}
       </p>
 
       <div className="mt-4 flex items-center justify-between">
@@ -138,7 +152,7 @@ export default function ProductListingCard({ product, shopName }) {
             className="rounded-full border border-slate-600 px-3 py-2 text-sm font-medium text-slate-200 transition hover:bg-slate-700"
           >
             View details
-          </Link>
+          </Link> 
           <button
             onClick={() => addToCart(product)}
             disabled={!inStock}

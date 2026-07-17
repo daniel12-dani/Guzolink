@@ -1,5 +1,7 @@
 import bcrypt from "bcrypt";
 import UserModel from "../models/user.model.js";
+import ShopModel from "../models/shop.model.js";
+import ProductModel from "../models/product.model.js";
 import ValidateUserRegisration from "../validators/user.validator.js";
 import { GenerateToken } from "../middlewares/auth.middleware.js";
 import { publicPathFor } from "../middlewares/upload.middleware.js";
@@ -266,6 +268,9 @@ export async function DeleteUser(req, res) {
       });
     }
     await UserModel.findOneAndDelete({ _id: userId });
+    // we need to delete shops and products related to the user also not just the account
+    await ShopModel.deleteMany({ owner: userId });
+    await ProductModel.deleteMany({ owner: userId });
     return res.status(200).json({
       success: true,
       message: "Profile deleted successfully",

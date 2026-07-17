@@ -32,12 +32,12 @@ function ShopCard({ shop, isOwner }) {
   // console.log("ShopCard rendering with shop image:", shop.posterImage, "isOwner:", isOwner);
 
   return (
-    <div className="relative w-64 justify-items-center rounded-xl overflow-hidden shadow-lg transform transition-shadow duration-300 hover:scale-[1.01]">
+    <div className="relative  sm:shrink-0 w-54 mb-2 justify-items-center rounded-xl overflow-hidden shadow-lg transform transition-shadow duration-300 hover:scale-[1.01]">
       <div className="relative rounded-xl overflow-hidden shadow-lg">
         <img
           src={getImageUrl(shop.posterImage)}
           alt={shop.name}
-          className="w-full h-48 object-cover"
+          className="w-full h-48 object-fill"
           onError={(e) => {
             e.currentTarget.onerror = null;
             e.currentTarget.src = "https://picsum.photos/200/300";

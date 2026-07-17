@@ -8,10 +8,7 @@ import { client } from "./providers/ApolloClient.js";
 // componenets
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
-import Home from "./pages/Home.jsx";
-import ContactUs from "./pages/ContactUs.jsx";
-import AboutUs from "./pages/AboutUs.jsx";
-import Marketplace from "./pages/MarketPlace.jsx";
+import FloatingCartButton from "./components/FloatingCartButton.jsx";
 
 // auth
 import Login from "./features/auth/pages/Login.jsx";
@@ -33,6 +30,13 @@ import CreateProductCard from "./features/products/pages/CreateProductPage.jsx";
 import Cart from "./pages/Cart.jsx";
 import Checkout from "./pages/Checkout.jsx";
 
+import Home from "./pages/Home.jsx";
+import ContactUs from "./pages/ContactUs.jsx";
+import AboutUs from "./pages/AboutUs.jsx";
+import Marketplace from "./pages/MarketPlace.jsx";
+import AdminPage from "./pages/AdminPage.jsx";
+import ComingSoon from "./pages/ComingSoon.jsx";
+
 function App() {
   return (
     <ApolloProvider client={client}>
@@ -45,7 +49,14 @@ function App() {
           <Route path="/support" element={<ContactUs />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-         
+          <Route
+            path="/admin/"
+            element={
+              <ProtectedRoute>
+                <AdminPage />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/profile/:userId"
             element={
@@ -121,10 +132,11 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route path="/products/:productId" element={<ComingSoon />} />
           <Route path="/marketplace" element={<Marketplace />} />
-          
         </Routes>
         <Footer />
+        <FloatingCartButton />
       </div>
     </ApolloProvider>
   );

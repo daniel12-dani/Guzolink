@@ -4,6 +4,8 @@ import { useAuth } from "../../auth/auth.context.js";
 import { useShops } from "../shop.context.js";
 import { useCategories } from "../../categories/category.context.js";
 import { Link } from "react-router-dom";
+import LoadingSpinnerModal from "../../../components/LoadingSpinnerModal.jsx"
+
 
 function CreateShop() {
   const user = useAuth()?.user;
@@ -11,7 +13,7 @@ function CreateShop() {
   const { shopCategories = [] } = useCategories();
   const [posterImageFile, setPosterImageFile] = useState(null);
   const navigate = useNavigate();
-
+  const [loading, setLoading] = useState(false);
   const [shopDetails, setShopDetails] = useState({
     name: "",
     description: "",
@@ -34,6 +36,7 @@ function CreateShop() {
     e.preventDefault();
     setError("");
     setMessage("");
+    setLoading(true);
 
     // if (fileInputRef.current) fileInputRef.current.value = "";
 
@@ -300,10 +303,17 @@ function CreateShop() {
           <div className="flex items-center gap-4">
             <button
               type="submit"
-              disabled={!shopDetails.name || !shopDetails.contact}
+              disabled={loading}
               className="w-full rounded-xl bg-amber-500 px-4 py-3 font-semibold text-slate-950 transition hover:bg-amber-400 disabled:cursor-not-allowed disabled:bg-amber-300"
             >
-              Create Shop
+               {loading ? (
+                            <LoadingSpinnerModal
+                              isOpen={loading}
+                              message="creating shop please wait..."
+                            />
+                          ) : (
+                            "Create Shop"
+                          )}
             </button>
 
             {shopDetails.posterImage && (

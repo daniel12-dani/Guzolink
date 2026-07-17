@@ -1,11 +1,13 @@
 import { createContext, createElement, useContext, useEffect, useMemo, useState } from "react";
 import { storage } from "../../shared/lib/storage.js";
+import { useToast } from "../toast/toast.context.jsx";
 
 const CartContext = createContext(null);
 
 function CartProvider({ children }) {
   const [cart, setCart] = useState(() => storage.cart.get());
-
+  const { showToast } = useToast();
+  
   useEffect(() => {
     storage.cart.set(cart);
   }, [cart]);
@@ -19,13 +21,14 @@ function CartProvider({ children }) {
           item.id === product.id ? { ...item, quantity: item.quantity + quantity } : item
         );
       }
-
+      showToast(`${product.name} added to cart`, { type: "success" });
       return [...currentCart, { ...product, quantity }];
     });
   };
 
   const removeFromCart = (productId) => {
     setCart((currentCart) => currentCart.filter((item) => item.id !== productId));
+    showToast("Item removed from cart", { type: "info" });
   };
 
   const updateQuantity = (productId, quantity) => {
@@ -34,6 +37,7 @@ function CartProvider({ children }) {
         .map((item) => (item.id === productId ? { ...item, quantity } : item))
         .filter((item) => item.quantity > 0)
     );
+    showToast("Cart updated", { type: "info" });
   };
 
   const clearCart = () => setCart([]);
